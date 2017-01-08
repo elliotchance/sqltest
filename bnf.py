@@ -479,13 +479,25 @@ def find_missing_rules(rules):
 
     return sorted(rule_names - set(rules))
 
-def get_paths_for_rule(rules, rule_name, overrides):
+def get_paths_for_rule(rules, rule_name, overrides, exclude):
     paths = rules[rule_name]['ast'].resolve(rules, overrides)
-    return sorted([str(path) for path in paths])
 
-def output_rule(rules, rule_name, overrides, output_paths, output_subrules):
+    new_paths = []
+    for path in paths:
+        should_exclude = False
+        for token in path:
+            if str(token) in exclude:
+                should_exclude = True
+                break
+
+        if not should_exclude:
+            new_paths.append(path)
+
+    return sorted([str(path) for path in new_paths])
+
+def output_rule(rules, rule_name, overrides, exclude, output_paths, output_subrules):
     if output_paths:
-        print('\n'.join(get_paths_for_rule(rules, rule_name, overrides)))
+        print('\n'.join(get_paths_for_rule(rules, rule_name, overrides, exclude)))
     else:
         # Render as BNF syntax
         rules_to_render = set([rule_name])
@@ -522,8 +534,13 @@ if __name__ == '__main__':
     parser.add_argument('--validate', action='store_const', const=True, help='validate the BNF file')
     parser.add_argument('--paths', action='store_const', const=True, help='output all possible paths from BNF rules')
     parser.add_argument('--subrules', action='store_const', const=True, help='will also output any subrules of the provided rules')
+    parser.add_argument('--exclude', type=str, help='exclude paths that contain one of the keywords. Separate multiple keywords with a comma.')
 
     args = parser.parse_args()
+
+    exclude = []
+    if args.exclude:
+        exclude = args.exclude.split(',')
 
     raw_rules = parse_bnf_file(args.bnf_file)
     rules = analyze_rules(raw_rules)
@@ -541,7 +558,7 @@ if __name__ == '__main__':
     overrides = unpack_overrides(args.o)
     if len(args.rule) == 0:
         for rule in sorted(rules):
-            output_rule(rules, rule, overrides, args.paths, args.subrules)
+            output_rule(rules, rule, overrides, exclude, args.paths, args.subrules)
     else:
         for rule in sorted(args.rule):
-            output_rule(rules, rule, overrides, args.paths, args.subrules)
+            output_rule(rules, rule, overrides, exclude, args.paths, args.subrules)

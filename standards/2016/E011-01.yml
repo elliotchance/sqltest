@@ -1,0 +1,4 @@
+sql: CREATE TABLE $TN$ ( a $EXAMPLE$ )
+examples:
+  bnf: exact numeric type
+  exclude: [NUMERIC, DECIMAL, DEC]

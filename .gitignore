@@ -2,3 +2,4 @@
 /report.html
 *.pyc
 /.idea
+*.tests.yml
