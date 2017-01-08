@@ -139,7 +139,9 @@ class ASTTokens(list):
         return ' '.join([str(item) for item in self])
 
     def resolve(self, rules, overrides, exclude):
-        choice = ASTChoice([self])
+        # The deepcopy() here is important becuase we don't want to mutate the
+        # original rules which will be reused.
+        choice = ASTChoice([copy.deepcopy(self)])
         did_modify = True
 
         while did_modify:

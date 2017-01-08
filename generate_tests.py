@@ -52,6 +52,7 @@ def generate_tests(feature_file_path):
             overrides = {}
             for override in test['examples']:
                 overrides[override] = bnf.ASTKeyword(str(test['examples'][override]))
+
             examples = bnf.get_paths_for_rule(rules, rule_name, overrides, exclude)
 
             for example in examples:
@@ -94,7 +95,7 @@ conn = sqlite3.connect(db_file)
 c = conn.cursor()
 
 # Run the tests
-for feature_id in test_files:
+for feature_id in sorted(test_files):
     file_path = test_files[feature_id]
     test_file = open(file_path, "r")
     tests = list(yaml.load_all(test_file))
