@@ -5,25 +5,33 @@ import time
 import bnf
 import sys
 
-result_tests = []
+def feature_id_from_file_path(file_path):
+    return file_path.split('/')[-1][:-4]
 
-raw_rules = bnf.parse_bnf_file('standards/2016/bnf.txt')
-rules = bnf.analyze_rules(raw_rules)
+def output_file(feature_file_path):
+    return feature_file_path[:-4] + ".tests.yml"
 
-if len(sys.argv) == 1:
-    files = glob.glob("standards/2016/*.yml")
-else:
-    files = sys.argv[1:]
+def all_features_with_tests(standard):
+    all_files = glob.glob("standards/%s/*.yml" % standard)
+    feature_files = []
+    for feature_file_path in sorted(all_files):
+        basename = os.path.basename(feature_file_path)
+        if basename[0].upper() != basename[0] or '.tests.yml' in basename:
+            continue
 
-for feature_file_path in sorted(files):
-    basename = os.path.basename(feature_file_path)
-    if basename[0].upper() != basename[0] or '.tests.yml' in basename:
-        continue
+        feature_files.append(feature_file_path)
 
-    print(basename)
+    return feature_files
 
+def get_rules(standard):
+    raw_rules = bnf.parse_bnf_file('standards/%s/bnf.txt' % standard)
+    return bnf.analyze_rules(raw_rules)
+
+def generate_tests(feature_file_path):
     feature_file = open(feature_file_path, "r")
     tests = yaml.load_all(feature_file)
+    basename = os.path.basename(feature_file_path)
+    result_tests = []
 
     for test in tests:
         rule_names = test['examples']['bnf']
@@ -50,6 +58,16 @@ for feature_file_path in sorted(files):
                     'sql': sql.replace('$EXAMPLE$', example)
                 })
 
-    output_file_path = feature_file_path[:-4] + ".tests.yml"
-    with open(output_file_path, "w") as output_file:
-        output_file.write(yaml.dump_all(result_tests, default_flow_style=False))
+    with open(output_file(feature_file_path), "w") as f:
+        f.write(yaml.dump_all(result_tests, default_flow_style=False))
+
+standard = '2016'
+rules = get_rules(standard)
+feature_file_paths = all_features_with_tests(standard)
+
+for feature_file_path in feature_file_paths:
+    if os.path.isfile(output_file(feature_file_path)):
+        continue
+
+    print("Generating tests for %s" % feature_id_from_file_path(feature_file_path))
+    generate_tests(feature_file_path)
