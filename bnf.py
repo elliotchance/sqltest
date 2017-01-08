@@ -20,6 +20,12 @@ class DuplicateBNFRuleException(Exception):
     def __init__(self, rule_name):
         Exception.__init__(self, 'Rule <%s> redefined.' % rule_name)
 
+class MissingBNFRuleException(Exception):
+    """Thrown when a BNF rule is not found."""
+
+    def __init__(self, rule_name):
+        Exception.__init__(self, 'Rule <%s> is not defined.' % rule_name)
+
 def parse_bnf_file(file_path):
     """Parse a BNF file and return the rule names and grammars."""
 
@@ -46,7 +52,10 @@ def extract_subrules_from_grammar(grammar):
     returned value will be a set so duplicate rule references will be
     removed."""
 
-    return set(re.findall(r'<([^>]+)>', grammar))
+    try:
+        return set(re.findall(r'<([^>]+)>', grammar))
+    except TypeError:
+        raise RuntimeError("Could not parse BNF grammar: %s" % grammar)
 
 def recurse_rule(rules, rule_name, already_seen):
     """Used to find all the subrules and call the same method recursively until
@@ -108,7 +117,7 @@ def next_token(grammar, offset):
         while ord('A') <= ord(grammar[offset].upper()) <= ord('Z') or \
             ord('0') <= ord(grammar[offset]) <= ord('9') or \
             grammar[offset] == '_' or grammar[offset] == '.' or \
-            grammar[offset] == '-':
+            grammar[offset] == '-' or grammar[offset] == ',':
             s += grammar[offset]
             offset += 1
 
@@ -391,17 +400,20 @@ def analyze_rules(rules):
         'vertical bar': '|',
     }
 
-    for rule_name in sorted(rules):
-        if rule_name in predefined_rules:
-            ast = ASTChoice([ASTTokens([predefined_rules[rule_name]])])
-        else:
-            tokens = all_tokens(rules[rule_name])
-            ast = parse(iter(tokens))
+    try:
+        for rule_name in sorted(rules):
+            if rule_name in predefined_rules:
+                ast = ASTChoice([ASTTokens([predefined_rules[rule_name]])])
+            else:
+                tokens = all_tokens(rules[rule_name])
+                ast = parse(iter(tokens))
 
-        cache[rule_name] = {
-            'recursive': rule_is_recursive(rules, rule_name),
-            'ast': ast
-        }
+            cache[rule_name] = {
+                'recursive': rule_is_recursive(rules, rule_name),
+                'ast': ast
+            }
+    except KeyError as e:
+        raise MissingBNFRuleException(str(e)[1:-1])
 
     return cache
 
@@ -503,20 +515,12 @@ def resolve_rule(rules, rule_name, already_parsed, checking_for_recursion=None):
 
     return new_paths
 
-# Load or build cache file if it doesn't exist
-# if os.path.isfile('cache.yml'):
-#     with open("cache.yml", "r") as cache_file:
-#         rules = yaml.load(cache_file)
-# else:
-#     rules = parse_bnf_file('standards/ISO_IEC_9075-2-2016-E_Foundation/bnf.txt')
-
-#     with open("cache.yml", "w") as cache_file:
-#         cache_file.write(yaml.dump(rules, default_flow_style=False))
-
 parser = argparse.ArgumentParser(description='bnf.py is a CLI tool and module for parsing, manipulating and resolving paths from BNF definitions.')
 parser.add_argument('bnf_file', type=str, help='a path to a BNF file')
 parser.add_argument('rule', type=str, nargs='*', help='a BNF rule name')
 parser.add_argument('-o', type=str, nargs='*', help='override a rule when resolving paths')
+parser.add_argument('--validate', action='store_const', const=True, help='validate the BNF file')
+parser.add_argument('--paths', action='store_const', const=True, help='output all possible paths from BNF rules')
 
 # for rule_name in rules:
 #     if len(rules[rule_name]) > 1 or '<' in ''.join(rules[rule_name]):
@@ -527,8 +531,39 @@ args = parser.parse_args()
 raw_rules = parse_bnf_file(args.bnf_file)
 rules = analyze_rules(raw_rules)
 
+def find_missing_rules(rules):
+    # Find all the rule names by taking the rules already defined as keys and
+    # then running through all the known grammars to find any other rules.
+    rule_names = set(rules)
+
+    for rule_name in rules:
+        grammar = str(rules[rule_name]['ast'])
+        rule_names.update(extract_subrules_from_grammar(grammar))
+
+    return sorted(rule_names - set(rules))
+
+def output_rule(rules, rule_name, output_paths):
+    if output_paths:
+        paths = rules[rule_name]['ast'].resolve(rules, {})
+        print('\n'.join(sorted([str(path) for path in paths])))
+    else:
+        # Render as BNF syntax
+        print('<%s> ::=\n%s\n' % (rule, str(rules[rule]['ast'])))
+
 if __name__ == '__main__':
+    # Validate
+    if args.validate is True:
+        missing_rules = find_missing_rules(rules)
+        if len(missing_rules):
+            print("The following rules are missing from the grammar:\n")
+            print('  ' + '\n  '.join(missing_rules))
+            sys.exit(1)
+        sys.exit(0)
+
     # When no rules are provided we print out all of them
     if len(args.rule) == 0:
         for rule in sorted(rules):
-            print('<%s> ::=\n%s\n' % (rule, str(rules[rule]['ast'])))
+            output_rule(rules, rule, args.paths)
+    else:
+        for rule in sorted(args.rule):
+            output_rule(rules, rule, args.paths)
