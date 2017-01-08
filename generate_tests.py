@@ -21,19 +21,23 @@ for feature_file_path in sorted(files):
     tests = yaml.load_all(feature_file)
 
     for test in tests:
-        rule_name = test['examples']['bnf']
-        overrides = {}
-        for override in test['examples']:
-            overrides[override] = bnf.ASTKeyword(str(test['examples'][override]))
-        examples = bnf.get_paths_for_rule(rules, rule_name, overrides)
+        rule_names = test['examples']['bnf']
+        if not isinstance(rule_names, list):
+            rule_names = [rule_names]
 
-        for example in examples:
-            test_id = basename.split('.')[0].lower() + "_t" + str(len(result_tests))
-            sql = test['sql'].replace('$TN$', test_id)
-            result_tests.append({
-                'id': test_id,
-                'feature': basename[:-4],
-                'sql': sql.replace('$EXAMPLE$', example)
-            })
+        for rule_name in rule_names:
+            overrides = {}
+            for override in test['examples']:
+                overrides[override] = bnf.ASTKeyword(str(test['examples'][override]))
+            examples = bnf.get_paths_for_rule(rules, rule_name, overrides)
+
+            for example in examples:
+                test_id = basename.split('.')[0].lower() + "_t" + str(len(result_tests))
+                sql = test['sql'].replace('$TN$', test_id)
+                result_tests.append({
+                    'id': test_id,
+                    'feature': basename[:-4],
+                    'sql': sql.replace('$EXAMPLE$', example)
+                })
 
 print(yaml.dump_all(result_tests, default_flow_style=False))
