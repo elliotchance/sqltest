@@ -9,3 +9,12 @@ examples:
   bnf: numeric value expression
   numeric value expression: 1
   term: 2
+---
+sql: SELECT $EXAMPLE$
+examples:
+  bnf: [signed numeric literal, unsigned numeric literal]
+  digit: 2
+---
+sql: SELECT 3 $EXAMPLE$ 5
+examples:
+  bnf: comp op
