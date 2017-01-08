@@ -494,19 +494,6 @@ def resolve_rule(rules, rule_name, already_parsed, checking_for_recursion=None):
 
     return new_paths
 
-parser = argparse.ArgumentParser(description='bnf.py is a CLI tool and module for parsing, manipulating and resolving paths from BNF definitions.')
-parser.add_argument('bnf_file', type=str, help='a path to a BNF file')
-parser.add_argument('rule', type=str, nargs='*', help='a BNF rule name')
-parser.add_argument('-o', type=str, nargs='*', help='override a rule when resolving paths')
-parser.add_argument('--validate', action='store_const', const=True, help='validate the BNF file')
-parser.add_argument('--paths', action='store_const', const=True, help='output all possible paths from BNF rules')
-parser.add_argument('--subrules', action='store_const', const=True, help='will also output any subrules of the provided rules')
-
-args = parser.parse_args()
-
-raw_rules = parse_bnf_file(args.bnf_file)
-rules = analyze_rules(raw_rules)
-
 def find_missing_rules(rules):
     # Find all the rule names by taking the rules already defined as keys and
     # then running through all the known grammars to find any other rules.
@@ -518,10 +505,13 @@ def find_missing_rules(rules):
 
     return sorted(rule_names - set(rules))
 
-def output_rule(rules, rule_name, output_paths, output_subrules):
+def get_paths_for_rule(rules, rule_name, overrides):
+    paths = rules[rule_name]['ast'].resolve(rules, overrides)
+    return sorted([str(path) for path in paths])
+
+def output_rule(rules, rule_name, overrides, output_paths, output_subrules):
     if output_paths:
-        paths = rules[rule_name]['ast'].resolve(rules, {})
-        print('\n'.join(sorted([str(path) for path in paths])))
+        print('\n'.join(get_paths_for_rule(rules, rule_name, overrides)))
     else:
         # Render as BNF syntax
         rules_to_render = set([rule_name])
@@ -539,7 +529,28 @@ def get_subrules(rules, rule_name):
 
     return all_rules
 
+def unpack_overrides(overrides):
+    o = {}
+    for override in overrides:
+        key, value = override[0].split('=')
+        o[key.replace('-', ' ')] = ASTKeyword(value)
+
+    return o
+
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='bnf.py is a CLI tool and module for parsing, manipulating and resolving paths from BNF definitions.')
+    parser.add_argument('bnf_file', type=str, help='a path to a BNF file')
+    parser.add_argument('rule', type=str, nargs='*', help='a BNF rule name')
+    parser.add_argument('-o', type=str, nargs='*', help='override a rule when resolving paths', action='append')
+    parser.add_argument('--validate', action='store_const', const=True, help='validate the BNF file')
+    parser.add_argument('--paths', action='store_const', const=True, help='output all possible paths from BNF rules')
+    parser.add_argument('--subrules', action='store_const', const=True, help='will also output any subrules of the provided rules')
+
+    args = parser.parse_args()
+
+    raw_rules = parse_bnf_file(args.bnf_file)
+    rules = analyze_rules(raw_rules)
+
     # Validate
     if args.validate is True:
         missing_rules = find_missing_rules(rules)
@@ -550,9 +561,10 @@ if __name__ == '__main__':
         sys.exit(0)
 
     # When no rules are provided we print out all of them
+    overrides = unpack_overrides(args.o)
     if len(args.rule) == 0:
         for rule in sorted(rules):
-            output_rule(rules, rule, args.paths, args.subrules)
+            output_rule(rules, rule, overrides, args.paths, args.subrules)
     else:
         for rule in sorted(args.rule):
-            output_rule(rules, rule, args.paths, args.subrules)
+            output_rule(rules, rule, overrides, args.paths, args.subrules)
