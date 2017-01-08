@@ -5664,3 +5664,862 @@ POSITION <left paren> <binary value expression> IN <binary value expression> <ri
   | OMIT EMPTY MATCHES
   | WITH UNMATCHED ROWS
   
+  <allocate received cursor statement> ::=
+  ALLOCATE <cursor name>
+      [ CURSOR ] FOR PROCEDURE <specific routine designator>
+
+      <alter domain statement> ::=
+  ALTER DOMAIN <domain name> <alter domain action>
+<alter domain action> ::=
+    <set domain default clause>
+  | <drop domain default clause>
+  | <add domain constraint definition>
+  | <drop domain constraint definition>
+
+  <alter sequence generator statement> ::=
+  ALTER SEQUENCE <sequence generator name> <alter sequence generator options>
+<alter sequence generator options> ::=
+  <alter sequence generator option>...
+<alter sequence generator option> ::=
+    <alter sequence generator restart option>
+  | <basic sequence generator option>
+<alter sequence generator restart option> ::=
+  RESTART [ WITH <sequence generator restart value> ]
+<sequence generator restart value> ::=
+  <signed numeric literal>
+
+  <alter table statement> ::=
+  ALTER TABLE <table name> <alter table action>
+<alter table action> ::=
+    <add column definition>
+  | <alter column definition>
+  | <drop column definition>
+  | <add table constraint definition>
+  | <alter table constraint definition>
+  | <drop table constraint definition>
+  | <add table period definition>
+  | <drop table period definition>
+  | <add system versioning clause>
+  | <drop system versioning clause>
+
+  <alter transform statement> ::=
+  ALTER { TRANSFORM | TRANSFORMS }
+      FOR <schema-resolved user-defined type name> <alter group>...
+<alter group> ::=
+  <group name> <left paren> <alter transform action list> <right paren>
+<alter transform action list> ::=
+  <alter transform action> [ { <comma> <alter transform action> }... ]
+<alter transform action> ::=
+    <add transform element list>
+  | <drop transform element list>
+
+  <alter type statement> ::=
+  ALTER TYPE <schema-resolved user-defined type name> <alter type action>
+<alter type action> ::=
+    <add attribute definition>
+  | <drop attribute definition>
+  | <add original method specification>
+  | <add overriding method specification>
+  | <drop method specification>
+
+
+<drop domain constraint definition> ::=
+  DROP CONSTRAINT <constraint name>
+
+  <drop domain default clause> ::=
+  DROP DEFAULT
+
+  <set domain default clause> ::=
+  SET <default clause>
+
+
+<add transform element list> ::=
+  ADD <left paren> <transform element list> <right paren>
+
+  <add table period definition> ::=
+  ADD <table period definition> [ <add system time period column list> ]
+<add system time period column list> ::=
+  ADD [ COLUMN ] <column definition 1> ADD [ COLUMN ] <column definition 2>
+<column definition 1> ::=
+  <column definition>
+<column definition 2> ::=
+  <column definition>
+  <drop method specification> ::=
+  DROP <specific method specification designator> RESTRICT
+<specific method specification designator> ::=
+  [ INSTANCE | STATIC | CONSTRUCTOR ]
+      METHOD <method name> <data type list>
+
+      <view definition> ::=
+  CREATE [ RECURSIVE ] VIEW <table name> <view specification>
+      AS <query expression> [ WITH [ <levels clause> ] CHECK OPTION ]
+<view specification> ::=
+    <regular view specification>
+  | <referenceable view specification>
+<regular view specification> ::=
+  [ <left paren> <view column list> <right paren> ]
+<referenceable view specification> ::=
+  OF <path-resolved user-defined type name> [ <subview clause> ]
+      [ <view element list> ]
+<subview clause> ::=
+  UNDER <table name>
+<view element list> ::=
+  <left paren> <view element> [ { <comma> <view element> }... ] <right paren>
+<view element> ::=
+    <self-referencing column specification>
+  | <view column option>
+<view column option> ::=
+  <column name> WITH OPTIONS <scope clause>
+<levels clause> ::=
+    CASCADED
+| LOCAL
+<view column list> ::=
+  <column name list>
+
+
+<user-defined ordering definition> ::=
+  CREATE ORDERING FOR <schema-resolved user-defined type name> <ordering form>
+<ordering form> ::=
+    <equals ordering form>
+  | <full ordering form>
+<equals ordering form> ::=
+  EQUALS ONLY BY <ordering category>
+<full ordering form> ::=
+  ORDER FULL BY <ordering category>
+   <ordering category> ::=
+    <relative category>
+  | <map category>
+  | <state category>
+<relative category> ::=
+  RELATIVE WITH <relative function specification>
+<map category> ::=
+  MAP WITH <map function specification>
+<state category> ::=
+  STATE [ <specific name> ]
+<relative function specification> ::=
+  <specific routine designator>
+<map function specification> ::=
+  <specific routine designator>
+
+  <user-defined cast definition> ::=
+  CREATE CAST <left paren> <source data type> AS <target data type> <right paren>
+      WITH <cast function>
+      [ AS ASSIGNMENT ]
+<cast function> ::=
+  <specific routine designator>
+<source data type> ::=
+  <data type>
+<target data type> ::=
+  <data type>
+
+  <update statement: searched> ::=
+  UPDATE <target table>
+      [ FOR PORTION OF <application time period name>
+        FROM <point in time 1> TO <point in time 2> ]
+      [ [ AS ] <correlation name> ]
+      SET <set clause list>
+      [ WHERE <search condition> ]
+
+      <truncate table statement> ::=
+  TRUNCATE TABLE <target table> [ <identity column restart option> ]
+<identity column restart option> ::=
+    CONTINUE IDENTITY
+  | RESTART IDENTITY
+
+  <transliteration definition> ::=
+  CREATE TRANSLATION <transliteration name> FOR <source character set specification>
+      TO <target character set specification> FROM <transliteration source>
+<source character set specification> ::=
+  <character set specification>
+<target character set specification> ::=
+  <character set specification>
+<transliteration source> ::=
+    <existing transliteration name>
+  | <transliteration routine>
+<existing transliteration name> ::=
+  <transliteration name>
+<transliteration routine> ::=
+  <specific routine designator>
+
+  <temporary table declaration> ::=
+  DECLARE LOCAL TEMPORARY TABLE <table name> <table element list>
+      [ ON COMMIT <table commit action> ROWS ]
+
+
+<table constraint definition> ::=
+  [ <constraint name definition> ] <table constraint>
+      [ <constraint characteristics> ]
+<table constraint> ::=
+    <unique constraint definition>
+  | <referential constraint definition>
+  | <check constraint definition>
+
+  <set transform group statement> ::=
+  SET <transform group characteristic>
+<transform group characteristic> ::=
+    DEFAULT TRANSFORM GROUP <value specification>
+  | TRANSFORM GROUP FOR TYPE <path-resolved user-defined type name> <value specification>
+
+  <set transaction statement> ::=
+  SET [ LOCAL ] TRANSACTION <transaction characteristics>
+
+<return statement> ::=
+  RETURN <return value>
+<return value> ::=
+    <value expression>
+| NULL
+
+<execute statement> ::=
+  EXECUTE <SQL statement name> [ <result using clause> ] [ <parameter using clause> ]
+<result using clause> ::=
+  <output using clause>
+<parameter using clause> ::=
+  <input using clause>
+
+
+  <input using clause> ::=
+    <using arguments>
+  | <using input descriptor>
+<using arguments> ::=
+  USING <using argument> [ { <comma> <using argument> }... ]
+<using argument> ::=
+  <general value specification>
+<using input descriptor> ::=
+  <using descriptor>
+
+
+<describe statement> ::=
+    <describe input statement>
+  | <describe output statement>
+<describe input statement> ::=
+  DESCRIBE INPUT <SQL statement name> <using descriptor> [ <nesting option> ]
+<describe output statement> ::=
+  DESCRIBE [ OUTPUT ] <described object> <using descriptor> [ <nesting option> ]
+<nesting option> ::=
+    WITH NESTING
+  | WITHOUT NESTING
+<using descriptor> ::=
+  USING [ SQL ] DESCRIPTOR <descriptor name>
+<described object> ::=
+    <SQL statement name>
+  | CURSOR <cursor name> STRUCTURE
+
+  <output using clause> ::=
+    <into arguments>
+  | <into descriptor>
+<into arguments> ::=
+  INTO <into argument> [ { <comma> <into argument> }... ]
+<into argument> ::=
+  <target specification>
+<into descriptor> ::=
+  INTO [ SQL ] DESCRIPTOR <descriptor name>
+
+  <set session collation statement> ::=
+    SET COLLATION <collation specification> [ FOR <character set specification list> ]
+  | SET NO COLLATION [ FOR <character set specification list> ]
+<collation specification> ::=
+  <value specification>
+
+  <set session characteristics statement> ::=
+  SET SESSION CHARACTERISTICS AS <session characteristic list>
+<session characteristic list> ::=
+  <session characteristic> [ { <comma> <session characteristic> }... ]
+<session characteristic> ::=
+  <session transaction characteristics>
+<session transaction characteristics> ::=
+  TRANSACTION <transaction mode> [ { <comma> <transaction mode> }... ]
+
+  <set schema statement> ::=
+  SET <schema name characteristic>
+<schema name characteristic> ::=
+  SCHEMA <value specification>
+
+  <set role statement> ::=
+  SET ROLE <role specification>
+<role specification> ::=
+    <value specification>
+| NONE
+
+<set path statement> ::=
+  SET <SQL-path characteristic>
+<SQL-path characteristic> ::=
+  PATH <value specification>
+
+  <set names statement> ::=
+  SET <character set name characteristic>
+<character set name characteristic> ::=
+  NAMES <value specification>
+
+  <set local time zone statement> ::=
+  SET TIME ZONE <set time zone value>
+<set time zone value> ::=
+    <interval value expression>
+| LOCAL
+
+<set constraints mode statement> ::=
+  SET CONSTRAINTS <constraint name list> { DEFERRED | IMMEDIATE }
+<constraint name list> ::=
+    ALL
+  | <constraint name> [ { <comma> <constraint name> }... ]
+
+
+<set connection statement> ::=
+  SET CONNECTION <connection object>
+<connection object> ::=
+    DEFAULT
+  | <connection name>
+
+<set catalog statement> ::=
+  SET <catalog name characteristic>
+<catalog name characteristic> ::=
+  CATALOG <value specification>
+
+  <select statement: single row> ::=
+  SELECT [ <set quantifier> ] <select list>
+      INTO <select target list>
+      <table expression>
+   <select target list> ::=
+  <target specification> [ { <comma> <target specification> }... ]
+
+  <search or cycle clause> ::=
+    <search clause>
+  | <cycle clause>
+  | <search clause> <cycle clause>
+<search clause> ::=
+  SEARCH <recursive search order> SET <sequence column>
+<recursive search order> ::=
+    DEPTH FIRST BY <column name list>
+  | BREADTH FIRST BY <column name list>
+<sequence column> ::=
+  <column name>
+<cycle clause> ::=
+  CYCLE <cycle column list> SET <cycle mark column> TO <cycle mark value>
+      DEFAULT <non-cycle mark value> USING <path column>
+<cycle column list> ::=
+  <cycle column> [ { <comma> <cycle column> }... ]
+<cycle column> ::=
+  <column name>
+<cycle mark column> ::=
+  <column name>
+<path column> ::=
+  <column name>
+<cycle mark value> ::=
+  <value expression>
+<non-cycle mark value> ::=
+  <value expression>
+
+
+<savepoint statement> ::=
+  SAVEPOINT <savepoint specifier>
+<savepoint specifier> ::=
+  <savepoint name>
+
+  <row pattern common syntax> ::=
+  [ AFTER MATCH <row pattern skip to> ]
+      [ <row pattern initial or seek> ]
+      PATTERN <left paren> <row pattern> <right paren>
+      [ <row pattern subset clause> ]
+      DEFINE <row pattern definition list>
+<row pattern skip to> ::=
+    SKIP TO NEXT ROW
+  | SKIP PAST LAST ROW
+  | SKIP TO FIRST <row pattern skip to variable name>
+  | SKIP TO LAST <row pattern skip to variable name>
+  | SKIP TO <row pattern skip to variable name>
+<row pattern skip to variable name> ::=
+  <row pattern variable name>
+<row pattern initial or seek> ::=
+    INITIAL
+| SEEK
+<row pattern> ::=
+    <row pattern term>
+  | <row pattern alternation>
+<row pattern alternation> ::=
+  <row pattern> <vertical bar> <row pattern term>
+<row pattern term> ::=
+    <row pattern factor>
+  | <row pattern term> <row pattern factor>
+<row pattern factor> ::=
+  <row pattern primary> [ <row pattern quantifier> ]
+<row pattern quantifier> ::=
+    <asterisk> [ <question mark> ]
+  | <plus sign> [ <question mark> ]
+  | <question mark> [ <question mark> ]
+  | <left brace> [ <unsigned integer> ] <comma> [ <unsigned integer> ] <right brace>
+      [ <question mark> ]
+  | <left brace> <unsigned integer> <right brace>
+<row pattern primary> ::=
+    <row pattern primary variable name>
+  | <dollar sign>
+  | <circumflex>
+  | <left paren> [ <row pattern> ] <right paren>
+  | <left brace minus> <row pattern> <right minus brace>
+  | <row pattern permute>
+<row pattern primary variable name> ::=
+  <row pattern variable name>
+<row pattern permute> ::=
+  PERMUTE <left paren> <row pattern> [ { <comma> <row pattern> }... ] <right paren>
+<row pattern subset clause> ::=
+  SUBSET <row pattern subset list>
+<row pattern subset list> ::=
+  <row pattern subset item> [ { <comma> <row pattern subset item> }... ]
+<row pattern subset item> ::=
+  <row pattern subset item variable name> <equals operator>
+      <left paren> <row pattern subset rhs> <right paren>
+<row pattern subset item variable name> ::=
+  <row pattern variable name>
+<row pattern subset rhs> ::=
+  <row pattern subset rhs variable name>
+      [ { <comma> <row pattern subset rhs variable name> }... ]
+<row pattern subset rhs variable name> ::=
+  <row pattern variable name>
+<row pattern definition list> ::=
+  <row pattern definition> [ { <comma> <row pattern definition> }... ]
+<row pattern definition> ::=
+  <row pattern definition variable name> AS <row pattern definition search condition>
+<row pattern definition variable name> ::=
+  <row pattern variable name>
+<row pattern definition search condition> ::=
+  <search condition>
+
+<rollback statement> ::=
+  ROLLBACK [ WORK ] [ AND [ NO ] CHAIN ] [ <savepoint clause> ]
+<savepoint clause> ::=
+  TO SAVEPOINT <savepoint specifier>
+
+  <role definition> ::=
+  CREATE ROLE <role name> [ WITH ADMIN <grantor> ]
+
+  <revoke statement> ::=
+    <revoke privilege statement>
+  | <revoke role statement>
+<revoke privilege statement> ::=
+  REVOKE [ <revoke option extension> ] <privileges>
+      FROM <grantee> [ { <comma> <grantee> }... ]
+      [ GRANTED BY <grantor> ]
+      <drop behavior>
+<revoke option extension> ::=
+    GRANT OPTION FOR
+  | HIERARCHY OPTION FOR
+<revoke role statement> ::=
+  REVOKE [ ADMIN OPTION FOR ] <role revoked> [ { <comma> <role revoked> }... ]
+      FROM <grantee> [ { <comma> <grantee> }... ]
+      [ GRANTED BY <grantor> ]
+      <drop behavior>
+<role revoked> ::=
+  <role name>
+
+  <privileges> ::=
+  <object privileges> ON <object name>
+         <object name> ::=
+    [ TABLE ] <table name>
+  | DOMAIN <domain name>
+  | COLLATION <collation name>
+  | CHARACTER SET <character set name>
+  | TRANSLATION <transliteration name>
+  | TYPE <schema-resolved user-defined type name>
+  | SEQUENCE <sequence generator name>
+  | <specific routine designator>
+<object privileges> ::=
+    ALL PRIVILEGES
+  | <action> [ { <comma> <action> }... ]
+<action> ::=
+    SELECT
+  | SELECT <left paren> <privilege column list> <right paren>
+  | SELECT <left paren> <privilege method list> <right paren>
+  | DELETE
+  | INSERT [ <left paren> <privilege column list> <right paren> ]
+  | UPDATE [ <left paren> <privilege column list> <right paren> ]
+  | REFERENCES [ <left paren> <privilege column list> <right paren> ]
+  | USAGE
+  | TRIGGER
+  | UNDER
+  | EXECUTE
+<privilege method list> ::=
+  <specific routine designator> [ { <comma> <specific routine designator> }... ]
+<privilege column list> ::=
+  <column name list>
+<grantee> ::=
+    PUBLIC
+  | <authorization identifier>
+<grantor> ::=
+    CURRENT_USER
+  | CURRENT_ROLE
+
+<release savepoint statement> ::=
+  RELEASE SAVEPOINT <savepoint specifier>
+
+  <prepare statement> ::=
+  PREPARE <SQL statement name> [ <attributes specification> ]
+      FROM <SQL statement variable>
+<attributes specification> ::=
+  ATTRIBUTES <attributes variable>
+<attributes variable> ::=
+  <simple value specification>
+<SQL statement variable> ::=
+  <simple value specification>
+<preparable statement> ::=
+    <preparable SQL data statement>
+  | <preparable SQL schema statement>
+  | <preparable SQL transaction statement>
+  | <preparable SQL control statement>
+  | <preparable SQL session statement>
+  | <preparable implementation-defined statement>
+<preparable SQL data statement> ::=
+    <delete statement: searched>
+  | <dynamic single row select statement>
+  | <insert statement>
+  | <dynamic select statement>
+  | <update statement: searched>
+  | <truncate table statement>
+  | <merge statement>
+  | <preparable dynamic delete statement: positioned>
+  | <preparable dynamic update statement: positioned>
+  | <hold locator statement>
+  | <free locator statement>
+<preparable SQL schema statement> ::=
+  <SQL schema statement>
+<preparable SQL transaction statement> ::=
+  <SQL transaction statement>
+<preparable SQL control statement> ::=
+  <SQL control statement>
+<preparable SQL session statement> ::=
+  <SQL session statement>
+<dynamic select statement> ::=
+  <cursor specification>
+<preparable implementation-defined statement> ::= !! See the Syntax Rules.
+
+<preparable dynamic update statement: positioned> ::=
+  UPDATE [ <target table> ] SET <set clause list>
+      WHERE CURRENT OF <preparable dynamic cursor name>
+
+      <preparable dynamic delete statement: positioned> ::=
+  DELETE [ FROM <target table> ]
+      WHERE CURRENT OF <preparable dynamic cursor name>
+
+      <preparable dynamic cursor name> ::=
+  [ <scope option> ] <cursor name>
+
+  <pipe row statement> ::=
+  PIPE ROW <PTF descriptor name>
+
+
+<having clause> ::=
+  HAVING <search condition>
+
+<group by clause> ::=
+  GROUP BY [ <set quantifier> ] <grouping element list>
+<grouping element list> ::=
+  <grouping element> [ { <comma> <grouping element> }... ]
+<grouping element> ::=
+    <ordinary grouping set>
+  | <rollup list>
+  | <cube list>
+  | <grouping sets specification>
+  | <empty grouping set>
+<ordinary grouping set> ::=
+    <grouping column reference>
+  | <left paren> <grouping column reference list> <right paren>
+<grouping column reference> ::=
+  <column reference> [ <collate clause> ]
+<grouping column reference list> ::=
+  <grouping column reference> [ { <comma> <grouping column reference> }... ]
+<rollup list> ::=
+  ROLLUP <left paren> <ordinary grouping set list> <right paren>
+<ordinary grouping set list> ::=
+  <ordinary grouping set> [ { <comma> <ordinary grouping set> }... ]
+<cube list> ::=
+  CUBE <left paren> <ordinary grouping set list> <right paren>
+<grouping sets specification> ::=
+  GROUPING SETS <left paren> <grouping set list> <right paren>
+<grouping set list> ::=
+  <grouping set> [ { <comma> <grouping set> }... ]
+<grouping set> ::=
+    <ordinary grouping set>
+  | <rollup list>
+  | <cube list>
+  | <grouping sets specification>
+  | <empty grouping set>
+<empty grouping set> ::=
+  <left paren> <right paren>
+
+
+  <grant statement> ::=
+    <grant privilege statement>
+  | <grant role statement>
+
+  <from clause> ::=
+  FROM <table reference list>
+<table reference list> ::=
+  <table reference> [ { <comma> <table reference> }... ]
+
+
+<execute immediate statement> ::=
+  EXECUTE IMMEDIATE <SQL statement variable>
+
+  <embedded exception declaration> ::=
+  WHENEVER <condition> <condition action>
+<condition> ::=
+  <SQL condition>
+<SQL condition> ::=
+    <major category>
+  | SQLSTATE ( <SQLSTATE class code> [ , <SQLSTATE subclass code> ] )
+  | CONSTRAINT <constraint name>
+<major category> ::=
+    SQLEXCEPTION
+  | SQLWARNING
+  | NOT FOUND
+<SQLSTATE class code> ::=
+<SQLSTATE char> <SQLSTATE char>!! See the Syntax Rules.
+<SQLSTATE subclass code> ::=
+<SQLSTATE char> <SQLSTATE char> <SQLSTATE char>!! See the Syntax Rules.
+<SQLSTATE char> ::=
+    <simple Latin upper case letter>
+| <digit>
+<condition action> ::=
+    CONTINUE
+| <go to>
+<go to> ::=
+  { GOTO | GO TO } <goto target>
+<goto target> ::=
+    <host label identifier>
+  | <unsigned integer>
+  | <host PL/I label variable>
+<host label identifier> ::= !! See the Syntax Rules.
+<host PL/I label variable> ::= !! See the Syntax Rules.
+
+
+<dynamic update statement: positioned> ::=
+  UPDATE <target table> SET <set clause list>
+      WHERE CURRENT OF <conventional dynamic cursor name>
+
+
+      <dynamic single row select statement> ::=
+  <query specification>
+
+  <dynamic open statement> ::=
+  OPEN <conventional dynamic cursor name> [ <input using clause> ]
+
+  <grant role statement> ::=
+  GRANT <role granted> [ { <comma> <role granted> }... ]
+      TO <grantee> [ { <comma> <grantee> }... ]
+      [ WITH ADMIN OPTION ]
+      [ GRANTED BY <grantor> ]
+<role granted> ::=
+  <role name>
+
+<grant privilege statement> ::=
+  GRANT <privileges> TO <grantee> [ { <comma> <grantee> }... ]
+      [ WITH HIERARCHY OPTION ]
+      [ WITH GRANT OPTION ]
+      [ GRANTED BY <grantor> ]
+
+      <dynamic fetch statement> ::=
+  FETCH [ [ <fetch orientation> ] FROM ] <dynamic cursor name> <output using clause>
+
+  <dynamic delete statement: positioned> ::=
+  DELETE FROM <target table> WHERE CURRENT OF <conventional dynamic cursor name>
+
+
+<dynamic close statement> ::=
+  CLOSE <conventional dynamic cursor name>
+
+  <drop view statement> ::=
+  DROP VIEW <table name> <drop behavior>
+
+  <drop user-defined ordering statement> ::=
+  DROP ORDERING FOR <schema-resolved user-defined type name> <drop behavior>
+
+  <drop user-defined cast statement> ::=
+  DROP CAST <left paren> <source data type> AS <target data type> <right paren>
+      <drop behavior>
+
+
+<drop trigger statement> ::=
+  DROP TRIGGER <trigger name>
+
+
+<drop transliteration statement> ::=
+  DROP TRANSLATION <transliteration name>
+
+  <drop transform statement> ::=
+  DROP { TRANSFORM | TRANSFORMS } <transforms to be dropped>
+      FOR <schema-resolved user-defined type name> <drop behavior>
+<transforms to be dropped> ::=
+    ALL
+  | <transform group element>
+<transform group element> ::=
+  <group name>
+
+  <drop transform element list> ::=
+  DROP <left paren> <transform kind>
+      [ <comma> <transform kind> ] <drop behavior> <right paren>
+<transform kind> ::=
+    TO SQL
+| FROM SQL
+
+<drop table statement> ::=
+  DROP TABLE <table name> <drop behavior>
+
+  <drop table period definition> ::=
+  DROP <system or application time period specification> <drop behavior>
+
+  <drop table constraint definition> ::=
+  DROP CONSTRAINT <constraint name> <drop behavior>
+
+  <drop system versioning clause> ::=
+  DROP SYSTEM VERSIONING <drop behavior>
+
+  <drop sequence generator statement> ::=
+  DROP SEQUENCE <sequence generator name> <drop behavior>
+
+
+<drop routine statement> ::=
+  DROP <specific routine designator> <drop behavior>
+
+  <drop role statement> ::=
+  DROP ROLE <role name>
+
+
+<drop domain statement> ::=
+  DROP DOMAIN <domain name> <drop behavior>
+
+  <drop data type statement> ::=
+  DROP TYPE <schema-resolved user-defined type name> <drop behavior>
+
+
+<drop column definition> ::=
+  DROP [ COLUMN ] <column name> <drop behavior>
+
+
+<drop collation statement> ::=
+  DROP COLLATION <collation name> <drop behavior>
+
+
+<drop character set statement> ::=
+  DROP CHARACTER SET <character set name>
+
+  <drop attribute definition> ::=
+  DROP ATTRIBUTE <attribute name> RESTRICT
+
+
+<drop assertion statement> ::=
+  DROP ASSERTION <constraint name> [ <drop behavior> ]
+
+
+<domain definition> ::=
+  CREATE DOMAIN <domain name> [ AS ] <predefined type>
+      [ <default clause> ]
+      [ <domain constraint>... ]
+      [ <collate clause> ]
+<domain constraint> ::=
+  [ <constraint name definition> ] <check constraint definition> [
+      <constraint characteristics> ]
+
+      <disconnect statement> ::=
+  DISCONNECT <disconnect object>
+<disconnect object> ::=
+    <connection object>
+  | ALL
+  | CURRENT
+
+
+<deallocate prepared statement> ::=
+  DEALLOCATE PREPARE <SQL statement name>
+
+<deallocate descriptor statement> ::=
+  DEALLOCATE [ SQL ] DESCRIPTOR <conventional descriptor name>
+
+  <commit statement> ::=
+  COMMIT [ WORK ] [ AND [ NO ] CHAIN ]
+
+  <character set definition> ::=
+  CREATE CHARACTER SET <character set name> [ AS ]
+      <character set source> [ <collate clause> ]
+<character set source> ::=
+  GET <character set specification>
+
+  <assertion definition> ::=
+  CREATE ASSERTION <constraint name>
+      CHECK <left paren> <search condition> <right paren>
+      [ <constraint characteristics> ]
+
+
+<alter table constraint definition> ::=
+  ALTER CONSTRAINT <constraint name> <constraint enforcement>
+
+  <alter column definition> ::=
+  ALTER [ COLUMN ] <column name> <alter column action>
+<alter column action> ::=
+    <set column default clause>
+  | <drop column default clause>
+  | <set column not null clause>
+  | <drop column not null clause>
+  | <add column scope clause>
+  | <drop column scope clause>
+  | <alter column data type clause>
+  | <alter identity column specification>
+  | <drop identity property clause>
+  | <drop column generation expression clause>
+
+  <add table constraint definition> ::=
+  ADD <table constraint definition>
+
+  <add system versioning clause> ::=
+  ADD <system versioning clause>
+
+  <add overriding method specification> ::=
+  ADD <overriding method specification>
+
+  <add original method specification> ::=
+  ADD <original method specification>
+
+
+<add domain constraint definition> ::=
+  ADD <domain constraint>
+
+  <add column definition> ::=
+  ADD [ COLUMN ] <column definition>
+
+
+<add attribute definition> ::=
+  ADD ATTRIBUTE <attribute definition>
+
+  <alter column data type clause> ::=
+  SET DATA TYPE <data type>
+
+
+<add column scope clause> ::=
+  ADD <scope clause>
+
+  <alter identity column specification> ::=
+    <set identity column generation clause> [ <alter identity column option>... ]
+  | <alter identity column option>...
+<set identity column generation clause> ::=
+  SET GENERATED { ALWAYS | BY DEFAULT }
+<alter identity column option> ::=
+    <alter sequence generator restart option>
+  | SET <basic sequence generator option>
+
+  <drop column default clause> ::=
+  DROP DEFAULT
+
+
+<drop column generation expression clause> ::=
+  DROP EXPRESSION
+
+  <drop column not null clause> ::=
+  DROP NOT NULL
+
+  <drop column scope clause> ::=
+  DROP SCOPE <drop behavior>
+
+  <drop identity property clause> ::=
+  DROP IDENTITY
+
+  <set column default clause> ::=
+  SET <default clause>
+
+  <set column not null clause> ::=
+  SET NOT NULL
+  
