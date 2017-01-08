@@ -1,20 +1,19 @@
 sql: CREATE TABLE $TN$ ( a $EXAMPLE$ )
 examples:
-  bnf: numeric type
-  precision: 3
-  scale: 6
+  bnf: approximate numeric type
+  precision: 2
 ---
 sql: SELECT $EXAMPLE$
 examples:
   bnf: numeric value expression
-  numeric value expression: 1
-  term: 2
+  numeric value expression: 1.5
+  term: 2.3
 ---
 sql: SELECT $EXAMPLE$
 examples:
   bnf: [signed numeric literal, unsigned numeric literal]
   digit: 2
 ---
-sql: SELECT 3 $EXAMPLE$ 5
+sql: SELECT 3.7 $EXAMPLE$ 5.2
 examples:
   bnf: comp op

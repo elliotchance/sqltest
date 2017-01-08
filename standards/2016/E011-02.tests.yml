@@ -1,0 +1,307 @@
+feature: E011-02
+id: e011_02_01_01
+sql: CREATE TABLE e011_02_01_01 ( a DOUBLE PRECISION )
+---
+feature: E011-02
+id: e011_02_01_02
+sql: CREATE TABLE e011_02_01_02 ( a FLOAT )
+---
+feature: E011-02
+id: e011_02_01_03
+sql: CREATE TABLE e011_02_01_03 ( a FLOAT (2) )
+---
+feature: E011-02
+id: e011_02_01_04
+sql: CREATE TABLE e011_02_01_04 ( a REAL )
+---
+feature: E011-02
+id: e011_02_02_01
+sql: SELECT 1.5 + 2.3
+---
+feature: E011-02
+id: e011_02_02_02
+sql: SELECT 1.5 - 2.3
+---
+feature: E011-02
+id: e011_02_02_03
+sql: SELECT 2.3
+---
+feature: E011-02
+id: e011_02_03_01
+sql: SELECT +.2
+---
+feature: E011-02
+id: e011_02_03_02
+sql: SELECT +.2E+2
+---
+feature: E011-02
+id: e011_02_03_03
+sql: SELECT +.2E-2
+---
+feature: E011-02
+id: e011_02_03_04
+sql: SELECT +.2E2
+---
+feature: E011-02
+id: e011_02_03_05
+sql: SELECT +2
+---
+feature: E011-02
+id: e011_02_03_06
+sql: SELECT +2.
+---
+feature: E011-02
+id: e011_02_03_07
+sql: SELECT +2.2
+---
+feature: E011-02
+id: e011_02_03_08
+sql: SELECT +2.2E+2
+---
+feature: E011-02
+id: e011_02_03_09
+sql: SELECT +2.2E-2
+---
+feature: E011-02
+id: e011_02_03_10
+sql: SELECT +2.2E2
+---
+feature: E011-02
+id: e011_02_03_11
+sql: SELECT +2.E+2
+---
+feature: E011-02
+id: e011_02_03_12
+sql: SELECT +2.E-2
+---
+feature: E011-02
+id: e011_02_03_13
+sql: SELECT +2.E2
+---
+feature: E011-02
+id: e011_02_03_14
+sql: SELECT +2E+2
+---
+feature: E011-02
+id: e011_02_03_15
+sql: SELECT +2E-2
+---
+feature: E011-02
+id: e011_02_03_16
+sql: SELECT +2E2
+---
+feature: E011-02
+id: e011_02_03_17
+sql: SELECT -.2
+---
+feature: E011-02
+id: e011_02_03_18
+sql: SELECT -.2E+2
+---
+feature: E011-02
+id: e011_02_03_19
+sql: SELECT -.2E-2
+---
+feature: E011-02
+id: e011_02_03_20
+sql: SELECT -.2E2
+---
+feature: E011-02
+id: e011_02_03_21
+sql: SELECT -2
+---
+feature: E011-02
+id: e011_02_03_22
+sql: SELECT -2.
+---
+feature: E011-02
+id: e011_02_03_23
+sql: SELECT -2.2
+---
+feature: E011-02
+id: e011_02_03_24
+sql: SELECT -2.2E+2
+---
+feature: E011-02
+id: e011_02_03_25
+sql: SELECT -2.2E-2
+---
+feature: E011-02
+id: e011_02_03_26
+sql: SELECT -2.2E2
+---
+feature: E011-02
+id: e011_02_03_27
+sql: SELECT -2.E+2
+---
+feature: E011-02
+id: e011_02_03_28
+sql: SELECT -2.E-2
+---
+feature: E011-02
+id: e011_02_03_29
+sql: SELECT -2.E2
+---
+feature: E011-02
+id: e011_02_03_30
+sql: SELECT -2E+2
+---
+feature: E011-02
+id: e011_02_03_31
+sql: SELECT -2E-2
+---
+feature: E011-02
+id: e011_02_03_32
+sql: SELECT -2E2
+---
+feature: E011-02
+id: e011_02_03_33
+sql: SELECT .2
+---
+feature: E011-02
+id: e011_02_03_34
+sql: SELECT .2E+2
+---
+feature: E011-02
+id: e011_02_03_35
+sql: SELECT .2E-2
+---
+feature: E011-02
+id: e011_02_03_36
+sql: SELECT .2E2
+---
+feature: E011-02
+id: e011_02_03_37
+sql: SELECT 2
+---
+feature: E011-02
+id: e011_02_03_38
+sql: SELECT 2.
+---
+feature: E011-02
+id: e011_02_03_39
+sql: SELECT 2.2
+---
+feature: E011-02
+id: e011_02_03_40
+sql: SELECT 2.2E+2
+---
+feature: E011-02
+id: e011_02_03_41
+sql: SELECT 2.2E-2
+---
+feature: E011-02
+id: e011_02_03_42
+sql: SELECT 2.2E2
+---
+feature: E011-02
+id: e011_02_03_43
+sql: SELECT 2.E+2
+---
+feature: E011-02
+id: e011_02_03_44
+sql: SELECT 2.E-2
+---
+feature: E011-02
+id: e011_02_03_45
+sql: SELECT 2.E2
+---
+feature: E011-02
+id: e011_02_03_46
+sql: SELECT 2E+2
+---
+feature: E011-02
+id: e011_02_03_47
+sql: SELECT 2E-2
+---
+feature: E011-02
+id: e011_02_03_48
+sql: SELECT 2E2
+---
+feature: E011-02
+id: e011_02_03_49
+sql: SELECT .2
+---
+feature: E011-02
+id: e011_02_03_50
+sql: SELECT .2E+2
+---
+feature: E011-02
+id: e011_02_03_51
+sql: SELECT .2E-2
+---
+feature: E011-02
+id: e011_02_03_52
+sql: SELECT .2E2
+---
+feature: E011-02
+id: e011_02_03_53
+sql: SELECT 2
+---
+feature: E011-02
+id: e011_02_03_54
+sql: SELECT 2.
+---
+feature: E011-02
+id: e011_02_03_55
+sql: SELECT 2.2
+---
+feature: E011-02
+id: e011_02_03_56
+sql: SELECT 2.2E+2
+---
+feature: E011-02
+id: e011_02_03_57
+sql: SELECT 2.2E-2
+---
+feature: E011-02
+id: e011_02_03_58
+sql: SELECT 2.2E2
+---
+feature: E011-02
+id: e011_02_03_59
+sql: SELECT 2.E+2
+---
+feature: E011-02
+id: e011_02_03_60
+sql: SELECT 2.E-2
+---
+feature: E011-02
+id: e011_02_03_61
+sql: SELECT 2.E2
+---
+feature: E011-02
+id: e011_02_03_62
+sql: SELECT 2E+2
+---
+feature: E011-02
+id: e011_02_03_63
+sql: SELECT 2E-2
+---
+feature: E011-02
+id: e011_02_03_64
+sql: SELECT 2E2
+---
+feature: E011-02
+id: e011_02_04_01
+sql: SELECT 3.7 < 5.2
+---
+feature: E011-02
+id: e011_02_04_02
+sql: SELECT 3.7 <= 5.2
+---
+feature: E011-02
+id: e011_02_04_03
+sql: SELECT 3.7 <> 5.2
+---
+feature: E011-02
+id: e011_02_04_04
+sql: SELECT 3.7 = 5.2
+---
+feature: E011-02
+id: e011_02_04_05
+sql: SELECT 3.7 > 5.2
+---
+feature: E011-02
+id: e011_02_04_06
+sql: SELECT 3.7 >= 5.2

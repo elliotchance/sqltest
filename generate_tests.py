@@ -35,8 +35,10 @@ def generate_tests(feature_file_path):
     tests = yaml.load_all(feature_file)
     basename = os.path.basename(feature_file_path)
     result_tests = []
+    test_number = 0
 
     for test in tests:
+        test_number += 1
         rule_names = test['examples']['bnf']
         if not isinstance(rule_names, list):
             rule_names = [rule_names]
@@ -45,15 +47,19 @@ def generate_tests(feature_file_path):
         if 'exclude' in test['examples']:
             exclude = test['examples']['exclude']
 
+        rule_number = 0
         for rule_name in rule_names:
-
             overrides = {}
             for override in test['examples']:
                 overrides[override] = bnf.ASTKeyword(str(test['examples'][override]))
             examples = bnf.get_paths_for_rule(rules, rule_name, overrides, exclude)
 
             for example in examples:
-                test_id = basename.split('.')[0].replace('-', '_').lower() + "_t" + str(len(result_tests))
+                rule_number += 1
+                test_id = '%s_%02d_%02d' % (
+                    basename.split('.')[0].replace('-', '_').lower(),
+                    test_number, rule_number
+                )
                 sql = test['sql'].replace('$TN$', test_id)
                 result_tests.append({
                     'id': test_id,
@@ -74,8 +80,8 @@ for feature_file_path in feature_file_paths:
     generated_file_path = output_file(feature_file_path)
     test_files[feature_id] = generated_file_path
 
-    if os.path.isfile(generated_file_path):
-        continue
+    #if os.path.isfile(generated_file_path):
+    #    continue
 
     print("Generating tests for %s" % feature_id)
     generate_tests(feature_file_path)

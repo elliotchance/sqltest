@@ -2,3 +2,17 @@ sql: CREATE TABLE $TN$ ( a $EXAMPLE$ )
 examples:
   bnf: exact numeric type
   exclude: [NUMERIC, DECIMAL, DEC]
+---
+sql: SELECT $EXAMPLE$
+examples:
+  bnf: numeric value expression
+  numeric value expression: 1
+  term: 2
+---
+sql: SELECT $EXAMPLE$ 5
+examples:
+  bnf: sign
+---
+sql: SELECT 3 $EXAMPLE$ 5
+examples:
+  bnf: comp op

@@ -204,9 +204,11 @@ class ASTTokens(list):
         # must be removed.
         for choice_idx in xrange(0, len(choice)):
             s = str(choice[choice_idx])
+
+            # Since almost all of the components of a constructed number are optional it difficult in a single regex to find anything that could be a number without catching general spaces
             choice[choice_idx] = re.sub(
                 r'([+-]? *\d* *\.? *\d* *E? *[+-]? *\d*)',
-                lambda m: m.group(1).replace(' ', ''),
+                lambda m: format_number(m.group(1)),
                 s
             )
 
@@ -214,6 +216,14 @@ class ASTTokens(list):
 
     def render(self):
         return '<tokens>%s</tokens>' % ''.join([x.render() for x in self])
+
+def format_number(number):
+    try:
+        candidate = number.replace(' ', '')
+        float(candidate)
+        return candidate
+    except:
+        return number
 
 class ASTRule:
     """Represents a rule enclosed with angle brackets."""
