@@ -3544,10 +3544,10 @@
   | <octet length expression>
 
 <less than operator> ::=
-    <>
+    <
 
 <less than or equals operator> ::=
-    <>
+    <=
 
 <level of isolation> ::=
     READ UNCOMMITTED

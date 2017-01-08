@@ -377,12 +377,15 @@ def analyze_rules(rules):
     predefined_rules = {
         'doublequote symbol': '""',
         'vertical bar': '|',
+        'less than operator': '<',
+        'less than or equals operator': '<=',
+        'not equals operator': '<>'
     }
 
     try:
         for rule_name in sorted(rules):
             if rule_name in predefined_rules:
-                ast = ASTChoice([ASTTokens([predefined_rules[rule_name]])])
+                ast = ASTChoice([ASTTokens([ASTKeyword(predefined_rules[rule_name])])])
             else:
                 tokens = all_tokens(rules[rule_name])
                 ast = parse(iter(tokens))
@@ -415,17 +418,6 @@ def resolve_paths(rules, rule_name):
                 for j in xrange(0, len(path)):
                     token = path[j]
 
-                    # if isinstance(token, ASTRule):
-                    #     sub_paths = resolve_paths(rules, str(token)[1:-1])
-                    #     for sub_path in sub_paths:
-                    #         p = copy.copy(paths[i])
-                    #         p[j] = sub_path
-                    #         paths.append(p)
-
-                    #     del paths[i]
-                    #     pprint.pprint(paths)
-                    #     sys.exit(0)
-                    #     did_modify = True
                     if isinstance(token, ASTOptional):
                         paths.append(ASTTokens(copy.deepcopy(paths[i])))
                         del paths[i][j]
@@ -435,24 +427,6 @@ def resolve_paths(rules, rule_name):
                 raise RuntimeError('Cannot parse %s' % str(path.__class__))
 
     return paths
-
-# print(str(rules['character substring function']['ast']))
-# sys.exit(0)
-
-# print(str(rules['character substring function']['ast'].resolve(rules, {
-#     'character value expression': 'CVE',
-#     'start position': 'SP',
-#     'string length': 'SL',
-# })))
-
-# result = []
-# for choice in rules['numeric type']['ast'].resolve(rules, {'scale': ASTKeyword('6')}):
-#     result.append(str(choice))
-# print('\n'.join(sorted(result)))
-# sys.exit(0)
-
-# pprint.pprint(resolve_paths_for_ast(rules, rules['decimal floating-point type']['ast'][0], {}))
-# sys.exit(0)
 
 def resolve_rule(rules, rule_name, already_parsed, checking_for_recursion=None):
     override = get_override(rule_name.replace(' ', '_'))
@@ -530,6 +504,9 @@ def get_subrules(rules, rule_name):
     return all_rules
 
 def unpack_overrides(overrides):
+    if overrides is None:
+        return {}
+
     o = {}
     for override in overrides:
         key, value = override[0].split('=')
