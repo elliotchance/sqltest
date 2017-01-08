@@ -138,15 +138,12 @@ class ASTTokens(list):
     def __str__(self):
         return ' '.join([str(item) for item in self])
 
-    def resolve(self, rules, overrides):
+    def resolve(self, rules, overrides, exclude):
         choice = ASTChoice([self])
         did_modify = True
 
         while did_modify:
             did_modify = False
-
-            # print(choice.render())
-            # print("\n")
 
             for choice_idx in xrange(0, len(choice)):
                 for token_idx in xrange(0, len(choice[choice_idx])):
@@ -160,7 +157,7 @@ class ASTTokens(list):
                         did_modify = True
                         break
                     elif isinstance(choice[choice_idx][token_idx], ASTRule):
-                        sub_paths = choice[choice_idx][token_idx].resolve(rules, overrides)
+                        sub_paths = choice[choice_idx][token_idx].resolve(rules, overrides, exclude)
 
                         for sub_path in sub_paths:
                             choice.append(copy.deepcopy(choice[choice_idx]))
@@ -184,7 +181,35 @@ class ASTTokens(list):
                         choice[choice_idx][token_idx] = ASTTokens(choice[choice_idx][token_idx])
                     else:
                         raise RuntimeError(choice[choice_idx][token_idx].__class__)
+
+        # Apply the excludes
+        new_paths = []
+        for path in choice:
+            should_exclude = False
+            for token in path:
+                if str(token) in exclude:
+                    should_exclude = True
+                    break
+
+            if not should_exclude:
+                new_paths.append(path)
+        choice = new_paths
         
+        # One edge case is when we are dealing with the constructing numerical
+        # values, if we were to resolve the paths for 'signed numeric literal'
+        # we would get some values like: `+ . 2`, `+ . 2 E + 2`, ...
+        # 
+        # These numbers are correct from the point of view of the BNF but
+        # (probably) no databases will understand or accept these so the spaces
+        # must be removed.
+        for choice_idx in xrange(0, len(choice)):
+            s = str(choice[choice_idx])
+            choice[choice_idx] = re.sub(
+                r'([+-]? *\d* *\.? *\d* *E? *[+-]? *\d*)',
+                lambda m: m.group(1).replace(' ', ''),
+                s
+            )
+
         return choice
 
     def render(self):
@@ -202,7 +227,7 @@ class ASTRule:
     def render(self):
         return '<rule>%s</rule>' % self.name
 
-    def resolve(self, rules, overrides):
+    def resolve(self, rules, overrides, exclude):
         if self.name in overrides:
             return ASTTokens([[overrides[self.name]]])
 
@@ -237,11 +262,11 @@ class ASTChoice(list):
     def render(self):
         return '<choices>%s</choices>' % ''.join([x.render() for x in self])
 
-    def resolve(self, rules, overrides):
+    def resolve(self, rules, overrides, exclude):
         new_choice = ASTChoice()
 
         for choice in self:
-            new_choice.extend(choice.resolve(rules, overrides))
+            new_choice.extend(choice.resolve(rules, overrides, exclude))
 
         return new_choice
 
@@ -399,35 +424,6 @@ def analyze_rules(rules):
 
     return cache
 
-def resolve_paths(rules, rule_name):
-    # The root AST should always be an ASTChoice.
-    assert(isinstance(rules[rule_name]['ast'], ASTChoice))
-    paths = list(rules[rule_name]['ast'])
-    print(paths)
-
-    did_modify = True
-    while did_modify:
-        pprint.pprint(paths)
-        print()
-        did_modify = False
-
-        for i in xrange(0, len(paths)):
-            path = paths[i]
-
-            if isinstance(path, ASTTokens):
-                for j in xrange(0, len(path)):
-                    token = path[j]
-
-                    if isinstance(token, ASTOptional):
-                        paths.append(ASTTokens(copy.deepcopy(paths[i])))
-                        del paths[i][j]
-                    #else:
-                    #    raise RuntimeError('Unknown token %s' % str(token))
-            else:
-                raise RuntimeError('Cannot parse %s' % str(path.__class__))
-
-    return paths
-
 def resolve_rule(rules, rule_name, already_parsed, checking_for_recursion=None):
     override = get_override(rule_name.replace(' ', '_'))
     if override and len(already_parsed) > 1:
@@ -480,20 +476,9 @@ def find_missing_rules(rules):
     return sorted(rule_names - set(rules))
 
 def get_paths_for_rule(rules, rule_name, overrides, exclude):
-    paths = rules[rule_name]['ast'].resolve(rules, overrides)
+    paths = rules[rule_name]['ast'].resolve(rules, overrides, exclude)
 
-    new_paths = []
-    for path in paths:
-        should_exclude = False
-        for token in path:
-            if str(token) in exclude:
-                should_exclude = True
-                break
-
-        if not should_exclude:
-            new_paths.append(path)
-
-    return sorted([str(path) for path in new_paths])
+    return sorted([str(path) for path in paths])
 
 def output_rule(rules, rule_name, overrides, exclude, output_paths, output_subrules):
     if output_paths:
