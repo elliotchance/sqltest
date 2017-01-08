@@ -161,11 +161,7 @@ class ASTTokens(list):
                         break
                     elif isinstance(choice[choice_idx][token_idx], ASTRule):
                         sub_paths = choice[choice_idx][token_idx].resolve(rules, overrides)
-                        #print(sub_paths[0].render())
 
-                        # if len(sub_paths) == 1:
-                        #     choice[choice_idx][token_idx] = sub_paths[0]
-                        # else:
                         for sub_path in sub_paths:
                             choice.append(copy.deepcopy(choice[choice_idx]))
                             choice[-1] = ASTTokens(choice[-1][:token_idx] + sub_path + choice[-1][token_idx + 1:])
@@ -184,23 +180,6 @@ class ASTTokens(list):
 
                         did_modify = True
                         break
-                        #choice[choice_idx][token_idx].resolve(rules, overrides)
-                    #elif isinstance(choice[choice_idx][token_idx], ASTChoice) \
-                    #    or isinstance(choice[choice_idx][token_idx], ASTSubChoice):
-                        # print(choice[choice_idx][token_idx].__class__)
-                        # sys.exit(0)
-
-                        # for sub_path in choice[choice_idx][token_idx]:
-                        #     choice.append(copy.deepcopy(choice[choice_idx]))
-                        #     choice[-1][token_idx] = ASTTokens(sub_path)
-
-                        # del choice[choice_idx]
-
-                        # did_modify = True
-                        #print(choice[choice_idx][token_idx], choice[choice_idx][token_idx].__class__)
-                        
-                    #    print(choice[choice_idx], choice[choice_idx][token_idx])
-                    #    break
                     elif isinstance(choice[choice_idx][token_idx], ASTRepeat):
                         choice[choice_idx][token_idx] = ASTTokens(choice[choice_idx][token_idx])
                     else:
@@ -521,10 +500,7 @@ parser.add_argument('rule', type=str, nargs='*', help='a BNF rule name')
 parser.add_argument('-o', type=str, nargs='*', help='override a rule when resolving paths')
 parser.add_argument('--validate', action='store_const', const=True, help='validate the BNF file')
 parser.add_argument('--paths', action='store_const', const=True, help='output all possible paths from BNF rules')
-
-# for rule_name in rules:
-#     if len(rules[rule_name]) > 1 or '<' in ''.join(rules[rule_name]):
-#         parser.add_argument('--%s' % rule_name.replace(' ', '-'))
+parser.add_argument('--subrules', action='store_const', const=True, help='will also output any subrules of the provided rules')
 
 args = parser.parse_args()
 
@@ -542,13 +518,26 @@ def find_missing_rules(rules):
 
     return sorted(rule_names - set(rules))
 
-def output_rule(rules, rule_name, output_paths):
+def output_rule(rules, rule_name, output_paths, output_subrules):
     if output_paths:
         paths = rules[rule_name]['ast'].resolve(rules, {})
         print('\n'.join(sorted([str(path) for path in paths])))
     else:
         # Render as BNF syntax
-        print('<%s> ::=\n%s\n' % (rule, str(rules[rule]['ast'])))
+        rules_to_render = set([rule_name])
+        if output_subrules:
+            rules_to_render = get_subrules(rules, rule_name)
+
+        for rule in rules_to_render:
+            print('<%s> ::=\n%s\n' % (rule, str(rules[rule]['ast'])))
+
+def get_subrules(rules, rule_name):
+    all_rules = set([rule_name])
+
+    for rule in extract_subrules_from_grammar(str(rules[rule_name]['ast'])):
+        all_rules.update(get_subrules(rules, rule))
+
+    return all_rules
 
 if __name__ == '__main__':
     # Validate
@@ -563,7 +552,7 @@ if __name__ == '__main__':
     # When no rules are provided we print out all of them
     if len(args.rule) == 0:
         for rule in sorted(rules):
-            output_rule(rules, rule, args.paths)
+            output_rule(rules, rule, args.paths, args.subrules)
     else:
         for rule in sorted(args.rule):
-            output_rule(rules, rule, args.paths)
+            output_rule(rules, rule, args.paths, args.subrules)
