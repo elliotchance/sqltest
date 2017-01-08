@@ -1,0 +1,11 @@
+sql: CREATE TABLE $TN$ ( a $EXAMPLE$ )
+examples:
+  bnf: numeric type
+  precision: 3
+  scale: 6
+---
+sql: SELECT $EXAMPLE$
+examples:
+  bnf: numeric value expression
+  numeric-value-expression: 1
+  term: 2
