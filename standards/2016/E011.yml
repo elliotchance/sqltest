@@ -7,5 +7,5 @@ examples:
 sql: SELECT $EXAMPLE$
 examples:
   bnf: numeric value expression
-  numeric-value-expression: 1
+  numeric value expression: 1
   term: 2
