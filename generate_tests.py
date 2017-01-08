@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
+
 import glob
 import yaml
 import os.path
 import time
 import bnf
 import sys
+import sqlite3
 
 def feature_id_from_file_path(file_path):
     return file_path.split('/')[-1][:-4]
@@ -64,10 +67,45 @@ def generate_tests(feature_file_path):
 standard = '2016'
 rules = get_rules(standard)
 feature_file_paths = all_features_with_tests(standard)
+test_files = {}
 
 for feature_file_path in feature_file_paths:
-    if os.path.isfile(output_file(feature_file_path)):
+    feature_id = feature_id_from_file_path(feature_file_path)
+    generated_file_path = output_file(feature_file_path)
+    test_files[feature_id] = generated_file_path
+
+    if os.path.isfile(generated_file_path):
         continue
 
-    print("Generating tests for %s" % feature_id_from_file_path(feature_file_path))
+    print("Generating tests for %s" % feature_id)
     generate_tests(feature_file_path)
+
+# Prepare the database
+db_file = 'test.db'
+if os.path.isfile(db_file):
+    os.remove(db_file)
+conn = sqlite3.connect(db_file)
+c = conn.cursor()
+
+# Run the tests
+for feature_id in test_files:
+    file_path = test_files[feature_id]
+    test_file = open(file_path, "r")
+    tests = list(yaml.load_all(test_file))
+
+    print('\n%s: %s tests' % (feature_id, len(tests)))
+
+    for test in tests:
+        did_pass = True
+        try:
+            c.execute(test['sql'])
+        except sqlite3.OperationalError:
+            did_pass = False
+
+        if did_pass:
+            print('  ✓ %s' % test['sql'])
+        else:
+            print('  ✗ %s' % test['sql'])
+
+#conn.commit()
+conn.close()

@@ -3,3 +3,4 @@
 *.pyc
 /.idea
 *.tests.yml
+/test.db
