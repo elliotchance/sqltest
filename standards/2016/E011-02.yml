@@ -3,17 +3,11 @@ examples:
   bnf: approximate numeric type
   precision: 2
 ---
-sql: SELECT $EXAMPLE$
+sql: SELECT $EXAMPLE$7.8
 examples:
-  bnf: numeric value expression
-  numeric value expression: 1.5
-  term: 2.3
+  bnf: sign
 ---
 sql: SELECT $EXAMPLE$
 examples:
   bnf: [signed numeric literal, unsigned numeric literal]
   digit: 2
----
-sql: SELECT 3.7 $EXAMPLE$ 5.2
-examples:
-  bnf: comp op

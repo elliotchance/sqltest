@@ -16,44 +16,8 @@ sql: CREATE TABLE e011_01_01_04 ( a SMALLINT )
 ---
 feature: E011-01
 id: e011_01_02_01
-sql: SELECT 1 + 2
+sql: SELECT +5
 ---
 feature: E011-01
 id: e011_01_02_02
-sql: SELECT 1 - 2
----
-feature: E011-01
-id: e011_01_02_03
-sql: SELECT 2
----
-feature: E011-01
-id: e011_01_03_01
-sql: SELECT + 5
----
-feature: E011-01
-id: e011_01_03_02
-sql: SELECT - 5
----
-feature: E011-01
-id: e011_01_04_01
-sql: SELECT 3 < 5
----
-feature: E011-01
-id: e011_01_04_02
-sql: SELECT 3 <= 5
----
-feature: E011-01
-id: e011_01_04_03
-sql: SELECT 3 <> 5
----
-feature: E011-01
-id: e011_01_04_04
-sql: SELECT 3 = 5
----
-feature: E011-01
-id: e011_01_04_05
-sql: SELECT 3 > 5
----
-feature: E011-01
-id: e011_01_04_06
-sql: SELECT 3 >= 5
+sql: SELECT -5

@@ -7,6 +7,19 @@ import time
 import bnf
 import sys
 import sqlite3
+import cgi
+
+def get_all_features(standard):
+    features_file = open("standards/%s/features.yml" % standard, "r")
+    all_features = yaml.load(features_file)
+
+    for group in ('mandatory', 'optional'):
+        for feature_id in all_features[group]:
+            all_features[group][feature_id] = {
+                'description': all_features[group][feature_id]
+            }
+
+    return all_features
 
 def feature_id_from_file_path(file_path):
     return file_path.split('/')[-1][:-4]
@@ -79,7 +92,9 @@ test_files = {}
 for feature_file_path in feature_file_paths:
     feature_id = feature_id_from_file_path(feature_file_path)
     generated_file_path = output_file(feature_file_path)
-    test_files[feature_id] = generated_file_path
+    test_files[feature_id] = {
+        'path': generated_file_path
+    }
 
     #if os.path.isfile(generated_file_path):
     #    continue
@@ -96,9 +111,12 @@ c = conn.cursor()
 
 # Run the tests
 for feature_id in sorted(test_files):
-    file_path = test_files[feature_id]
+    file_path = test_files[feature_id]['path']
     test_file = open(file_path, "r")
     tests = list(yaml.load_all(test_file))
+
+    test_files[feature_id]['pass'] = 0
+    test_files[feature_id]['fail'] = 0
 
     print('\n%s: %s tests' % (feature_id, len(tests)))
 
@@ -110,9 +128,80 @@ for feature_id in sorted(test_files):
             did_pass = False
 
         if did_pass:
+            test_files[feature_id]['pass'] += 1
             print('  ✓ %s' % test['sql'])
         else:
+            test_files[feature_id]['fail'] += 1
             print('  ✗ %s' % test['sql'])
 
 #conn.commit()
 conn.close()
+
+# Merge the rules with the original features
+all_features = get_all_features(standard)
+for feature_id in test_files:
+    all_features['mandatory'][feature_id].update(test_files[feature_id])
+
+def get_html_color_for_pass_rate(pass_rate):
+    # The returned weighted gradient goes from red at 0% to yellow at 75% to
+    # green at 100%. It is weighted because what feels like a "pass" where it
+    # start transitioning to green should really start at 75% rather than 50%.
+    if pass_rate <= 0.75:
+        r, g, b = (255, 255 * pass_rate * 1.333, 0)
+    else:
+        r, g, b = (255 - (255 * (pass_rate - 0.75) * 4), 255, 0)
+    
+    return '#%x%x%x' % (r, g, b)
+
+# Generate HTML report
+with open("report.html", "w") as report_file:
+    report_file.write("<html><head><title>SQL Conformance</title><body>")
+
+    report_file.write("<h1>Summary</h1>")
+
+    report_file.write("<table border='1' cellpadding='3' cellspacing='0' width='100%' bordercolor='grey'>")
+    report_file.write("<tr><td>Database Name</td><td>%s</td></tr>" % 'Unknown')
+    report_file.write("<tr><td>Database Version</td><td>%s</td></tr>" % 'Unknown')
+    report_file.write("<tr><td>Mandatory Features</td><td>%s</td></tr>" % '0 of 0 (0%)')
+    report_file.write("<tr><td>Optional Features</td><td>%s</td></tr>" % '0 of 0 (0%)')
+    report_file.write("</table>")
+
+    # report_file.write("<table border='1' cellpadding='3' width='100%'>")
+    # for i in xrange(0, 100, 5):
+    #     color = get_html_color_for_pass_rate(float(i) / 100)
+    #     report_file.write("<tr><td bgcolor='%s'>&nbsp;</td></tr>" % color)
+    # report_file.write("</table>")
+
+    report_file.write("<h1>Mandatory Features (%d)</h1>" % len(all_features['mandatory']))
+    report_file.write("<table border='1' cellpadding='3' cellspacing='0' width='100%' bordercolor='grey'>")
+    report_file.write("<tr><th>&nbsp</th><th>Feature ID</th><th>Tests</th><th>Description</th></tr>")
+
+    i = 1
+    for feature_id in sorted(all_features['mandatory']):
+        f = all_features['mandatory'][feature_id]
+        feature_name = f['description']
+
+        percent = '&nbsp;'
+        color = 'grey'
+        if 'pass' in f:
+            pass_rate = float(f['pass']) / (float(f['pass']) + float(f['fail']))
+            percent = '%.0d%% (%d/%d)' % (pass_rate * 100, f['pass'], int(f['pass']) + int(f['fail']))
+
+            color = get_html_color_for_pass_rate(pass_rate)
+
+        report_file.write("<tr><td>%s</td><td>%s</td><td bgcolor='%s'>%s</td><td>%s</td></tr>" % (i, feature_id, color, percent, cgi.escape(feature_name)))
+        i += 1
+
+    report_file.write("</table>")
+
+    report_file.write("<h1>Optional Features (%d)</h1>" % len(all_features['optional']))
+    report_file.write("<table border='1' cellpadding='3' width='100%'>")
+
+    for feature_id in sorted(all_features['optional']):
+        feature_name = all_features['optional'][feature_id]['description']
+        report_file.write("<tr><td>%s</td><td>%s</td><td>%s</td></tr>" % (i, feature_id, cgi.escape(feature_name)))
+        i += 1
+
+    report_file.write("</table>")
+
+    report_file.write("</body></html>")

@@ -1,0 +1,23 @@
+feature: E011-04
+id: e011_04_01_01
+sql: SELECT 1 + 2
+---
+feature: E011-04
+id: e011_04_01_02
+sql: SELECT 1 - 2
+---
+feature: E011-04
+id: e011_04_01_03
+sql: SELECT 2
+---
+feature: E011-04
+id: e011_04_02_01
+sql: SELECT 1.5 + 2.3
+---
+feature: E011-04
+id: e011_04_02_02
+sql: SELECT 1.5 - 2.3
+---
+feature: E011-04
+id: e011_04_02_03
+sql: SELECT 2.3

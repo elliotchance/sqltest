@@ -1,0 +1,11 @@
+sql: SELECT $EXAMPLE$
+examples:
+  bnf: numeric value expression
+  numeric value expression: 1
+  term: 2
+---
+sql: SELECT $EXAMPLE$
+examples:
+  bnf: numeric value expression
+  numeric value expression: 1.5
+  term: 2.3
