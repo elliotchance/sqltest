@@ -484,7 +484,7 @@
 
 <JSON query wrapper behavior> ::=
     WITHOUT [ ARRAY ]
-  | WITH [ CONDITIONAL UNCONDITIONAL ] [ ARRAY ]
+  | WITH [ CONDITIONAL | UNCONDITIONAL ] [ ARRAY ]
 
 <JSON representation> ::=
     JSON [ ENCODING { UTF8 UTF16 UTF32 } ]
@@ -568,7 +568,7 @@
 
 <JSON table formatted column wrapper behavior> ::=
     WITHOUT [ ARRAY ]
-  | WITH [ CONDITIONAL UNCONDITIONAL ] [ ARRAY ]
+  | WITH [ CONDITIONAL | UNCONDITIONAL ] [ ARRAY ]
 
 <JSON table nested columns> ::=
     NESTED [ PATH ] <JSON table nested path specification> 
@@ -1555,7 +1555,7 @@
     <row value predicand> <between predicate part 2>
 
 <between predicate part 2> ::=
-    [ NOT ] BETWEEN [ ASYMMETRIC SYMMETRIC ] <row value predicand> AND 
+    [ NOT ] BETWEEN [ ASYMMETRIC | SYMMETRIC ] <row value predicand> AND 
     <row value predicand>
 
 <binary concatenation> ::=
@@ -1945,7 +1945,7 @@
 
 <column definition> ::=
     <column name> [ <data type or domain name> ] 
-    [ <default clause> <identity column specification> <generation clause> <system time period start column specification> <system time period end column specification> ] 
+    [ <default clause> | <identity column specification> | <generation clause> | <system time period start column specification> | <system time period end column specification> ] 
     [ <column constraint definition>... ] [ <collate clause> ]
 
 <column definition 1> ::=
@@ -3649,7 +3649,7 @@
     <row value predicand> <match predicate part 2>
 
 <match predicate part 2> ::=
-    MATCH [ UNIQUE ] [ SIMPLE PARTIAL FULL ] <table subquery>
+    MATCH [ UNIQUE ] [ SIMPLE | PARTIAL | FULL ] <table subquery>
 
 <match type> ::=
     FULL
@@ -3756,7 +3756,7 @@
 
 <method specification designator> ::=
     SPECIFIC METHOD <specific method name>
-  | [ INSTANCE STATIC CONSTRUCTOR ] METHOD <method name> 
+  | [ INSTANCE | STATIC | CONSTRUCTOR ] METHOD <method name> 
     <SQL parameter declaration list> [ <returns clause> ] FOR 
     <schema-resolved user-defined type name>
 
@@ -3840,7 +3840,7 @@
 
 <multiset term> ::=
     <multiset primary>
-  | <multiset term> MULTISET INTERSECT [ ALL DISTINCT ] <multiset primary>
+  | <multiset term> MULTISET INTERSECT [ ALL | DISTINCT ] <multiset primary>
 
 <multiset type> ::=
     <data type> MULTISET
@@ -3859,8 +3859,8 @@
 
 <multiset value expression> ::=
     <multiset term>
-  | <multiset value expression> MULTISET UNION [ ALL DISTINCT ] <multiset term>
-  | <multiset value expression> MULTISET EXCEPT [ ALL DISTINCT ] <multiset term>
+  | <multiset value expression> MULTISET UNION [ ALL | DISTINCT ] <multiset term>
+  | <multiset value expression> MULTISET EXCEPT [ ALL | DISTINCT ] <multiset term>
 
 <multiset value function> ::=
     <multiset set function>
@@ -4554,7 +4554,7 @@
     <left paren> <value expression> <right paren>
 
 <partial method specification> ::=
-    [ INSTANCE STATIC CONSTRUCTOR ] METHOD <method name> 
+    [ INSTANCE | STATIC | CONSTRUCTOR ] METHOD <method name> 
     <SQL parameter declaration list> <returns clause> 
     [ SPECIFIC <specific method name> ]
 
@@ -4841,9 +4841,9 @@
 
 <query expression body> ::=
     <query term>
-  | <query expression body> UNION [ ALL DISTINCT ] [ <corresponding spec> ] 
+  | <query expression body> UNION [ ALL | DISTINCT ] [ <corresponding spec> ] 
     <query term>
-  | <query expression body> EXCEPT [ ALL DISTINCT ] [ <corresponding spec> ] 
+  | <query expression body> EXCEPT [ ALL | DISTINCT ] [ <corresponding spec> ] 
     <query term>
 
 <query name> ::=
@@ -4859,13 +4859,13 @@
 
 <query system time period specification> ::=
     FOR SYSTEM_TIME AS OF <point in time 1>
-  | FOR SYSTEM_TIME BETWEEN [ ASYMMETRIC SYMMETRIC ] <point in time 1> AND 
+  | FOR SYSTEM_TIME BETWEEN [ ASYMMETRIC | SYMMETRIC ] <point in time 1> AND 
     <point in time 2>
   | FOR SYSTEM_TIME FROM <point in time 1> TO <point in time 2>
 
 <query term> ::=
     <query primary>
-  | <query term> INTERSECT [ ALL DISTINCT ] [ <corresponding spec> ] 
+  | <query term> INTERSECT [ ALL | DISTINCT ] [ <corresponding spec> ] 
     <query primary>
 
 <question mark> ::=
@@ -5577,7 +5577,7 @@
     ROUTINE
   | FUNCTION
   | PROCEDURE
-  | [ INSTANCE STATIC CONSTRUCTOR ] METHOD
+  | [ INSTANCE | STATIC | CONSTRUCTOR ] METHOD
 
 <row marker> ::=
     BEGIN_PARTITION
@@ -6313,7 +6313,7 @@
     [ <schema name> <period> ] <qualified identifier>
 
 <specific method specification designator> ::=
-    [ INSTANCE STATIC CONSTRUCTOR ] METHOD <method name> <data type list>
+    [ INSTANCE | STATIC | CONSTRUCTOR ] METHOD <method name> <data type list>
 
 <specific name> ::=
     <schema qualified name>
