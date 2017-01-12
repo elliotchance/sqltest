@@ -1,0 +1,5 @@
+sql: SELECT <character substring function>
+override:
+  character value expression: "'foo'"
+  start position: 1
+  string length: 2

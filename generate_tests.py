@@ -170,8 +170,13 @@ with open("templates/report.html", "r") as report_template:
             percent = '&nbsp;'
             color = 'grey'
             if 'pass' in f:
-                pass_rate = float(f['pass']) / (float(f['pass']) + float(f['fail']))
-                percent = '%.0d%% (%d/%d)' % (pass_rate * 100, f['pass'], int(f['pass']) + int(f['fail']))
+                if f['pass'] == 0:
+                    pass_rate = 0
+                else:
+                    pass_rate = float(f['pass']) / (float(f['pass']) + float(f['fail']))
+
+                percent = '%01.0d%% (%d/%d)' % (pass_rate * 100, f['pass'],
+                    int(f['pass']) + int(f['fail']))
                 color = get_html_color_for_pass_rate(pass_rate)
                 total_tests += f['pass'] + f['fail']
                 total_passed += f['pass']
