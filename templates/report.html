@@ -25,42 +25,27 @@
         </tr>
         <tr>
             <td>All Tests</td>
-            <td>{{ total_passed }} of {{ total_tests }} ({{ total_passed / total_tests * 100 }}%)</td>
+            <td>{{ total_passed }} of {{ total_tests }} ({{ int(total_passed / total_tests * 100) }}%)</td>
         </tr>
     </table>
 
-    <h1>Mandatory Features ({{ len(features['mandatory']) }})</h1>
+    {% for category in ('mandatory', 'optional') %}
+        <h1>{{ category[0].upper() + category[1:] }} Features ({{ len(features[category]) }})</h1>
 
-    <table border='1' cellpadding='3' cellspacing='0' width='100%' bordercolor='grey'>
-        <tr>
-            <th>Feature ID</th>
-            <th>Tests</th>
-            <th>Description</th>
-        </tr>
-        {% for feature in features['mandatory'] %}
-        <tr>
-            <td>{{ feature.id }}</td>
-            <td bgcolor="{{ feature.color }}">{{ feature.percent }}</td>
-            <td>{{ feature.description }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <h1>Optional Features ({{ len(features['optional']) }})</h1>
-
-    <table border='1' cellpadding='3' cellspacing='0' width='100%' bordercolor='grey'>
-        <tr>
-            <th>Feature ID</th>
-            <th>Tests</th>
-            <th>Description</th>
-        </tr>
-        {% for feature in features['optional'] %}
-        <tr>
-            <td>{{ feature.id }}</td>
-            <td bgcolor="{{ feature.color }}">{{ feature.percent }}</td>
-            <td>{{ feature.description }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+        <table border='1' cellpadding='3' cellspacing='0' width='100%' bordercolor='grey'>
+            <tr>
+                <th nowrap>Feature ID</th>
+                <th>Tests</th>
+                <th>Description</th>
+            </tr>
+            {% for feature in features[category] %}
+            <tr style="font-weight: {{ 'bold' if feature.id.find('-') < 0 else 'normal' }} ">
+                <td nowrap>{{ feature.id }}</td>
+                <td nowrap bgcolor="{{ feature.color }}">{{ feature.percent }}</td>
+                <td>{{ feature.description }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endfor %}
 </body>
 </html>

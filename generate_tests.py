@@ -64,7 +64,6 @@ def generate_tests(feature_file_path):
         if 'exclude' in test:
             exclude = test['exclude']
 
-        print(test['sql'])
         sqls = bnf.get_paths_for_rule(rules, test['sql'], override, exclude)
 
         for rule_number in xrange(0, len(sqls)):
@@ -185,4 +184,4 @@ with open("templates/report.html", "r") as report_template:
             })
 
     with open("report.html", "w") as report_file:
-        report_file.write(t.render(features=feats, len=len, total_tests=total_tests, total_passed=total_passed))
+        report_file.write(t.render(features=feats, int=int, len=len, total_tests=total_tests, total_passed=total_passed))

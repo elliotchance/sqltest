@@ -1,0 +1,3 @@
+sql: SELECT <octet length expression>
+override:
+  string value expression: "'foo'"
