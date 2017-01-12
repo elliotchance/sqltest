@@ -8,6 +8,7 @@ import bnf
 import sys
 import sqlite3
 import cgi
+from jinja2 import Template
 
 def get_all_features(standard):
     features_file = open("standards/%s/features.yml" % standard, "r")
@@ -52,34 +53,31 @@ def generate_tests(feature_file_path):
 
     for test in tests:
         test_number += 1
-        rule_names = test['examples']['bnf']
-        if not isinstance(rule_names, list):
-            rule_names = [rule_names]
+
+        override = {}
+        if 'override' in test:
+            override = test['override']
+        for name in override:
+            override[name] = bnf.ASTKeyword(str(override[name]))
 
         exclude = []
-        if 'exclude' in test['examples']:
-            exclude = test['examples']['exclude']
+        if 'exclude' in test:
+            exclude = test['exclude']
 
-        rule_number = 0
-        for rule_name in rule_names:
-            overrides = {}
-            for override in test['examples']:
-                overrides[override] = bnf.ASTKeyword(str(test['examples'][override]))
+        print(test['sql'])
+        sqls = bnf.get_paths_for_rule(rules, test['sql'], override, exclude)
 
-            examples = bnf.get_paths_for_rule(rules, rule_name, overrides, exclude)
+        for rule_number in xrange(0, len(sqls)):
+            test_id = '%s_%02d_%02d' % (
+                basename.split('.')[0].replace('-', '_').lower(),
+                test_number, rule_number + 1
+            )
 
-            for example in examples:
-                rule_number += 1
-                test_id = '%s_%02d_%02d' % (
-                    basename.split('.')[0].replace('-', '_').lower(),
-                    test_number, rule_number
-                )
-                sql = test['sql'].replace('$TN$', test_id)
-                result_tests.append({
-                    'id': test_id,
-                    'feature': basename[:-4],
-                    'sql': sql.replace('$EXAMPLE$', example)
-                })
+            result_tests.append({
+                'id': test_id,
+                'feature': basename[:-4],
+                'sql': sqls[rule_number].replace('TN', test_id)
+            })
 
     with open(output_file(feature_file_path), "w") as f:
         f.write(yaml.dump_all(result_tests, default_flow_style=False))
@@ -154,54 +152,37 @@ def get_html_color_for_pass_rate(pass_rate):
     return '#%x%x%x' % (r, g, b)
 
 # Generate HTML report
-with open("report.html", "w") as report_file:
-    report_file.write("<html><head><title>SQL Conformance</title><body>")
 
-    report_file.write("<h1>Summary</h1>")
+with open("templates/report.html", "r") as report_template:
+    t = Template(report_template.read())
 
-    report_file.write("<table border='1' cellpadding='3' cellspacing='0' width='100%' bordercolor='grey'>")
-    report_file.write("<tr><td>Database Name</td><td>%s</td></tr>" % 'Unknown')
-    report_file.write("<tr><td>Database Version</td><td>%s</td></tr>" % 'Unknown')
-    report_file.write("<tr><td>Mandatory Features</td><td>%s</td></tr>" % '0 of 0 (0%)')
-    report_file.write("<tr><td>Optional Features</td><td>%s</td></tr>" % '0 of 0 (0%)')
-    report_file.write("</table>")
+    feats = {
+        'mandatory': [],
+        'optional': []
+    }
 
-    # report_file.write("<table border='1' cellpadding='3' width='100%'>")
-    # for i in xrange(0, 100, 5):
-    #     color = get_html_color_for_pass_rate(float(i) / 100)
-    #     report_file.write("<tr><td bgcolor='%s'>&nbsp;</td></tr>" % color)
-    # report_file.write("</table>")
+    total_tests = 0
+    total_passed = 0
+    
+    for category in ('mandatory', 'optional'):
+        for feature_id in sorted(all_features[category]):
+            f = all_features[category][feature_id]
 
-    report_file.write("<h1>Mandatory Features (%d)</h1>" % len(all_features['mandatory']))
-    report_file.write("<table border='1' cellpadding='3' cellspacing='0' width='100%' bordercolor='grey'>")
-    report_file.write("<tr><th>&nbsp</th><th>Feature ID</th><th>Tests</th><th>Description</th></tr>")
+            percent = '&nbsp;'
+            color = 'grey'
+            if 'pass' in f:
+                pass_rate = float(f['pass']) / (float(f['pass']) + float(f['fail']))
+                percent = '%.0d%% (%d/%d)' % (pass_rate * 100, f['pass'], int(f['pass']) + int(f['fail']))
+                color = get_html_color_for_pass_rate(pass_rate)
+                total_tests += f['pass'] + f['fail']
+                total_passed += f['pass']
 
-    i = 1
-    for feature_id in sorted(all_features['mandatory']):
-        f = all_features['mandatory'][feature_id]
-        feature_name = f['description']
+            feats[category].append({
+                'id': feature_id,
+                'description': cgi.escape(all_features[category][feature_id]['description']),
+                'color': color,
+                'percent': percent,
+            })
 
-        percent = '&nbsp;'
-        color = 'grey'
-        if 'pass' in f:
-            pass_rate = float(f['pass']) / (float(f['pass']) + float(f['fail']))
-            percent = '%.0d%% (%d/%d)' % (pass_rate * 100, f['pass'], int(f['pass']) + int(f['fail']))
-
-            color = get_html_color_for_pass_rate(pass_rate)
-
-        report_file.write("<tr><td>%s</td><td>%s</td><td bgcolor='%s'>%s</td><td>%s</td></tr>" % (i, feature_id, color, percent, cgi.escape(feature_name)))
-        i += 1
-
-    report_file.write("</table>")
-
-    report_file.write("<h1>Optional Features (%d)</h1>" % len(all_features['optional']))
-    report_file.write("<table border='1' cellpadding='3' width='100%'>")
-
-    for feature_id in sorted(all_features['optional']):
-        feature_name = all_features['optional'][feature_id]['description']
-        report_file.write("<tr><td>%s</td><td>%s</td><td>%s</td></tr>" % (i, feature_id, cgi.escape(feature_name)))
-        i += 1
-
-    report_file.write("</table>")
-
-    report_file.write("</body></html>")
+    with open("report.html", "w") as report_file:
+        report_file.write(t.render(features=feats, len=len, total_tests=total_tests, total_passed=total_passed))

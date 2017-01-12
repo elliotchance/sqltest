@@ -1,6 +1,5 @@
-sql: CREATE TABLE $TN$ ( a $EXAMPLE$ )
-examples:
-  bnf: exact numeric type
+sql: CREATE TABLE TN ( a <exact numeric type> )
+override:
   precision: 6
   scale: 3
-  exclude: [BIGINT, INT, INTEGER, SMALLINT]
+exclude: [BIGINT, INT, INTEGER, SMALLINT]

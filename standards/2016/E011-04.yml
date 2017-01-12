@@ -1,11 +1,3 @@
-sql: SELECT $EXAMPLE$
-examples:
-  bnf: numeric value expression
-  numeric value expression: 1
-  term: 2
+sql: SELECT 5 { <plus sign> | <minus sign> } 3
 ---
-sql: SELECT $EXAMPLE$
-examples:
-  bnf: numeric value expression
-  numeric value expression: 1.5
-  term: 2.3
+sql: SELECT 3.4 { <plus sign> | <minus sign> } 1.2

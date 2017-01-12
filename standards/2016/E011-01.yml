@@ -1,8 +1,3 @@
-sql: CREATE TABLE $TN$ ( a $EXAMPLE$ )
-examples:
-  bnf: exact numeric type
-  exclude: [NUMERIC, DECIMAL, DEC]
+sql: CREATE TABLE TN ( a { SMALLINT | INTEGER | INT | BIGINT } )
 ---
-sql: SELECT $EXAMPLE$5
-examples:
-  bnf: sign
+sql: SELECT [ <sign> ] 5

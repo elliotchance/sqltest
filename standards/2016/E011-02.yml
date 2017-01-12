@@ -1,13 +1,9 @@
-sql: CREATE TABLE $TN$ ( a $EXAMPLE$ )
-examples:
-  bnf: approximate numeric type
+sql: CREATE TABLE TN ( a <approximate numeric type> )
+override:
   precision: 2
 ---
-sql: SELECT $EXAMPLE$7.8
-examples:
-  bnf: sign
+sql: SELECT <sign> 7.8
 ---
-sql: SELECT $EXAMPLE$
-examples:
-  bnf: [signed numeric literal, unsigned numeric literal]
+sql: SELECT { <signed numeric literal> | <unsigned numeric literal> }
+override:
   digit: 2

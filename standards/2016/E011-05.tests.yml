@@ -48,4 +48,8 @@ sql: SELECT 3.7 >= 5.2
 ---
 feature: E011-05
 id: e011_05_03_01
-sql: SELECT (1)
+sql: SELECT ( 1 )
+---
+feature: E011-05
+id: e011_05_04_01
+sql: SELECT ( 5.5 )

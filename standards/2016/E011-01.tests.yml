@@ -21,3 +21,7 @@ sql: SELECT +5
 feature: E011-01
 id: e011_01_02_02
 sql: SELECT -5
+---
+feature: E011-01
+id: e011_01_02_03
+sql: SELECT 5

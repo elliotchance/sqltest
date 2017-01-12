@@ -1,35 +1,35 @@
 feature: E011-03
 id: e011_03_01_01
-sql: CREATE TABLE e011_03_01_01 ( a DEC )
+sql: CREATE TABLE e011_03_01_01 ( a DEC ( 6 ) )
 ---
 feature: E011-03
 id: e011_03_01_02
-sql: CREATE TABLE e011_03_01_02 ( a DEC (6) )
+sql: CREATE TABLE e011_03_01_02 ( a DEC ( 6 , 3 ) )
 ---
 feature: E011-03
 id: e011_03_01_03
-sql: CREATE TABLE e011_03_01_03 ( a DEC (6,3) )
+sql: CREATE TABLE e011_03_01_03 ( a DEC )
 ---
 feature: E011-03
 id: e011_03_01_04
-sql: CREATE TABLE e011_03_01_04 ( a DECIMAL )
+sql: CREATE TABLE e011_03_01_04 ( a DECIMAL ( 6 ) )
 ---
 feature: E011-03
 id: e011_03_01_05
-sql: CREATE TABLE e011_03_01_05 ( a DECIMAL (6) )
+sql: CREATE TABLE e011_03_01_05 ( a DECIMAL ( 6 , 3 ) )
 ---
 feature: E011-03
 id: e011_03_01_06
-sql: CREATE TABLE e011_03_01_06 ( a DECIMAL (6,3) )
+sql: CREATE TABLE e011_03_01_06 ( a DECIMAL )
 ---
 feature: E011-03
 id: e011_03_01_07
-sql: CREATE TABLE e011_03_01_07 ( a NUMERIC )
+sql: CREATE TABLE e011_03_01_07 ( a NUMERIC ( 6 ) )
 ---
 feature: E011-03
 id: e011_03_01_08
-sql: CREATE TABLE e011_03_01_08 ( a NUMERIC (6) )
+sql: CREATE TABLE e011_03_01_08 ( a NUMERIC ( 6 , 3 ) )
 ---
 feature: E011-03
 id: e011_03_01_09
-sql: CREATE TABLE e011_03_01_09 ( a NUMERIC (6,3) )
+sql: CREATE TABLE e011_03_01_09 ( a NUMERIC )

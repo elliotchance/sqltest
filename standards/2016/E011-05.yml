@@ -1,17 +1,11 @@
-sql: SELECT 3 $EXAMPLE$ 5
-examples:
-  bnf: comp op
+sql: SELECT 3 <comp op> 5
 ---
-sql: SELECT 3.7 $EXAMPLE$ 5.2
-examples:
-  bnf: comp op
+sql: SELECT 3.7 <comp op> 5.2
 ---
-sql: SELECT $EXAMPLE$
-examples:
-  bnf: parenthesized value expression
+sql: SELECT <parenthesized value expression>
+override:
   value expression: 1
 ---
-sql: SELECT $EXAMPLE$
-examples:
-  bnf: parenthesized value expression
+sql: SELECT <parenthesized value expression>
+override:
   value expression: 5.5

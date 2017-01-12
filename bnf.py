@@ -7,6 +7,12 @@ import os.path
 import copy
 import itertools
 
+# TODO:
+# 
+#   1. Change render() methods to json() and add option to CLI.
+#   2. Clean up CLI docs so that each mode is documented separately.
+#   3. See TODO below about resolving recusions at any level.
+
 class RecursiveException(Exception):
     """Thrown when recursion is detected on a BNF rule."""
 
@@ -181,6 +187,20 @@ class ASTTokens(list):
                         break
                     elif isinstance(choice[choice_idx][token_idx], ASTRepeat):
                         choice[choice_idx][token_idx] = ASTTokens(choice[choice_idx][token_idx])
+                    elif isinstance(choice[choice_idx][token_idx], ASTGroup):
+                        choice[choice_idx][token_idx] = choice[choice_idx][token_idx][0]
+
+                        did_modify = True
+                        break
+                    elif isinstance(choice[choice_idx][token_idx], ASTSubChoice):
+                        for subchoice in choice[choice_idx][token_idx]:
+                            choice.append(copy.deepcopy(choice[choice_idx]))
+                            choice[-1][token_idx] = ASTTokens(subchoice)
+
+                        del choice[choice_idx]
+
+                        did_modify = True
+                        break
                     else:
                         raise RuntimeError(choice[choice_idx][token_idx].__class__)
 
@@ -207,25 +227,37 @@ class ASTTokens(list):
         for choice_idx in xrange(0, len(choice)):
             s = str(choice[choice_idx])
 
-            # Since almost all of the components of a constructed number are optional it difficult in a single regex to find anything that could be a number without catching general spaces
+            # Since almost all of the components of a constructed number are
+            # optional it difficult in a single regex to find anything that
+            # could be a number without catching general spaces.
+            # 
+            # Note: use ' ' instead of \s so that it doesn't catch new lines.
             choice[choice_idx] = re.sub(
-                r'([+-]? *\d* *\.? *\d* *E? *[+-]? *\d*)',
-                lambda m: format_number(m.group(1)),
+                r'( |^)([+-]? ?[\d. ]{2,}) ?( ?E *[+-]? *\d+)?( |$)',
+                lambda m: format_number(m),
                 s
             )
+
+            # choice[choice_idx] = re.sub(
+            #     r'[\s^]([+-]? *\d* *\.? *\d* *E? *[+-]? *\d*)[\s$]',
+            #     lambda m: 'a' + format_number(m.group(1)) + 'a',
+            #     s
+            # )
 
         return choice
 
     def render(self):
         return '<tokens>%s</tokens>' % ''.join([x.render() for x in self])
 
-def format_number(number):
-    try:
-        candidate = number.replace(' ', '')
-        float(candidate)
-        return candidate
-    except:
-        return number
+def format_number(m):
+    r = m.group(1)
+    if m.group(2):
+        r += m.group(2).replace(' ', '')
+    if m.group(3):
+        r += m.group(3).replace(' ', '')
+    r += m.group(4)
+
+    return r
 
 class ASTRule:
     """Represents a rule enclosed with angle brackets."""
@@ -243,8 +275,10 @@ class ASTRule:
         if self.name in overrides:
             return ASTTokens([[overrides[self.name]]])
 
-        if rules[self.name]['recursive']:
-            raise RuntimeError("Rule %s is recursive." % self)
+        # TODO: recursive values can be resolve at any level, not just the top
+        # level.
+        # if rules[self.name]['recursive']:
+        #     raise RuntimeError("Rule %s is recursive." % self)
 
         return rules[self.name]['ast']
 
@@ -286,7 +320,7 @@ class ASTSubChoice(list):
     """A ASTSubChoice is grammatically the same as a ASTChoice, however it is
     render back into one line rather than multiple lines."""
     def __str__(self):
-        return ' | '.join([str(item) for item in self])
+        return '{ ' + ' | '.join([str(item) for item in self]) + ' }'
 
     def render(self):
         return '<subchoice>%s</subchoice>' % ''.join([x.render() for x in self])
@@ -295,7 +329,12 @@ class ASTOptional(list):
     """An optional part of the BNF is surrounded by square-brackets."""
 
     def __str__(self):
-        return '[ ' + str(ASTTokens(self)) + ' ]'
+        part = str(ASTTokens(self))
+
+        if len(self) == 1 and part[0] == '{' and part[-1] != '.':
+            part = part[2:-2]
+
+        return '[ ' + part + ' ]'
 
     def render(self):
         return '<optional>%s</optional>' % ''.join([x.render() for x in self])
@@ -357,16 +396,10 @@ def parse(tokens, eof=None, root=None):
 
         if token == '[':
             p = parse(tokens, ']', ASTSubChoice())
-            if len(p) == 1:
-                choice.append(ASTOptional(p[0]))
-            else:
-                choice.append(ASTOptional(p))
+            choice.append(ASTOptional([p]))
         elif token == '{':
             p = parse(tokens, '}', ASTSubChoice())
-            if len(p) == 1:
-                choice.append(ASTGroup(p[0]))
-            else:
-                choice.append(ASTGroup(p))
+            choice.append(ASTGroup([p]))
         elif token == '...':
             choice[-1] = ASTRepeat([choice[-1]])
         elif token == '|':
@@ -487,10 +520,9 @@ def find_missing_rules(rules):
 
     return sorted(rule_names - set(rules))
 
-def get_paths_for_rule(rules, rule_name, overrides, exclude):
-    paths = rules[rule_name]['ast'].resolve(rules, overrides, exclude)
-
-    return sorted([str(path) for path in paths])
+def get_paths_for_rule(rules, rule, overrides, exclude):
+    p = parse(iter(all_tokens(rule)))
+    return sorted([str(s) for s in p.resolve(rules, overrides, exclude)])
 
 def output_rule(rules, rule_name, overrides, exclude, output_paths, output_subrules):
     if output_paths:
@@ -524,14 +556,34 @@ def unpack_overrides(overrides):
     return o
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='bnf.py is a CLI tool and module for parsing, manipulating and resolving paths from BNF definitions.')
-    parser.add_argument('bnf_file', type=str, help='a path to a BNF file')
-    parser.add_argument('rule', type=str, nargs='*', help='a BNF rule name')
-    parser.add_argument('-o', type=str, nargs='*', help='override a rule when resolving paths', action='append')
-    parser.add_argument('--validate', action='store_const', const=True, help='validate the BNF file')
-    parser.add_argument('--paths', action='store_const', const=True, help='output all possible paths from BNF rules')
-    parser.add_argument('--subrules', action='store_const', const=True, help='will also output any subrules of the provided rules')
-    parser.add_argument('--exclude', type=str, help='exclude paths that contain one of the keywords. Separate multiple keywords with a comma.')
+    parser = argparse.ArgumentParser(
+        description="""bnf.py is a CLI tool and module for parsing, manipulating
+        and resolving paths from BNF definitions.""",
+        epilog='''Foo\n
+        Bar'''
+    )
+
+    parser.add_argument('bnf_file', type=str, help='A path to a BNF file.')
+
+    parser.add_argument('--validate', action='store_const', const=True,
+        help="""Validate the BNF file. If the validation is successful there
+        will be no output and the exit code will be zero.""")
+
+    parser.add_argument('--all-rules', action='store_const', const=True,
+        help='Output all BNF rules sorted by name.')
+
+    parser.add_argument('--rule', type=str, nargs='+',
+        help='One or more BNF rule names.')
+    parser.add_argument('--subrules', action='store_const', const=True,
+        help='Will also output any subrules of the provided rules.')
+
+    parser.add_argument('--paths', type=str, nargs='+',
+        help='Output all possible paths from one or more BNF syntaxes.')
+    parser.add_argument('--override', type=str, nargs='*', action='append',
+        help='Override rules when resolving paths.')
+    parser.add_argument('--exclude', type=str,
+        help="""Exclude paths that contain one of the keywords. Separate
+        multiple keywords with a comma.""")
 
     args = parser.parse_args()
 
@@ -542,7 +594,7 @@ if __name__ == '__main__':
     raw_rules = parse_bnf_file(args.bnf_file)
     rules = analyze_rules(raw_rules)
 
-    # Validate
+    # --validate
     if args.validate is True:
         missing_rules = find_missing_rules(rules)
         if len(missing_rules):
@@ -551,11 +603,17 @@ if __name__ == '__main__':
             sys.exit(1)
         sys.exit(0)
 
-    # When no rules are provided we print out all of them
-    overrides = unpack_overrides(args.o)
-    if len(args.rule) == 0:
+    # --all-rules
+    overrides = {} # unpack_overrides(args.o)
+    if args.all_rules:
         for rule in sorted(rules):
-            output_rule(rules, rule, overrides, exclude, args.paths, args.subrules)
+            print('<%s> ::=\n%s\n' % (rule, str(rules[rule]['ast'])))
+        sys.exit(0)
+
+    # When no rules are provided we print out all of them
+    if args.rule is None:
+        for path in args.paths:
+            print('\n'.join(get_paths_for_rule(rules, str(path), overrides, exclude)))
     else:
         for rule in sorted(args.rule):
-            output_rule(rules, rule, overrides, exclude, args.paths, args.subrules)
+            print('<%s> ::=\n%s\n' % (rule, str(rules[rule]['ast'])))
