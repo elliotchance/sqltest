@@ -225,7 +225,7 @@ class ASTTokens(list):
         # (probably) no databases will understand or accept these so the spaces
         # must be removed.
         for choice_idx in xrange(0, len(choice)):
-            s = str(choice[choice_idx])
+            choice[choice_idx] = str(choice[choice_idx])
 
             # Since almost all of the components of a constructed number are
             # optional it difficult in a single regex to find anything that
@@ -235,14 +235,16 @@ class ASTTokens(list):
             choice[choice_idx] = re.sub(
                 r'( |^)([+-]? ?[\d. ]{2,}) ?( ?E *[+-]? *\d+)?( |$)',
                 lambda m: format_number(m),
-                s
+                choice[choice_idx]
             )
 
-            # choice[choice_idx] = re.sub(
-            #     r'[\s^]([+-]? *\d* *\.? *\d* *E? *[+-]? *\d*)[\s$]',
-            #     lambda m: 'a' + format_number(m.group(1)) + 'a',
-            #     s
-            # )
+            # Collapse character literals
+            choice[choice_idx] = re.sub(
+                r'\' (\w+) \'',
+                lambda m: "'%s'" % m.group(1),
+                choice[choice_idx]
+            )
+            choice[choice_idx] = choice[choice_idx].replace("' '", "''")
 
         return choice
 

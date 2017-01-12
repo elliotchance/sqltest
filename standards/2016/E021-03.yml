@@ -1,0 +1,1 @@
+sql: SELECT { <quote> <quote> | <quote> a <quote> |  <quote> abc <quote> }

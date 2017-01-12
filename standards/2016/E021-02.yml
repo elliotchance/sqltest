@@ -1,0 +1,3 @@
+sql: CREATE TABLE TN ( a { CHAR VARING | CHARACTER VARYING | VARCHAR } [ <left paren> <character length> <right paren> ] )
+override:
+  length: 8

@@ -1753,7 +1753,7 @@
     { CEIL CEILING } <left paren> <numeric value expression> <right paren>
 
 <char length expression> ::=
-    { CHAR_LENGTH CHARACTER_LENGTH } <left paren> <character value expression> 
+    { CHAR_LENGTH | CHARACTER_LENGTH } <left paren> <character value expression> 
     [ USING <char length units> ] <right paren>
 
 <char length units> ::=

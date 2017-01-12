@@ -1,0 +1,3 @@
+sql: SELECT <char length expression>
+override:
+  character value expression: "'foo'"
