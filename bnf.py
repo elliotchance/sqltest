@@ -240,8 +240,8 @@ class ASTTokens(list):
 
             # Collapse character literals
             choice[choice_idx] = re.sub(
-                r'\' (\w+) \'',
-                lambda m: "'%s'" % m.group(1),
+                r'\'([ \w]+)\'',
+                lambda m: "'%s'" % m.group(1)[1:-1] if m.group(1)[0] == ' ' else "'%s'" % m.group(1),
                 choice[choice_idx]
             )
             choice[choice_idx] = choice[choice_idx].replace("' '", "''")
@@ -540,9 +540,18 @@ def output_rule(rules, rule_name, overrides, exclude, output_paths, output_subru
 
 def get_subrules(rules, rule_name):
     all_rules = set([rule_name])
+    did_update = True
 
-    for rule in extract_subrules_from_grammar(str(rules[rule_name]['ast'])):
-        all_rules.update(get_subrules(rules, rule))
+    while did_update:
+        did_update = False
+
+        for r in all_rules:
+            sub_rules = extract_subrules_from_grammar(str(rules[r]['ast']))
+
+            if len(sub_rules - all_rules) > 0:
+                did_update = True
+                all_rules.update(sub_rules)
+                break
 
     return all_rules
 
@@ -606,7 +615,7 @@ if __name__ == '__main__':
         sys.exit(0)
 
     # --all-rules
-    overrides = {} # unpack_overrides(args.o)
+    overrides = unpack_overrides(args.override)
     if args.all_rules:
         for rule in sorted(rules):
             print('<%s> ::=\n%s\n' % (rule, str(rules[rule]['ast'])))
@@ -617,5 +626,10 @@ if __name__ == '__main__':
         for path in args.paths:
             print('\n'.join(get_paths_for_rule(rules, str(path), overrides, exclude)))
     else:
-        for rule in sorted(args.rule):
-            print('<%s> ::=\n%s\n' % (rule, str(rules[rule]['ast'])))
+        for r in args.rule:
+            rules_to_render = set([r])
+            if args.subrules:
+                rules_to_render = get_subrules(rules, r)
+            
+            for rule in sorted(rules_to_render):
+                print('<%s> ::=\n%s\n' % (rule, str(rules[rule]['ast'])))

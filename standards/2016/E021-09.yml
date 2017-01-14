@@ -1,0 +1,3 @@
+sql: SELECT <trim function>
+override:
+  character value expression: "'foo'"
