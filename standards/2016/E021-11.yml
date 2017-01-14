@@ -1,0 +1,4 @@
+sql: SELECT <character position expression>
+override:
+  character value expression 1: "'foo'"
+  character value expression 2: "'bar'"
