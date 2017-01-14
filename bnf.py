@@ -155,7 +155,7 @@ class ASTTokens(list):
     def __str__(self):
         return ' '.join([str(item) for item in self])
 
-    def resolve(self, rules, overrides, exclude):
+    def resolve(self, rules, overrides, exclude, stack):
         # The deepcopy() here is important becuase we don't want to mutate the
         # original rules which will be reused.
         choice = ASTChoice([copy.deepcopy(self)])
@@ -176,7 +176,12 @@ class ASTTokens(list):
                         did_modify = True
                         break
                     elif isinstance(choice[choice_idx][token_idx], ASTRule):
-                        sub_paths = choice[choice_idx][token_idx].resolve(rules, overrides, exclude)
+                        # if len(stack) > 25:
+                        #     raise RecursiveException('\n  ' + '\n  '.join(stack))
+                            # raise RecursiveException(choice[choice_idx][token_idx])
+                        stack.append(choice[choice_idx][token_idx].name)
+
+                        sub_paths = choice[choice_idx][token_idx].resolve(rules, overrides, exclude, stack)
 
                         for sub_path in sub_paths:
                             choice.append(copy.deepcopy(choice[choice_idx]))
@@ -284,7 +289,7 @@ class ASTRule:
     def render(self):
         return '<rule>%s</rule>' % self.name
 
-    def resolve(self, rules, overrides, exclude):
+    def resolve(self, rules, overrides, exclude, stack):
         if self.name in overrides:
             return ASTTokens([[overrides[self.name]]])
 
@@ -321,11 +326,11 @@ class ASTChoice(list):
     def render(self):
         return '<choices>%s</choices>' % ''.join([x.render() for x in self])
 
-    def resolve(self, rules, overrides, exclude):
+    def resolve(self, rules, overrides, exclude, stack):
         new_choice = ASTChoice()
 
         for choice in self:
-            new_choice.extend(choice.resolve(rules, overrides, exclude))
+            new_choice.extend(choice.resolve(rules, overrides, exclude, stack))
 
         return new_choice
 
@@ -535,7 +540,7 @@ def find_missing_rules(rules):
 
 def get_paths_for_rule(rules, rule, overrides, exclude):
     p = parse(iter(all_tokens(rule)))
-    return sorted([str(s) for s in p.resolve(rules, overrides, exclude)])
+    return sorted([str(s) for s in p.resolve(rules, overrides, exclude, [])])
 
 def output_rule(rules, rule_name, overrides, exclude, output_paths, output_subrules):
     if output_paths:
@@ -572,10 +577,29 @@ def unpack_overrides(overrides):
 
     o = {}
     for override in overrides:
-        key, value = override[0].split('=')
-        o[key.replace('-', ' ')] = ASTKeyword(value)
+        parts = override[0].split(';')
+        for part in parts:
+            key, value = part.split('=')
+            o[key.replace('-', ' ')] = ASTKeyword(value)
 
     return o
+
+def visualize(rules, rule_name, depth, max_depth, overrides):
+    print ' ' * depth,
+
+    if depth >= max_depth:
+        print "..."
+        return
+    
+    if rule_name in overrides:
+        print "%s = '%s'" % (rule_name, overrides[rule_name])
+        return
+
+    print rule_name
+
+    subrules = extract_subrules_from_grammar(str(rules[rule_name]['ast']))
+    for subrule in subrules:
+        visualize(rules, subrule, depth + 1, max_depth, overrides)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -593,6 +617,10 @@ if __name__ == '__main__':
 
     parser.add_argument('--all-rules', action='store_const', const=True,
         help='Output all BNF rules sorted by name.')
+
+    parser.add_argument('--visualize', type=str, help='A single rule name.')
+    parser.add_argument('--max-depth', type=int, default=5,
+        help='The maximum recursion depth for --visualize.')
 
     parser.add_argument('--rule', type=str, nargs='+',
         help='One or more BNF rule names.')
@@ -625,11 +653,17 @@ if __name__ == '__main__':
             sys.exit(1)
         sys.exit(0)
 
-    # --all-rules
     overrides = unpack_overrides(args.override)
+
+    # --all-rules
     if args.all_rules:
         for rule in sorted(rules):
             print('<%s> ::=\n%s\n' % (rule, str(rules[rule]['ast'])))
+        sys.exit(0)
+
+    # --visualize
+    if args.visualize:
+        visualize(rules, args.visualize, 0, args.max_depth, overrides)
         sys.exit(0)
 
     # When no rules are provided we print out all of them
