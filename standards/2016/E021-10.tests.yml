@@ -3,11 +3,4 @@ id: e021_10_01_01
 sql:
 - CREATE TABLE e021_10_01_01 ( a CHARACTER ( 10 ) , b CHARACTER VARYING ( 15 ) )
 - INSERT INTO e021_10_01_01 ( a, b ) VALUES ( 'foo' , 'bar' )
-- SELECT a <> b FROM e021_10_01_01
----
-feature: E021-10
-id: e021_10_01_02
-sql:
-- CREATE TABLE e021_10_01_02 ( a CHARACTER ( 10 ) , b CHARACTER VARYING ( 15 ) )
-- INSERT INTO e021_10_01_02 ( a, b ) VALUES ( 'foo' , 'bar' )
-- SELECT a = b FROM e021_10_01_02
+- SELECT a = b FROM e021_10_01_01
