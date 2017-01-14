@@ -1,0 +1,5 @@
+feature: E031-03
+id: e031_03_01_01
+sql:
+- CREATE TABLE e031_03_01_01 ( A_ INT )
+- SELECT A_ FROM e031_03_01_01

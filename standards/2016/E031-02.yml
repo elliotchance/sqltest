@@ -1,0 +1,3 @@
+sql:
+  - CREATE TABLE TN ( a INT )
+  - SELECT a FROM TN

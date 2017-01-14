@@ -106,9 +106,10 @@ def next_token(grammar, offset):
                 new_offset = len(grammar)
             return grammar[offset:new_offset], new_offset
 
-        if grammar[offset] == "'":
+        if grammar[offset] == "'" or grammar[offset] == '"':
+            looking_for = grammar[offset]
             try:
-                new_offset = grammar.index("'", offset + 1) + 1
+                new_offset = grammar.index(looking_for, offset + 1) + 1
             except ValueError:
                 new_offset = len(grammar)
             return grammar[offset:new_offset], new_offset
