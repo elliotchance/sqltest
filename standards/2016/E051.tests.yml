@@ -1,0 +1,23 @@
+feature: E051
+id: e051_01_01
+sql:
+- CREATE TABLE e051_01_01 ( A INT )
+- SELECT A FROM e051_01_01
+---
+feature: E051
+id: e051_01_02
+sql:
+- CREATE TABLE e051_01_02 ( A INT )
+- SELECT A FROM e051_01_02 WHERE A = 1
+---
+feature: E051
+id: e051_01_03
+sql:
+- CREATE TABLE e051_01_03 ( A INT )
+- SELECT ALL A FROM e051_01_03
+---
+feature: E051
+id: e051_01_04
+sql:
+- CREATE TABLE e051_01_04 ( A INT )
+- SELECT ALL A FROM e051_01_04 WHERE A = 1

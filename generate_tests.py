@@ -9,6 +9,7 @@ import sys
 import sqlite3
 import cgi
 from jinja2 import Template
+import pprint
 
 def get_all_features(standard):
     features_file = open("standards/%s/features.yml" % standard, "r")
@@ -179,10 +180,14 @@ with open("templates/report.html", "r") as report_template:
         for feature_id in sorted(all_features[category]):
             f = all_features[category][feature_id]
 
-            if '-' not in feature_id and ('%s-01' % feature_id) in all_features[category]:
+            if 'pass' in all_features[category][feature_id]:
+                f['pass'] = all_features[category][feature_id]['pass']
+                f['fail'] = all_features[category][feature_id]['fail']
+            else:
                 f['pass'] = 0
                 f['fail'] = 0
 
+            if '-' not in feature_id and ('%s-01' % feature_id) in all_features[category]:
                 for fid in sorted(all_features[category]):
                     if fid.startswith('%s-' % feature_id) and \
                     'pass' in all_features[category][fid]:
@@ -195,7 +200,7 @@ with open("templates/report.html", "r") as report_template:
 
             percent = '&nbsp;'
             color = 'grey'
-            if 'pass' in f:
+            if 'pass' in f and (f['pass'] + f['fail']) > 0:
                 if f['pass'] == 0:
                     pass_rate = 0
                 else:

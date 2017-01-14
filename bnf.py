@@ -663,6 +663,8 @@ if __name__ == '__main__':
 
     # --visualize
     if args.visualize:
+        if args.visualize[0] == '<':
+            args.visualize = args.visualize[1:-1]
         visualize(rules, args.visualize, 0, args.max_depth, overrides)
         sys.exit(0)
 
