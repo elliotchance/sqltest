@@ -1,0 +1,4 @@
+sql: SELECT <character value expression> <concatenation operator> <character primary>
+override:
+  character value expression: "'foo'"
+  character primary: "'bar'"
