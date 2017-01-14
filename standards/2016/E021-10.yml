@@ -1,0 +1,4 @@
+sql:
+  - CREATE TABLE TN ( a CHARACTER (10), b CHARACTER VARYING (15) )
+  - INSERT INTO TN (a, b) VALUES ('foo', 'bar')
+  - SELECT a { <equals operator> | <not equals operator> } b FROM TN

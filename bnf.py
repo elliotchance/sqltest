@@ -96,9 +96,19 @@ def next_token(grammar, offset):
         while grammar[offset] == ' ':
             offset += 1
 
+        if grammar[offset] == ';':
+            return grammar[offset], offset + 1
+
         if grammar[offset] == '!':
             try:
                 new_offset = grammar.index('\n', offset) + 1
+            except ValueError:
+                new_offset = len(grammar)
+            return grammar[offset:new_offset], new_offset
+
+        if grammar[offset] == "'":
+            try:
+                new_offset = grammar.index("'", offset + 1) + 1
             except ValueError:
                 new_offset = len(grammar)
             return grammar[offset:new_offset], new_offset

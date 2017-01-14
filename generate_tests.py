@@ -64,6 +64,9 @@ def generate_tests(feature_file_path):
         if 'exclude' in test:
             exclude = test['exclude']
 
+        if isinstance(test['sql'], list):
+            test['sql'] = ';'.join(test['sql'])
+
         sqls = bnf.get_paths_for_rule(rules, test['sql'], override, exclude)
 
         for rule_number in xrange(0, len(sqls)):
@@ -72,10 +75,14 @@ def generate_tests(feature_file_path):
                 test_number, rule_number + 1
             )
 
+            split_sql = sqls[rule_number].replace('TN', test_id).split(' ; ')
+            if len(split_sql) == 1:
+                split_sql = split_sql[0]
+
             result_tests.append({
                 'id': test_id,
                 'feature': basename[:-4],
-                'sql': sqls[rule_number].replace('TN', test_id)
+                'sql': split_sql
             })
 
     with open(output_file(feature_file_path), "w") as f:
@@ -119,17 +126,22 @@ for feature_id in sorted(test_files):
 
     for test in tests:
         did_pass = True
+
+        if not isinstance(test['sql'], list):
+            test['sql'] = [ test['sql'] ]
+
         try:
-            c.execute(test['sql'])
+            for sql in test['sql']:
+                c.execute(sql)
         except sqlite3.OperationalError:
             did_pass = False
 
         if did_pass:
             test_files[feature_id]['pass'] += 1
-            print('  ✓ %s' % test['sql'])
+            print('  ✓ %s' % '\n    '.join(test['sql']))
         else:
             test_files[feature_id]['fail'] += 1
-            print('  ✗ %s' % test['sql'])
+            print('  ✗ %s' % '\n    '.join(test['sql']))
 
 #conn.commit()
 conn.close()
@@ -167,6 +179,20 @@ with open("templates/report.html", "r") as report_template:
         for feature_id in sorted(all_features[category]):
             f = all_features[category][feature_id]
 
+            if '-' not in feature_id and ('%s-01' % feature_id) in all_features[category]:
+                f['pass'] = 0
+                f['fail'] = 0
+
+                for fid in sorted(all_features[category]):
+                    if fid.startswith('%s-' % feature_id) and \
+                    'pass' in all_features[category][fid]:
+                        f['pass'] += all_features[category][fid]['pass']
+                        f['fail'] += all_features[category][fid]['fail']
+
+                if f['pass'] == 0 and f['fail'] == 0:
+                    del f['pass']
+                    del f['fail']
+
             percent = '&nbsp;'
             color = 'grey'
             if 'pass' in f:
@@ -178,8 +204,10 @@ with open("templates/report.html", "r") as report_template:
                 percent = '%01.0d%% (%d/%d)' % (pass_rate * 100, f['pass'],
                     int(f['pass']) + int(f['fail']))
                 color = get_html_color_for_pass_rate(pass_rate)
-                total_tests += f['pass'] + f['fail']
-                total_passed += f['pass']
+
+                if '-' not in feature_id:
+                    total_tests += f['pass'] + f['fail']
+                    total_passed += f['pass']
 
             feats[category].append({
                 'id': feature_id,
