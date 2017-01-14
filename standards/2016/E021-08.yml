@@ -1,0 +1,3 @@
+sql: SELECT <fold>
+override:
+  character value expression: "'foo'"

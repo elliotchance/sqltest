@@ -188,7 +188,7 @@
     [ { <comma> <C host identifier> [ <C initial value> ] }... ]
 
 <C numeric variable> ::=
-    { long long long short float double } <C host identifier> 
+    { long long | long | short | float | double } <C host identifier> 
     [ <C initial value> ] 
     [ { <comma> <C host identifier> [ <C initial value> ] }... ]
 
@@ -244,7 +244,7 @@
     [ USAGE [ IS ] ] SQL TYPE IS <array type> AS LOCATOR
 
 <COBOL character type> ::=
-    [ CHARACTER SET [ IS ] <character set specification> ] { PIC PICTURE } [ IS ] 
+    [ CHARACTER SET [ IS ] <character set specification> ] { PIC | PICTURE } [ IS ] 
     { X [ <left paren> <character length> <right paren> ] }...
 
 <COBOL derived type specification> ::=
@@ -264,13 +264,13 @@
     !! See the Syntax Rules.
 
 <COBOL integer type> ::=
-    { PIC PICTURE } [ IS ] S <COBOL nines> [ USAGE [ IS ] ] BINARY
+    { PIC | PICTURE } [ IS ] S <COBOL nines> [ USAGE [ IS ] ] BINARY
 
 <COBOL multiset locator variable> ::=
     [ USAGE [ IS ] ] SQL TYPE IS <multiset type> AS LOCATOR
 
 <COBOL national character type> ::=
-    { PIC PICTURE } [ IS ] 
+    { PIC | PICTURE } [ IS ] 
     { N [ <left paren> <character length> <right paren> ] }...
 
 <COBOL nines> ::=
@@ -281,7 +281,7 @@
   | V <COBOL nines>
 
 <COBOL numeric type> ::=
-    { PIC PICTURE } [ IS ] S <COBOL nines specification> [ USAGE [ IS ] ] DISPLAY 
+    { PIC | PICTURE } [ IS ] S <COBOL nines specification> [ USAGE [ IS ] ] DISPLAY 
     SIGN LEADING SEPARATE
 
 <COBOL type specification> ::=
@@ -772,19 +772,19 @@
     SQL TYPE IS <multiset type> AS LOCATOR
 
 <PL/I type fixed binary> ::=
-    { BIN BINARY } FIXED
-  | FIXED { BIN BINARY }
+    { BIN | BINARY } FIXED
+  | FIXED { BIN | BINARY }
 
 <PL/I type fixed decimal> ::=
-    { DEC DECIMAL } FIXED
-  | FIXED { DEC DECIMAL }
+    { DEC | DECIMAL } FIXED
+  | FIXED { DEC | DECIMAL }
 
 <PL/I type float binary> ::=
-    { BIN BINARY } FLOAT
-  | FLOAT { BIN BINARY }
+    { BIN | BINARY } FLOAT
+  | FLOAT { BIN | BINARY }
 
 <PL/I type specification> ::=
-    { CHAR CHARACTER } [ VARYING ] <left paren> <character length> <right paren> 
+    { CHAR | CHARACTER } [ VARYING ] <left paren> <character length> <right paren> 
     [ CHARACTER SET [ IS ] <character set specification> ]
   | <PL/I type fixed decimal> <left paren> <precision> [ <comma> <scale> ] 
     <right paren>
@@ -799,7 +799,7 @@
     SQL TYPE IS <path-resolved user-defined type name> AS <predefined type>
 
 <PL/I variable definition> ::=
-    { DCL DECLARE } <PL/I type specification> [ <character representation>... ] 
+    { DCL | DECLARE } <PL/I type specification> [ <character representation>... ] 
     <semicolon>
   | { <PL/I host identifier> <left paren> <PL/I host identifier> [ { <comma> <PL/I host identifier> }... ] <right paren> } 
     <PL/I type specification> [ <character representation>... ] <semicolon>
@@ -1417,7 +1417,7 @@
     <alter transform action> [ { <comma> <alter transform action> }... ]
 
 <alter transform statement> ::=
-    ALTER { TRANSFORM TRANSFORMS } FOR <schema-resolved user-defined type name> 
+    ALTER { TRANSFORM | TRANSFORMS } FOR <schema-resolved user-defined type name> 
     <alter group>...
 
 <alter type action> ::=
@@ -1750,7 +1750,7 @@
     CATALOG <value specification>
 
 <ceiling function> ::=
-    { CEIL CEILING } <left paren> <numeric value expression> <right paren>
+    { CEIL | CEILING } <left paren> <numeric value expression> <right paren>
 
 <char length expression> ::=
     { CHAR_LENGTH | CHARACTER_LENGTH } <left paren> <character value expression> 
@@ -2673,7 +2673,7 @@
     <drop behavior> <right paren>
 
 <drop transform statement> ::=
-    DROP { TRANSFORM TRANSFORMS } <transforms to be dropped> FOR 
+    DROP { TRANSFORM | TRANSFORMS } <transforms to be dropped> FOR 
     <schema-resolved user-defined type name> <drop behavior>
 
 <drop transliteration statement> ::=
@@ -2779,9 +2779,9 @@
 <embedded authorization clause> ::=
     SCHEMA <schema name>
   | AUTHORIZATION <embedded authorization identifier> 
-    [ FOR STATIC { ONLY AND DYNAMIC } ]
+    [ FOR STATIC { ONLY | AND DYNAMIC } ]
   | SCHEMA <schema name> AUTHORIZATION <embedded authorization identifier> 
-    [ FOR STATIC { ONLY AND DYNAMIC } ]
+    [ FOR STATIC { ONLY | AND DYNAMIC } ]
 
 <embedded authorization declaration> ::=
     DECLARE <embedded authorization clause>
@@ -2927,8 +2927,8 @@
     [ <sign> ] <numeric primary>
 
 <fetch first clause> ::=
-    FETCH { FIRST NEXT } [ <fetch first quantity> ] { ROW ROWS } 
-    { ONLY WITH TIES }
+    FETCH { FIRST | NEXT } [ <fetch first quantity> ] { ROW | ROWS } 
+    { ONLY | WITH TIES }
 
 <fetch first percentage> ::=
     <simple value specification> PERCENT
@@ -2945,7 +2945,7 @@
   | PRIOR
   | FIRST
   | LAST
-  | { ABSOLUTE RELATIVE } <simple value specification>
+  | { ABSOLUTE | RELATIVE } <simple value specification>
 
 <fetch statement> ::=
     FETCH [ [ <fetch orientation> ] FROM ] <cursor name> INTO <fetch target list>
@@ -2985,7 +2985,7 @@
     FLOOR <left paren> <numeric value expression> <right paren>
 
 <fold> ::=
-    { UPPER LOWER } <left paren> <character value expression> <right paren>
+    { UPPER | LOWER } <left paren> <character value expression> <right paren>
 
 <free locator statement> ::=
     FREE LOCATOR <locator reference> [ { <comma> <locator reference> }... ]
@@ -3115,7 +3115,7 @@
   | LOCAL
 
 <go to> ::=
-    { GOTO GO TO } <goto target>
+    { GOTO | GO TO } <goto target>
 
 <goto target> ::=
     <host label identifier>
@@ -3298,7 +3298,7 @@
   | RESTART IDENTITY
 
 <identity column specification> ::=
-    GENERATED { ALWAYS BY DEFAULT } AS IDENTITY 
+    GENERATED { ALWAYS | BY DEFAULT } AS IDENTITY 
     [ <left paren> <common sequence generator options> <right paren> ]
 
 <identity option> ::=
@@ -3518,7 +3518,7 @@
     [ <null treatment> ]
 
 <left brace> ::=
-    {  }
+    {
 
 <left brace minus> ::=
     {-
@@ -3772,9 +3772,9 @@
 <module authorization clause> ::=
     SCHEMA <schema name>
   | AUTHORIZATION <module authorization identifier> 
-    [ FOR STATIC { ONLY AND DYNAMIC } ]
+    [ FOR STATIC { ONLY | AND DYNAMIC } ]
   | SCHEMA <schema name> AUTHORIZATION <module authorization identifier> 
-    [ FOR STATIC { ONLY AND DYNAMIC } ]
+    [ FOR STATIC { ONLY | AND DYNAMIC } ]
 
 <module authorization identifier> ::=
     <authorization identifier>
@@ -5447,7 +5447,7 @@
     <value expression>
 
 <result offset clause> ::=
-    OFFSET <offset row count> { ROW ROWS }
+    OFFSET <offset row count> { ROW | ROWS }
 
 <result option> ::=
     FINAL
@@ -6070,7 +6070,7 @@
     SET CONNECTION <connection object>
 
 <set constraints mode statement> ::=
-    SET CONSTRAINTS <constraint name list> { DEFERRED IMMEDIATE }
+    SET CONSTRAINTS <constraint name list> { DEFERRED | IMMEDIATE }
 
 <set descriptor information> ::=
     <set header information> [ { <comma> <set header information> }... ]
@@ -6094,7 +6094,7 @@
     <header item name> <equals operator> <simple value specification 1>
 
 <set identity column generation clause> ::=
-    SET GENERATED { ALWAYS BY DEFAULT }
+    SET GENERATED { ALWAYS | BY DEFAULT }
 
 <set item information> ::=
     <descriptor item name> <equals operator> <simple value specification 2>
@@ -6712,7 +6712,7 @@
     <schema qualified name>
 
 <transform definition> ::=
-    CREATE { TRANSFORM TRANSFORMS } FOR <schema-resolved user-defined type name> 
+    CREATE { TRANSFORM | TRANSFORMS } FOR <schema-resolved user-defined type name> 
     <transform group>...
 
 <transform element> ::=
@@ -6798,7 +6798,7 @@
   | BEGIN ATOMIC { <SQL procedure statement> <semicolon> }... END
 
 <triggered action> ::=
-    [ FOR EACH { ROW STATEMENT } ] [ <triggered when clause> ] 
+    [ FOR EACH { ROW | STATEMENT } ] [ <triggered when clause> ] 
     <triggered SQL statement>
 
 <triggered when clause> ::=
