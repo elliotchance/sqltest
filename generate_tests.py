@@ -123,7 +123,7 @@ for feature_id in sorted(test_files):
     test_files[feature_id]['pass'] = 0
     test_files[feature_id]['fail'] = 0
 
-    print('\n%s: %s tests' % (feature_id, len(tests)))
+    print('%s: %s tests' % (feature_id, len(tests)))
 
     for test in tests:
         did_pass = True
@@ -131,18 +131,20 @@ for feature_id in sorted(test_files):
         if not isinstance(test['sql'], list):
             test['sql'] = [ test['sql'] ]
 
+        error = None
         try:
             for sql in test['sql']:
                 c.execute(sql)
-        except sqlite3.OperationalError:
+        except sqlite3.OperationalError as e:
+            error = e
             did_pass = False
 
         if did_pass:
             test_files[feature_id]['pass'] += 1
-            print('  ✓ %s' % '\n    '.join(test['sql']))
+            print('  ✓ %s\n' % '\n    '.join(test['sql']))
         else:
             test_files[feature_id]['fail'] += 1
-            print('  ✗ %s' % '\n    '.join(test['sql']))
+            print('  ✗ %s\n    ERROR: %s\n' % ('\n    '.join(test['sql']), error))
 
 #conn.commit()
 conn.close()
