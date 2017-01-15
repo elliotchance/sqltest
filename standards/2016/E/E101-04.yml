@@ -1,0 +1,4 @@
+sql:
+  - CREATE TABLE TN ( A INT, B INT )
+  - INSERT INTO TN VALUES ( 1, 2 )
+  - DELETE FROM TN [ WHERE A = 1 ]

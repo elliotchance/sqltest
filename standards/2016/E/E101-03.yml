@@ -1,0 +1,4 @@
+sql:
+  - CREATE TABLE TN ( A INT, B INT )
+  - INSERT INTO TN VALUES ( 1, 2 )
+  - UPDATE TN SET A = 3, B = 4 [ WHERE A = 1 ]
