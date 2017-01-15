@@ -1,0 +1,3 @@
+sql:
+  - CREATE TABLE TN ( A INT, B INT )
+  - SELECT [ ALL | DISTINCT ] A FROM TN [ WHERE A = 1 ] GROUP BY B
