@@ -1,0 +1,9 @@
+sql:
+  - CREATE TABLE TN1 ( A INT <default clause> )
+override:
+  literal: 123
+  datetime value function: CURRENT_DATE
+  implicitly typed value specification: NULL
+---
+sql:
+  - CREATE TABLE TN1 ( A INT DEFAULT { CURRENT_TIME | LOCALTIME | CURRENT_TIMESTAMP | LOCALTIMESTAMP } )

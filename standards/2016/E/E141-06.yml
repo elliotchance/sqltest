@@ -1,0 +1,9 @@
+sql:
+  - CREATE TABLE TN1 ( A INT [ <constraint name definition> ] CHECK ( A = 1 ) )
+override:
+  constraint name: CONSTRAINT1
+---
+sql:
+  - CREATE TABLE TN1 ( A INT, [ <constraint name definition> ] CHECK ( A = 1 ) )
+override:
+  constraint name: CONSTRAINT1

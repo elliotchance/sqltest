@@ -1,0 +1,11 @@
+sql:
+  - CREATE TABLE TN1 ( A INT NOT NULL, B INT NOT NULL, UNIQUE ( A, B ) )
+  - CREATE TABLE TN2 ( C INT NOT NULL, D INT NOT NULL, [ <constraint name definition> ] FOREIGN KEY ( C, D ) REFERENCES TN1 ( B, A ) [ ON UPDATE NO ACTION ] [ ON DELETE NO ACTION ] )
+override:
+  constraint name: CONSTRAINT1
+---
+sql:
+  - CREATE TABLE TN1 ( A INT NOT NULL, B INT NOT NULL, UNIQUE ( A, B ) )
+  - CREATE TABLE TN2 ( C INT NOT NULL, D INT NOT NULL, [ <constraint name definition> ] FOREIGN KEY ( C, D ) REFERENCES TN1 ( B, A ) ON DELETE NO ACTION ON UPDATE NO ACTION )
+override:
+  constraint name: CONSTRAINT1

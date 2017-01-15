@@ -1,0 +1,23 @@
+sql:
+  - CREATE TABLE TN ( A INT, B INT, [ <constraint name definition> ] <unique specification> <left paren> { A | A , B } <right paren> )
+override:
+  unique specification: UNIQUE
+  constraint name: CONSTRAINT1
+---
+sql:
+  - CREATE TABLE TN ( A INT [ <constraint name definition> ] <unique specification> )
+override:
+  unique specification: UNIQUE
+  constraint name: CONSTRAINT1
+---
+sql:
+  - CREATE TABLE TN ( A INT, B INT, [ <constraint name definition> ] <unique specification> <left paren> { A | A , B } <right paren> )
+override:
+  unique specification: PRIMARY KEY
+  constraint name: CONSTRAINT1
+---
+sql:
+  - CREATE TABLE TN ( A INT [ <constraint name definition> ] <unique specification> )
+override:
+  unique specification: PRIMARY KEY
+  constraint name: CONSTRAINT1
