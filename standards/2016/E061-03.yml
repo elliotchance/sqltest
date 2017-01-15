@@ -1,0 +1,7 @@
+sql:
+  - CREATE TABLE TN ( A INT )
+  - SELECT A FROM TN WHERE A <in predicate part 2>
+override:
+  row value predicand: 1
+  table subquery: '( 1 )'
+  in value list: '1, 2'

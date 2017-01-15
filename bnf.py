@@ -176,11 +176,6 @@ class ASTTokens(list):
                         did_modify = True
                         break
                     elif isinstance(choice[choice_idx][token_idx], ASTRule):
-                        # if len(stack) > 25:
-                        #     raise RecursiveException('\n  ' + '\n  '.join(stack))
-                            # raise RecursiveException(choice[choice_idx][token_idx])
-                        stack.append(choice[choice_idx][token_idx].name)
-
                         sub_paths = choice[choice_idx][token_idx].resolve(rules, overrides, exclude, stack)
 
                         for sub_path in sub_paths:
