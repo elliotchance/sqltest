@@ -79,6 +79,7 @@ def generate_tests(feature_file_path):
             sqls[rule_number] = sqls[rule_number].replace('TN', test_id)
             sqls[rule_number] = sqls[rule_number].replace('ROLL1', 'roll_%s' % test_id)
             sqls[rule_number] = sqls[rule_number].replace('CURSOR1', 'cur_%s' % test_id)
+            sqls[rule_number] = sqls[rule_number].replace('CONSTRAINT1', 'c_%s' % test_id)
 
             split_sql = sqls[rule_number].split(' ; ')
             if len(split_sql) == 1:

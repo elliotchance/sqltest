@@ -1,0 +1,4 @@
+sql:
+  - CREATE TABLE TN ( A INT [ <constraint name definition> ] NOT NULL )
+override:
+  constraint name: CONSTRAINT1
