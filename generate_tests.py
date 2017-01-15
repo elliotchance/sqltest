@@ -114,7 +114,7 @@ for feature_file_path in feature_file_paths:
 
 # Prepare the database
 conn = sqlite3.connect(':memory:')
-c = conn.cursor()
+conn.isolation_level = None
 
 # Run the tests
 for feature_id in sorted(test_files):
@@ -135,6 +135,7 @@ for feature_id in sorted(test_files):
 
         error = None
         try:
+            c = conn.cursor()
             for sql in test['sql']:
                 c.execute(sql)
         except sqlite3.OperationalError as e:

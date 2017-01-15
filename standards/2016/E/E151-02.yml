@@ -1,0 +1,3 @@
+sql:
+  - START TRANSACTION
+  - ROLLBACK [ WORK ]
