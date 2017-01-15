@@ -1,0 +1,5 @@
+sql:
+  - CREATE TABLE TN ( A INT )
+  - SELECT A FROM TN WHERE A <between predicate part 2>
+override:
+  row value predicand: 1
