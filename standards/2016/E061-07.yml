@@ -1,0 +1,5 @@
+sql:
+  - CREATE TABLE TN ( A INT )
+  - SELECT A FROM TN WHERE A <quantified comparison predicate part 2>
+override:
+  table subquery: ( SELECT A FROM TN )
