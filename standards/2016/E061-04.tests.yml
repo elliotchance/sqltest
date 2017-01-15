@@ -1,0 +1,11 @@
+feature: E061-04
+id: e061_04_01_01
+sql:
+- CREATE TABLE e061_04_01_01 ( A INT )
+- SELECT A FROM e061_04_01_01 WHERE A LIKE 'foo'
+---
+feature: E061-04
+id: e061_04_01_02
+sql:
+- CREATE TABLE e061_04_01_02 ( A INT )
+- SELECT A FROM e061_04_01_02 WHERE A NOT LIKE 'foo'

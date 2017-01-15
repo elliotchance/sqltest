@@ -224,4 +224,8 @@ with open("templates/report.html", "r") as report_template:
             })
 
     with open("report.html", "w") as report_file:
-        report_file.write(t.render(features=feats, int=int, len=len, total_tests=total_tests, total_passed=total_passed))
+        db = {
+            'name': 'SQLite3',
+            'version': sqlite3.sqlite_version,
+        }
+        report_file.write(t.render(db=db, features=feats, int=int, len=len, total_tests=total_tests, total_passed=total_passed))
