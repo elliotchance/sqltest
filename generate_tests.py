@@ -141,10 +141,10 @@ for feature_id in sorted(test_files):
 
         if did_pass:
             test_files[feature_id]['pass'] += 1
-            print('  ✓ %s\n' % '\n    '.join(test['sql']))
+            print('\33[32m  ✓ %s\33[0m\n' % '\n    '.join(test['sql']))
         else:
             test_files[feature_id]['fail'] += 1
-            print('  ✗ %s\n    ERROR: %s\n' % ('\n    '.join(test['sql']), error))
+            print('\33[31m  ✗ %s\n    ERROR: %s\33[0m\n' % ('\n    '.join(test['sql']), error))
 
 #conn.commit()
 conn.close()
