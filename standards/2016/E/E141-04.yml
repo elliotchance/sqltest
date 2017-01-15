@@ -1,0 +1,35 @@
+sql:
+  - CREATE TABLE TN1 ( A INT NOT NULL )
+  - CREATE TABLE TN2 ( B INT NOT NULL [ <constraint name definition> ] REFERENCES TN1 ( A ) [ ON UPDATE NO ACTION ] [ ON DELETE NO ACTION ] )
+override:
+  constraint name: CONSTRAINT1
+---
+sql:
+  - CREATE TABLE TN1 ( A INT NOT NULL )
+  - CREATE TABLE TN2 ( B INT NOT NULL [ <constraint name definition> ] REFERENCES TN1 ( A ) ON DELETE NO ACTION ON UPDATE NO ACTION )
+override:
+  constraint name: CONSTRAINT1
+---
+sql:
+  - CREATE TABLE TN1 ( A INT NOT NULL )
+  - CREATE TABLE TN2 ( B INT NOT NULL, [ <constraint name definition> ] FOREIGN KEY ( B ) REFERENCES TN1 ( A ) [ ON UPDATE NO ACTION ] [ ON DELETE NO ACTION ] )
+override:
+  constraint name: CONSTRAINT1
+---
+sql:
+  - CREATE TABLE TN1 ( A INT NOT NULL )
+  - CREATE TABLE TN2 ( B INT NOT NULL, [ <constraint name definition> ] FOREIGN KEY ( B ) REFERENCES TN1 ( A ) ON DELETE NO ACTION ON UPDATE NO ACTION )
+override:
+  constraint name: CONSTRAINT1
+---
+sql:
+  - CREATE TABLE TN1 ( A INT NOT NULL, B INT NOT NULL )
+  - CREATE TABLE TN2 ( C INT NOT NULL, D INT NOT NULL, [ <constraint name definition> ] FOREIGN KEY ( C, D ) REFERENCES TN1 ( A, B ) [ ON UPDATE NO ACTION ] [ ON DELETE NO ACTION ] )
+override:
+  constraint name: CONSTRAINT1
+---
+sql:
+  - CREATE TABLE TN1 ( A INT NOT NULL, B INT NOT NULL )
+  - CREATE TABLE TN2 ( C INT NOT NULL, D INT NOT NULL, [ <constraint name definition> ] FOREIGN KEY ( C, D ) REFERENCES TN1 ( A, B ) ON DELETE NO ACTION ON UPDATE NO ACTION )
+override:
+  constraint name: CONSTRAINT1
