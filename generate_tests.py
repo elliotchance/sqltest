@@ -11,6 +11,10 @@ import cgi
 from jinja2 import Template
 import pprint
 
+def load_db_config(name, version):
+    features_file = open("dbs/%s/%s.yml" % (name, version), "r")
+    return yaml.load(features_file)
+
 def get_all_features(standard):
     features_file = open("standards/%s/features.yml" % standard, "r")
     all_features = yaml.load(features_file)
@@ -45,7 +49,7 @@ def get_rules(standard):
     raw_rules = bnf.parse_bnf_file('standards/%s/bnf.txt' % standard)
     return bnf.analyze_rules(raw_rules)
 
-def generate_tests(feature_file_path):
+def generate_tests(feature_file_path, db_config):
     feature_file = open(feature_file_path, "r")
     tests = yaml.load_all(feature_file)
     basename = os.path.basename(feature_file_path)
@@ -94,6 +98,7 @@ def generate_tests(feature_file_path):
     with open(output_file(feature_file_path), "w") as f:
         f.write(yaml.dump_all(result_tests, default_flow_style=False))
 
+db_config = load_db_config('SQLite3', '3.16')
 standard = '2016'
 rules = get_rules(standard)
 feature_file_paths = all_features_with_tests(standard)
@@ -110,11 +115,7 @@ for feature_file_path in feature_file_paths:
     #    continue
 
     print("Generating tests for %s" % feature_id)
-    generate_tests(feature_file_path)
-
-# Prepare the database
-conn = sqlite3.connect(':memory:')
-conn.isolation_level = None
+    generate_tests(feature_file_path, db_config)
 
 # Run the tests
 for feature_id in sorted(test_files):
@@ -135,9 +136,19 @@ for feature_id in sorted(test_files):
 
         error = None
         try:
+            conn = sqlite3.connect(':memory:')
+            conn.isolation_level = None
+
             c = conn.cursor()
             for sql in test['sql']:
+                # Fix keywords
+                for keyword in db_config['keywords']:
+                    sql = sql.replace(keyword, db_config['keywords'][keyword])
+
                 c.execute(sql)
+
+            # conn.commit()
+            conn.close()
         except sqlite3.OperationalError as e:
             error = e
             did_pass = False
@@ -148,9 +159,6 @@ for feature_id in sorted(test_files):
         else:
             test_files[feature_id]['fail'] += 1
             print('\33[31m  ✗ %s\n    ERROR: %s\33[0m\n' % ('\n    '.join(test['sql']), error))
-
-#conn.commit()
-conn.close()
 
 # Merge the rules with the original features
 all_features = get_all_features(standard)
