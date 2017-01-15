@@ -1,0 +1,7 @@
+sql:
+  - CREATE TABLE TN ( A INT )
+  - <declare cursor>
+override:
+  query expression: SELECT A FROM TN
+  column name list: A
+  cursor name: MYCURSOR
