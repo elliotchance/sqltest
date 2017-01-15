@@ -1,0 +1,3 @@
+sql:
+  - CREATE TABLE TN ( A INT, B INT )
+  - SELECT [ ALL | DISTINCT ] [ MYTEMP <period> ] <asterisk> [ AS ( C , D ) ] FROM TN AS MYTEMP
