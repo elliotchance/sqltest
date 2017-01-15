@@ -1,0 +1,8 @@
+sql:
+  - CREATE TABLE TN1 ( A INT )
+  - CREATE TABLE TN2 ( A INT )
+  - DECLARE CURSOR CURSOR1 FOR SELECT A FROM TN1
+  - OPEN CURSOR1
+  - FETCH [ [ <fetch orientation> ] FROM ] CURSOR1 INTO TN2
+override:
+  simple value specification: 2

@@ -6923,7 +6923,7 @@
   | <general value specification>
 
 <updatability clause> ::=
-    FOR { READ ONLY UPDATE [ OF <column name list> ] }
+    FOR { READ ONLY | UPDATE [ OF <column name list> ] }
 
 <update rule> ::=
     ON UPDATE <referential action>

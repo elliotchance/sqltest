@@ -1,0 +1,3 @@
+sql:
+  - CREATE TABLE TN1 ( A INT )
+  - DECLARE CURSOR CURSOR1 <cursor holdability> FOR SELECT A FROM TN

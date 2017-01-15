@@ -5,3 +5,4 @@ override:
   query expression: SELECT A FROM TN
   column name list: A
   cursor name: MYCURSOR
+  cursor properties:

@@ -78,6 +78,8 @@ def generate_tests(feature_file_path):
 
             sqls[rule_number] = sqls[rule_number].replace('TN', test_id)
             sqls[rule_number] = sqls[rule_number].replace('ROLL1', 'roll_%s' % test_id)
+            sqls[rule_number] = sqls[rule_number].replace('CURSOR1', 'cur_%s' % test_id)
+
             split_sql = sqls[rule_number].split(' ; ')
             if len(split_sql) == 1:
                 split_sql = split_sql[0]
@@ -103,17 +105,14 @@ for feature_file_path in feature_file_paths:
         'path': generated_file_path
     }
 
-    #if os.path.isfile(generated_file_path):
+    # if os.path.isfile(generated_file_path):
     #    continue
 
     print("Generating tests for %s" % feature_id)
     generate_tests(feature_file_path)
 
 # Prepare the database
-db_file = 'test.db'
-if os.path.isfile(db_file):
-    os.remove(db_file)
-conn = sqlite3.connect(db_file)
+conn = sqlite3.connect(':memory:')
 c = conn.cursor()
 
 # Run the tests
