@@ -1,0 +1,19 @@
+sql:
+  - CREATE TABLE TN ( A FLOAT )
+  - SELECT AVG ( ALL A ) FROM TN
+---
+sql:
+  - CREATE TABLE TN ( A FLOAT )
+  - SELECT COUNT ( ALL A ) FROM TN
+---
+sql:
+  - CREATE TABLE TN ( A FLOAT )
+  - SELECT MAX ( ALL A ) FROM TN
+---
+sql:
+  - CREATE TABLE TN ( A FLOAT )
+  - SELECT MIN ( ALL A ) FROM TN
+---
+sql:
+  - CREATE TABLE TN ( A FLOAT )
+  - SELECT SUM ( ALL A ) FROM TN

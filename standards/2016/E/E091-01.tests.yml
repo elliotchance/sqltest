@@ -1,0 +1,5 @@
+feature: E091-01
+id: e091_01_01_01
+sql:
+- CREATE TABLE e091_01_01_01 ( A FLOAT )
+- SELECT AVG ( A ) FROM e091_01_01_01

@@ -1,0 +1,5 @@
+feature: E091-03
+id: e091_03_01_01
+sql:
+- CREATE TABLE e091_03_01_01 ( A FLOAT )
+- SELECT MAX ( A ) FROM e091_03_01_01
