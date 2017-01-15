@@ -462,7 +462,8 @@ def analyze_rules(rules):
         'vertical bar': '|',
         'less than operator': '<',
         'less than or equals operator': '<=',
-        'not equals operator': '<>'
+        'not equals operator': '<>',
+        'simple comment introducer': '--'
     }
 
     try:
