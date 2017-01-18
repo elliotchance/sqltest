@@ -1,4 +1,4 @@
-sql: CREATE TABLE TN ( a <exact numeric type> )
+sql: CREATE TABLE TN ( A <exact numeric type> )
 override:
   precision: 6
   scale: 3

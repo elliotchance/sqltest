@@ -1,4 +1,4 @@
-sql: CREATE TABLE TN ( a <approximate numeric type> )
+sql: CREATE TABLE TN ( A <approximate numeric type> )
 override:
   precision: 2
 ---
