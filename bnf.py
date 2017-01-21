@@ -625,8 +625,8 @@ if __name__ == '__main__':
 
     parser.add_argument('--paths', type=str, nargs='+',
         help='Output all possible paths from one or more BNF syntaxes.')
-    parser.add_argument('--override', type=str, nargs='*', action='append',
-        help='Override rules when resolving paths.')
+    parser.add_argument('--override', '-o', type=str, nargs='*',
+        action='append', help='Override rules when resolving paths.')
     parser.add_argument('--exclude', type=str,
         help="""Exclude paths that contain one of the keywords. Separate
         multiple keywords with a comma.""")

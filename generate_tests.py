@@ -34,7 +34,7 @@ def output_file(feature_file_path):
     return feature_file_path[:-4] + ".tests.yml"
 
 def all_features_with_tests(standard):
-    all_files = glob.glob("standards/%s/E/*.yml" % standard)
+    all_files = glob.glob("standards/%s/F/*.yml" % standard)
     feature_files = []
     for feature_file_path in sorted(all_files):
         basename = os.path.basename(feature_file_path)
@@ -80,10 +80,11 @@ def generate_tests(feature_file_path, db_config):
                 test_number, rule_number + 1
             )
 
-            sqls[rule_number] = sqls[rule_number].replace('TN', test_id)
-            sqls[rule_number] = sqls[rule_number].replace('ROLL1', 'roll_%s' % test_id)
-            sqls[rule_number] = sqls[rule_number].replace('CURSOR1', 'cur_%s' % test_id)
-            sqls[rule_number] = sqls[rule_number].replace('CONSTRAINT1', 'c_%s' % test_id)
+            sqls[rule_number] = sqls[rule_number].replace('TN', 'TABLE_%s' % test_id.upper())
+            sqls[rule_number] = sqls[rule_number].replace('ROLL1', 'ROLL_%s' % test_id.upper())
+            sqls[rule_number] = sqls[rule_number].replace('CURSOR1', 'CUR_%s' % test_id.upper())
+            sqls[rule_number] = sqls[rule_number].replace('CONSTRAINT1', 'CONST_%s' % test_id.upper())
+            sqls[rule_number] = sqls[rule_number].replace('VIEW1', 'VIEW_%s' % test_id.upper())
 
             split_sql = sqls[rule_number].split(' ; ')
             if len(split_sql) == 1:
