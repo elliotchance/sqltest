@@ -63,6 +63,8 @@ def generate_tests(feature_file_path, db_config):
         if 'override' in test:
             override = test['override']
         for name in override:
+            if override[name] is None:
+                override[name] = ''
             override[name] = bnf.ASTKeyword(str(override[name]))
 
         exclude = []

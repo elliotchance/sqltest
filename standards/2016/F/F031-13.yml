@@ -1,0 +1,6 @@
+sql:
+  - CREATE TABLE TN ( A INTEGER )
+  - <drop table statement>
+override:
+  table name: TN
+  drop behavior:

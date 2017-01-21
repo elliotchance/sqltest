@@ -1,0 +1,6 @@
+sql:
+  - CREATE TABLE TN ( A INTEGER )
+  - ALTER TABLE <table name> <add column definition>
+override:
+  table name: TN
+  column definition: B INT
