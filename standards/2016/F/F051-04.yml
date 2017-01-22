@@ -1,0 +1,11 @@
+sql: SELECT <date literal> <comp op> <date literal>
+override:
+  date string: "'2016-03-26'"
+---
+sql: SELECT <time literal> <comp op> <time literal>
+override:
+  time string: "'01:02:03'"
+---
+sql: SELECT <timestamp literal> <comp op> <timestamp literal>
+override:
+  timestamp string: "'2016-03-26 01:02:03'"

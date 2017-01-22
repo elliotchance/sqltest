@@ -1,0 +1,3 @@
+sql: SELECT <current time value function>
+override:
+  time precision: 0

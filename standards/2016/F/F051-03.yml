@@ -1,0 +1,5 @@
+sql: CREATE TABLE TN1 ( A TIMESTAMP )
+---
+sql: SELECT <timestamp literal>
+override:
+  timestamp string: "'2016-03-26 01:02:03'"

@@ -1,0 +1,5 @@
+sql: CREATE TABLE TN1 ( A TIME )
+---
+sql: SELECT <time literal>
+override:
+  time string: "'01:02:03'"
