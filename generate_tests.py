@@ -34,7 +34,7 @@ def output_file(feature_file_path):
     return feature_file_path[:-4] + ".tests.yml"
 
 def all_features_with_tests(standard):
-    all_files = glob.glob("standards/%s/F/*.yml" % standard)
+    all_files = glob.glob("standards/%s/[EF]/*.yml" % standard)
     feature_files = []
     for feature_file_path in sorted(all_files):
         basename = os.path.basename(feature_file_path)

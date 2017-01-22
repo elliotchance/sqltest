@@ -1,0 +1,13 @@
+sql:
+  - CREATE TABLE TN1 ( A INTEGER )
+  - CREATE TABLE TN2 ( A INTEGER )
+  - CREATE TABLE TN3 ( A INTEGER )
+  - SELECT TN1.A FROM <table reference 1>
+      LEFT JOIN <table reference 2> ON <join specification 1>
+      LEFT JOIN <table reference 3> ON <join specification 2>
+override:
+  table reference 1: TN1
+  table reference 2: TN2
+  table reference 3: TN3
+  join specification 1: TN1.A = TN2.A
+  join specification 2: TN2.A = TN3.A
