@@ -1,0 +1,5 @@
+sql: SELECT <simple case>
+override:
+  result expression: 1
+  when operand: 2
+  row value predicand: 0
