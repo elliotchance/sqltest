@@ -1,0 +1,4 @@
+sql:
+  - CREATE TABLE TN ( A INTEGER )
+  - INSERT INTO TN ( A ) VALUES ( 1 )
+  - SELECT A FROM TN WHERE A IN ( 1 )

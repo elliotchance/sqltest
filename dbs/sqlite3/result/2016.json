@@ -818,8 +818,8 @@ loadResults({
       },
       "T631": {
         "description": "IN predicate with one list element",
-        "pass": 0,
-        "total": 0
+        "pass": 1,
+        "total": 1
       }
     },
     "optional": {
