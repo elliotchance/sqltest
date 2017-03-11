@@ -784,7 +784,7 @@ loadResults({
       "S011": {
         "description": "Distinct data types",
         "pass": 0,
-        "total": 0
+        "total": 3
       },
       "T321": {
         "description": "Basic SQL-invoked routines",

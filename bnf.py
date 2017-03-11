@@ -576,7 +576,8 @@ def unpack_overrides(overrides):
         parts = override[0].split(';')
         for part in parts:
             key, value = part.split('=')
-            o[key.replace('-', ' ')] = ASTKeyword(value)
+            o[key] = ASTKeyword(value)
+            #o[key.replace('-', ' ')] = ASTKeyword(value)
 
     return o
 
