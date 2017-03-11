@@ -2,4 +2,4 @@ sql: <schema definition>
 override:
   schema name clause: TN
   schema character set or path:
-  schema element:
+  schema element: CREATE TABLE TN_2 ( A INT )

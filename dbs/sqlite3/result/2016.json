@@ -739,7 +739,7 @@ loadResults({
       "F311": {
         "description": "Schema definition statement",
         "pass": 0,
-        "total": 4
+        "total": 14
       },
       "F311-01": {
         "description": "CREATE SCHEMA",
@@ -749,27 +749,27 @@ loadResults({
       "F311-02": {
         "description": "CREATE TABLE for persistent base tables",
         "pass": 0,
-        "total": 0
+        "total": 4
       },
       "F311-03": {
         "description": "CREATE VIEW",
         "pass": 0,
-        "total": 0
+        "total": 1
       },
       "F311-04": {
         "description": "CREATE VIEW: WITH CHECK OPTION",
         "pass": 0,
-        "total": 0
+        "total": 3
       },
       "F311-05": {
         "description": "GRANT statement",
         "pass": 0,
-        "total": 0
+        "total": 2
       },
       "F471": {
         "description": "Scalar subquery values",
-        "pass": 0,
-        "total": 0
+        "pass": 1,
+        "total": 1
       },
       "F481": {
         "description": "Expanded NULL predicate",

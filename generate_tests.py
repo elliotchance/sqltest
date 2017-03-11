@@ -115,8 +115,8 @@ for feature_file_path in feature_file_paths:
         'path': generated_file_path
     }
 
-    # if os.path.isfile(generated_file_path):
-    #    continue
+    if os.path.isfile(generated_file_path):
+       continue
 
     print("Generating tests for %s" % feature_id)
     generate_tests(feature_file_path, db_config)
