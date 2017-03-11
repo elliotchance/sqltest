@@ -576,7 +576,8 @@ def unpack_overrides(overrides):
         parts = override[0].split(';')
         for part in parts:
             key, value = part.split('=')
-            o[key.replace('-', ' ')] = ASTKeyword(value)
+            o[key] = ASTKeyword(value)
+            #o[key.replace('-', ' ')] = ASTKeyword(value)
 
     return o
 
@@ -625,8 +626,8 @@ if __name__ == '__main__':
 
     parser.add_argument('--paths', type=str, nargs='+',
         help='Output all possible paths from one or more BNF syntaxes.')
-    parser.add_argument('--override', type=str, nargs='*', action='append',
-        help='Override rules when resolving paths.')
+    parser.add_argument('--override', '-o', type=str, nargs='*',
+        action='append', help='Override rules when resolving paths.')
     parser.add_argument('--exclude', type=str,
         help="""Exclude paths that contain one of the keywords. Separate
         multiple keywords with a comma.""")
@@ -662,6 +663,12 @@ if __name__ == '__main__':
         if args.visualize[0] == '<':
             args.visualize = args.visualize[1:-1]
         visualize(rules, args.visualize, 0, args.max_depth, overrides)
+
+        print('\n\nsql: <%s>' % args.visualize)
+        print('override:')
+        for override in overrides:
+            print('  %s: %s' % (override, overrides[override]))
+
         sys.exit(0)
 
     # When no rules are provided we print out all of them

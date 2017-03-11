@@ -1,0 +1,11 @@
+sql:
+  - CREATE TABLE TN1 ( A INTEGER )
+  - SELECT TN1.A FROM <table reference 1> [ INNER ] JOIN <table reference 2> <join specification>
+override:
+  partitioned join table:
+  table reference 1: TN1
+  table reference 2: TN1 AS TN2
+  search condition: TN1.A = TN2.A
+  join columns list: A
+  join correlation name: FOO
+  join column list: A

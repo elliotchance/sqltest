@@ -1,0 +1,15 @@
+feature: F311-01
+id: f311_01_01_01
+sql: CREATE SCHEMA TABLE_F311_01_01_01
+---
+feature: F311-01
+id: f311_01_01_02
+sql: 'CREATE SCHEMA TABLE_F311_01_01_02 '
+---
+feature: F311-01
+id: f311_01_01_03
+sql: 'CREATE SCHEMA TABLE_F311_01_01_03 '
+---
+feature: F311-01
+id: f311_01_01_04
+sql: CREATE SCHEMA TABLE_F311_01_01_04  <schema element>

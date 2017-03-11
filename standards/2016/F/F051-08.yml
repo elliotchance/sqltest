@@ -1,0 +1,3 @@
+sql: SELECT <current timestamp value function>
+override:
+  timestamp precision: 0

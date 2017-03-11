@@ -1,4 +1,4 @@
 sql:
-  - CREATE TABLE TN ( a CHARACTER (10), b CHARACTER VARYING (15) )
-  - INSERT INTO TN (a, b) VALUES ('foo', 'bar')
-  - SELECT a <equals operator> b FROM TN
+  - CREATE TABLE TN ( A CHARACTER (10), B CHARACTER VARYING (15) )
+  - INSERT INTO TN ( A, B ) VALUES ('foo', 'bar')
+  - SELECT A <equals operator> B FROM TN

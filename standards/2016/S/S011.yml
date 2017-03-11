@@ -1,0 +1,15 @@
+# These are missing:
+#
+# <subtype clause>
+# <user-defined type option list>
+# <method specification list>
+
+sql:
+  - CREATE TYPE TN [ AS <representation> ]
+override:
+  supertype name: TN2
+  representation: INT
+---
+sql:
+  - CREATE TYPE TN AS INT
+  - DROP TYPE TN

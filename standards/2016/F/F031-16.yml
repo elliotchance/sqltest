@@ -1,0 +1,7 @@
+sql:
+  - CREATE TABLE TN ( A INTEGER )
+  - CREATE VIEW VIEW1 AS SELECT A FROM TN
+  - <drop view statement>
+override:
+  table name: VIEW1
+  drop behavior:

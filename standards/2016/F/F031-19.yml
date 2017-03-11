@@ -1,0 +1,86 @@
+sql: REVOKE <privileges> FROM <grantee 1> [ <comma> <grantee 2> ] [ GRANTED BY <grantor> ] <drop behavior>
+override:
+  drop behavior:
+  grantor: ROLE1
+  grantee 1: ROLE1
+  grantee 2: ROLE1
+  privileges: SELECT ON TN
+---
+sql:
+  - CREATE TABLE TN ( A INTEGER )
+  - REVOKE { SELECT | SELECT <left paren> <privilege column list> <right paren> |
+      SELECT <left paren> <privilege method list> <right paren> | DELETE |
+      INSERT [ <left paren> <privilege column list> <right paren> ] |
+      UPDATE [ <left paren> <privilege column list> <right paren> ] |
+      REFERENCES [ <left paren> <privilege column list> <right paren> ] |
+      USAGE | TRIGGER | UNDER | EXECUTE } ON <object name> TO <grantee>
+override:
+  object name: TN
+  privilege column list: A
+  privilege method list: A
+  grantee: ROLE1
+---
+sql:
+  - CREATE TABLE TN ( A INTEGER )
+  - REVOKE <object privileges> ON [ TABLE ] <table name> TO <grantee>
+override:
+  object privileges: ALL PRIVILEGES
+  table name: TN
+  grantee: ROLE1
+---
+sql:
+  - CREATE DOMAIN DOMAIN1
+  - REVOKE <object privileges> ON DOMAIN <domain name> TO <grantee>
+override:
+  object privileges: ALL PRIVILEGES
+  domain name: DOMAIN1
+  grantee: ROLE1
+---
+sql:
+  - CREATE COLLATION COLLATION1
+  - REVOKE <object privileges> ON COLLATION <collation name> TO <grantee>
+override:
+  object privileges: ALL PRIVILEGES
+  collation name: COLLATION1
+  grantee: ROLE1
+---
+sql:
+  - CREATE CHARACTER SET CHARACTERSET1
+  - REVOKE <object privileges> ON CHARACTER SET <character set name> TO <grantee>
+override:
+  object privileges: ALL PRIVILEGES
+  character set name: CHARACTERSET1
+  grantee: ROLE1
+---
+sql:
+  - CREATE TRANSLATION TRANSLATION1
+  - REVOKE <object privileges> ON TRANSLATION <transliteration name> TO <grantee>
+override:
+  object privileges: ALL PRIVILEGES
+  transliteration name: TRANSLATION1
+  grantee: ROLE1
+---
+sql:
+  - CREATE TYPE TYPE1
+  - REVOKE <object privileges> ON TYPE <schema-resolved user-defined type name> TO <grantee>
+override:
+  object privileges: ALL PRIVILEGES
+  schema-resolved user-defined type name: TYPE1
+  grantee: ROLE1
+---
+sql:
+  - CREATE SEQUENCE SEQUENCE1
+  - REVOKE <object privileges> ON SEQUENCE <sequence generator name> TO <grantee>
+override:
+  object privileges: ALL PRIVILEGES
+  sequence generator name: SEQUENCE1
+  grantee: ROLE1
+---
+sql:
+  - REVOKE <object privileges> ON <specific routine designator> TO <grantee>
+override:
+  object privileges: ALL PRIVILEGES
+  specific name: FOO
+  member name: BAR
+  schema-resolved user-defined type name: BAZ
+  grantee: ROLE1

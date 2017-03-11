@@ -1,0 +1,39 @@
+sql: SELECT CAST <left paren> <cast operand> AS <cast target> <right paren>
+override:
+  cast operand: "'2016-03-26'"
+  cast target: DATE
+---
+sql: SELECT CAST <left paren> <cast operand> AS <cast target> <right paren>
+override:
+  cast operand: "'01:02:03'"
+  cast target: TIME
+---
+sql: SELECT CAST <left paren> <cast operand> AS <cast target> <right paren>
+override:
+  cast operand: "'2016-03-26 01:02:03'"
+  cast target: TIMESTAMP
+---
+sql: SELECT CAST <left paren> CAST <left paren> <cast operand> AS <cast target> <right paren> AS VARCHAR <right paren>
+override:
+  cast operand: "'2016-03-26'"
+  cast target: DATE
+---
+sql: SELECT CAST <left paren> CAST <left paren> <cast operand> AS <cast target> <right paren> AS VARCHAR <right paren>
+override:
+  cast operand: "'01:02:03'"
+  cast target: TIME
+---
+sql: SELECT CAST <left paren> CAST <left paren> <cast operand> AS <cast target> <right paren> AS VARCHAR <right paren>
+override:
+  cast operand: "'2016-03-26 01:02:03'"
+  cast target: TIMESTAMP
+---
+sql: SELECT CAST <left paren> CAST <left paren> <cast operand> AS <cast target> <right paren> AS { TIME | TIMESTAMP | VARCHAR } <right paren>
+override:
+  cast operand: "'01:02:03'"
+  cast target: TIME
+---
+sql: SELECT CAST <left paren> CAST <left paren> <cast operand> AS <cast target> <right paren> AS { DATE | TIME | TIMESTAMP | VARCHAR } <right paren>
+override:
+  cast operand: "'2016-03-26 01:02:03'"
+  cast target: TIMESTAMP

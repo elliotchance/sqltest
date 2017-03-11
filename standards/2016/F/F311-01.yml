@@ -1,0 +1,5 @@
+sql: <schema definition>
+override:
+  schema name clause: TN
+  schema character set or path:
+  schema element:

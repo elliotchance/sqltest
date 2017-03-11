@@ -1,0 +1,5 @@
+sql: CREATE TABLE TN1 ( A DATE )
+---
+sql: SELECT <date literal>
+override:
+  date string: "'2016-03-26'"

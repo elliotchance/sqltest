@@ -1,0 +1,4 @@
+sql: SELECT <searched case>
+override:
+  result expression: 1
+  boolean value expression: 0 = 1

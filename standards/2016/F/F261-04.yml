@@ -1,0 +1,3 @@
+sql: SELECT COALESCE <left paren> <value expression> { <comma> <value expression> }... <right paren>
+override:
+  value expression: 1
