@@ -663,6 +663,12 @@ if __name__ == '__main__':
         if args.visualize[0] == '<':
             args.visualize = args.visualize[1:-1]
         visualize(rules, args.visualize, 0, args.max_depth, overrides)
+
+        print('\n\nsql: <%s>' % args.visualize)
+        print('override:')
+        for override in overrides:
+            print('  %s: %s' % (override, overrides[override]))
+
         sys.exit(0)
 
     # When no rules are provided we print out all of them
