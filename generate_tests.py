@@ -10,6 +10,7 @@ import sqlite3
 import cgi
 from jinja2 import Template
 import pprint
+import json
 
 def load_db_config(name, version):
     features_file = open("dbs/%s/%s.yml" % (name, version), "r")
@@ -34,7 +35,7 @@ def output_file(feature_file_path):
     return feature_file_path[:-4] + ".tests.yml"
 
 def all_features_with_tests(standard):
-    all_files = glob.glob("standards/%s/[EF]/*.yml" % standard)
+    all_files = glob.glob("standards/%s/*/*.yml" % standard)
     feature_files = []
     for feature_file_path in sorted(all_files):
         basename = os.path.basename(feature_file_path)
@@ -168,78 +169,62 @@ all_features = get_all_features(standard)
 for feature_id in test_files:
     all_features['mandatory'][feature_id].update(test_files[feature_id])
 
-def get_html_color_for_pass_rate(pass_rate):
-    # The returned weighted gradient goes from red at 0% to yellow at 75% to
-    # green at 100%. It is weighted because what feels like a "pass" where it
-    # start transitioning to green should really start at 75% rather than 50%.
-    if pass_rate <= 0.75:
-        r, g, b = (255, 255 * pass_rate * 1.333, 0)
-    else:
-        r, g, b = (255 - (255 * (pass_rate - 0.75) * 4), 255, 0)
-    
-    return '#%x%x%x' % (r, g, b)
+# Generate YAML report
 
-# Generate HTML report
+feats = {
+    'mandatory': {},
+    'optional': {}
+}
 
-with open("templates/report.html", "r") as report_template:
-    t = Template(report_template.read())
+total_tests = 0
+total_passed = 0
 
-    feats = {
-        'mandatory': [],
-        'optional': []
-    }
+for category in ('mandatory', 'optional'):
+    for feature_id in sorted(all_features[category]):
+        f = all_features[category][feature_id]
 
-    total_tests = 0
-    total_passed = 0
-    
-    for category in ('mandatory', 'optional'):
-        for feature_id in sorted(all_features[category]):
-            f = all_features[category][feature_id]
+        if 'pass' in all_features[category][feature_id]:
+            f['pass'] = all_features[category][feature_id]['pass']
+            f['fail'] = all_features[category][feature_id]['fail']
+        else:
+            f['pass'] = 0
+            f['fail'] = 0
 
-            if 'pass' in all_features[category][feature_id]:
-                f['pass'] = all_features[category][feature_id]['pass']
-                f['fail'] = all_features[category][feature_id]['fail']
+        if '-' not in feature_id and ('%s-01' % feature_id) in all_features[category]:
+            for fid in sorted(all_features[category]):
+                if fid.startswith('%s-' % feature_id) and \
+                'pass' in all_features[category][fid]:
+                    f['pass'] += all_features[category][fid]['pass']
+                    f['fail'] += all_features[category][fid]['fail']
+
+        percent = '&nbsp;'
+        color = 'grey'
+        if 'pass' in f and (f['pass'] + f['fail']) > 0:
+            if f['pass'] == 0:
+                pass_rate = 0
             else:
-                f['pass'] = 0
-                f['fail'] = 0
+                pass_rate = float(f['pass']) / (float(f['pass']) + float(f['fail']))
 
-            if '-' not in feature_id and ('%s-01' % feature_id) in all_features[category]:
-                for fid in sorted(all_features[category]):
-                    if fid.startswith('%s-' % feature_id) and \
-                    'pass' in all_features[category][fid]:
-                        f['pass'] += all_features[category][fid]['pass']
-                        f['fail'] += all_features[category][fid]['fail']
+            percent = '%01.0d%% (%d/%d)' % (pass_rate * 100, f['pass'],
+                int(f['pass']) + int(f['fail']))
 
-                if f['pass'] == 0 and f['fail'] == 0:
-                    del f['pass']
-                    del f['fail']
+            if '-' not in feature_id:
+                total_tests += f['pass'] + f['fail']
+                total_passed += f['pass']
 
-            percent = '&nbsp;'
-            color = 'grey'
-            if 'pass' in f and (f['pass'] + f['fail']) > 0:
-                if f['pass'] == 0:
-                    pass_rate = 0
-                else:
-                    pass_rate = float(f['pass']) / (float(f['pass']) + float(f['fail']))
-
-                percent = '%01.0d%% (%d/%d)' % (pass_rate * 100, f['pass'],
-                    int(f['pass']) + int(f['fail']))
-                color = get_html_color_for_pass_rate(pass_rate)
-
-                if '-' not in feature_id:
-                    total_tests += f['pass'] + f['fail']
-                    total_passed += f['pass']
-
-            feats[category].append({
-                'id': feature_id,
-                'description': cgi.escape(all_features[category][feature_id]['description']),
-                'color': color,
-                'percent': percent,
-            })
-
-    with open("report.html", "w") as report_file:
-        db = {
-            'name': 'SQLite3',
-            'version': sqlite3.sqlite_version,
+        feats[category][feature_id] = {
+            'description': cgi.escape(all_features[category][feature_id]['description']),
+            "pass": int(f['pass']),
+            "total": int(f['pass']) + int(f['fail']),
         }
-        report_file.write(t.render(db=db, features=feats, int=int, len=len, total_tests=total_tests, total_passed=total_passed))
+
+# YAML is a much better format, but we use JSON so it can be easily ingested in
+# JavaScript for HTML reports.
+with open("dbs/sqlite3/result/%s.json" % standard, "w") as report_file:
+    db = {
+        'dbname': 'SQLite3',
+        'dbversion': sqlite3.sqlite_version,
+    }
+    report_file.write('loadResults(')
+    report_file.write(json.dumps({'info': db, 'features': feats}, sort_keys=True, indent=2, separators=(',', ': ')))
+    report_file.write(')')

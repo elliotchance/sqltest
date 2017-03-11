@@ -7,6 +7,9 @@ free** and the licence does not allow all or parts of it to be published. Older
 versions are either out of licence, or they don't mind, here is the
 [SQL-92 standard](https://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt).
 
+The report for SQLite3 [looks like this](report.html).
+
+
 How It Works
 ============
 
@@ -36,6 +39,25 @@ override:
 When running the suite these automatically expand into
 [70 individual tests](https://github.com/elliotchance/sqltest/blob/master/standards/2016/E/E011-02.tests.yml)
 that are executed against the actual database to produce the final report.
+
+
+Progress
+========
+
+There are some key milestones that I would like to hit (represented as
+versions):
+
+* `0.1.0` - Implement all mandatory features (fairly crudly) and be able to
+  run it against SQLite3. This is very close to complete, you can see the
+  [report here](report.html).
+
+* `0.2.0` - Add docker containers for various version of PostgreSQL and cleanup
+  any tests in the process.
+
+I don't want to plan too far ahead, but I imagine by that point it should be
+fairly easy to start adding more docker containers for other databases and
+produce a big comparison chart.
+
 
 In More Detail
 ==============

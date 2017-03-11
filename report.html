@@ -1,0 +1,178 @@
+<html>
+<head>
+    <title>SQL Conformance</title>
+    <style>
+    body {
+        font-family: 'Helvetica Neue', 'Verdana', serif;
+    }
+    .subfeature {
+        display: none;
+    }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+    <script>
+    // The returned weighted gradient goes from red at 0% to yellow at 75% to 
+    // green at 100%. It is weighted because what feels like a "pass" where it
+    // start transitioning to green should really start at 75% rather than 50%.
+    function getColorForPassRate(passRate) {
+        if (isNaN(passRate)) {
+            return '#eeeeee';
+        }
+
+        var r, g;
+
+        if (passRate <= 0.75) {
+            r = 255;
+            g = Math.round(255 * passRate * 1.333, 0);
+        } else {
+            r = Math.round(255 - (255 * (passRate - 0.75) * 4), 0);
+            g = 255;
+        }
+        
+        return '#' + ("0" + r.toString(16)).slice(-2) +
+            ("0" + g.toString(16)).slice(-2) + '00';
+    }
+
+    function countConformance(features) {
+        var pass = 0;
+        var total = 0;
+
+        $.each(features, function (featureId, feature) {
+            if (feature.total) {
+                ++total;
+            }
+
+            if (feature.pass / feature.total >= 0.5) {
+                ++pass;
+            }
+        });
+
+        return {pass: pass, total: total};
+    }
+
+    function countAllTests(features) {
+        var pass = 0;
+        var total = 0;
+
+        $.each(['mandatory', 'optional'], function (_, id) {
+            $.each(features[id], function (featureId, feature) {
+                pass += feature.pass;
+                total += feature.total;
+            });
+        });
+
+        return {pass: pass, total: total};
+    }
+
+    function loadResults(results) {
+        $(function () {
+            $.each(results.info, function (key, value) {
+                $('#' + key).html(value);
+            });
+
+            var allTests = countAllTests(results.features);
+            var color = getColorForPassRate(allTests.pass / allTests.total);
+            $('#alltests').html('' + allTests.pass + ' of ' + allTests.total +
+                ' (' + Math.round(allTests.pass / allTests.total * 100, 1) +
+                    '%)')
+                .attr('bgcolor', color);
+
+            $.each(['mandatory', 'optional'], function (_, id) {
+                var conform = countConformance(results.features[id]);
+                $('#' + id + 'conformance').html('' + conform.pass + ' of ' +
+                    conform.total + ' (' +
+                        Math.round(conform.pass / conform.total * 100, 1) +
+                        '%)');
+
+                var conformColor = getColorForPassRate(conform.pass / conform.total);
+                $('#' + id + 'conformance').attr('bgcolor', conformColor);
+
+                $.each(results.features[id], function (featureId, feature) {
+                    var testResult = '&nbsp;';
+                    var passRate = 0;
+                    if (feature.total > 0) {
+                        testResult = '' + feature.pass + ' / ' + feature.total;
+                        passRate = feature.pass / feature.total;
+                    }
+
+                    var row;
+                    if (featureId.indexOf('-') < 0) {
+                        row = '<tr style="font-weight: bold">';
+                        row += '<td nowrap width="100"><a href="#" onclick="event.preventDefault(); $(\'.' + featureId + '\').toggle()">' + featureId + '</a></td>';
+                    } else {
+                        var parentFeatureId = featureId.substr(0, featureId.indexOf('-'));
+                        row = '<tr style="font-weight: normal" class="subfeature ' + parentFeatureId + '">';
+                        row += '<td nowrap width="100">' + featureId + '</td>';
+                    }
+
+                    var percentage = '';
+                    var color = '#EEEEEE';
+                    if (feature.total > 0) {
+                        percentage = testResult + ' (' +
+                            Math.round(passRate * 100, 0) + '%)';
+                        color = getColorForPassRate(passRate);
+                    }
+                    row += '<td nowrap bgcolor="' + color + '" width="200">' + 
+                        percentage + '</td>' + '<td>' + feature['description'] +
+                        '</td></tr>';
+                    $('#' + id).append(row);
+                });
+            });
+        });
+    }
+    </script>
+    <script src="dbs/sqlite3/result/2016.json">
+    </script>
+</head>
+
+<body>
+    <h1>Summary</h1>
+
+    <table border='1' cellpadding='3' cellspacing='0' width='100%' bordercolor='grey'>
+        <tr>
+            <td>Database Name</td>
+            <td id="dbname">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>Database Version</td>
+            <td id="dbversion">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>Mandatory Features</td>
+            <td id="mandatoryconformance">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>Optional Features</td>
+            <td id="optionalconformance">&nbsp;</td>
+        </tr>
+        <tr>
+            <td>All Tests</td>
+            <td id="alltests">&nbsp;</td>
+        </tr>
+    </table>
+
+    
+        <h1>Mandatory Features (164)</h1>
+
+        <table border='1' cellpadding='3' cellspacing='0' width='100%' bordercolor='grey' id="mandatory">
+            <tr>
+                <th nowrap>Feature ID</th>
+                <th>Tests</th>
+                <th>Description</th>
+            </tr>
+            
+        </table>
+    
+        <h1>Optional Features (364)</h1>
+
+        <table border='1' cellpadding='3' cellspacing='0' width='100%' bordercolor='grey' id="optional">
+            <tr>
+                <th nowrap>Feature ID</th>
+                <th>Tests</th>
+                <th>Description</th>
+            </tr>
+            
+        </table>
+    
+</body>
+</html>

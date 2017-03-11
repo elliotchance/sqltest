@@ -1,5 +1,4 @@
 .DS_Store
-/report.html
 *.pyc
 /.idea
 /test.db
