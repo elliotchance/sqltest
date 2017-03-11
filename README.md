@@ -7,7 +7,8 @@ free** and the licence does not allow all or parts of it to be published. Older
 versions are either out of licence, or they don't mind, here is the
 [SQL-92 standard](https://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt).
 
-The report for SQLite3 [looks like this](report.html).
+The report for SQLite3
+[looks like this](http://htmlpreview.github.io/?https://github.com/elliotchance/sqltest/blob/master/report.html).
 
 
 How It Works
@@ -49,7 +50,7 @@ versions):
 
 * `0.1.0` - Implement all mandatory features (fairly crudly) and be able to
   run it against SQLite3. This is very close to complete, you can see the
-  [report here](report.html).
+  [report here](http://htmlpreview.github.io/?https://github.com/elliotchance/sqltest/blob/master/report.html).
 
 * `0.2.0` - Add docker containers for various version of PostgreSQL and cleanup
   any tests in the process.
