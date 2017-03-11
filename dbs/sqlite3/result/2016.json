@@ -773,8 +773,8 @@ loadResults({
       },
       "F481": {
         "description": "Expanded NULL predicate",
-        "pass": 0,
-        "total": 0
+        "pass": 2,
+        "total": 2
       },
       "F812": {
         "description": "Basic flagging",

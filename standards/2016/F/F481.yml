@@ -1,0 +1,3 @@
+sql:
+  - CREATE TABLE TN ( A INTEGER )
+  - SELECT A <plus sign> A IS [ NOT ] NULL FROM TN
