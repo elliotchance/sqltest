@@ -1,2 +1,2 @@
 sql:
-  - <simple comment introducer> hello
+  - SELECT 1 <simple comment introducer> hello

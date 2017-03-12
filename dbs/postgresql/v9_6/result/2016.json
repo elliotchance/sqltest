@@ -103,12 +103,12 @@ loadResults({
       },
       "E031": {
         "description": "Identifiers",
-        "pass": 2,
+        "pass": 3,
         "total": 3
       },
       "E031-01": {
         "description": "Delimited identifiers",
-        "pass": 0,
+        "pass": 1,
         "total": 1
       },
       "E031-02": {
@@ -123,8 +123,8 @@ loadResults({
       },
       "E051": {
         "description": "Basic query specification",
-        "pass": 28,
-        "total": 54
+        "pass": 41,
+        "total": 53
       },
       "E051-01": {
         "description": "SELECT DISTINCT",
@@ -133,12 +133,12 @@ loadResults({
       },
       "E051-02": {
         "description": "GROUP BY clause",
-        "pass": 6,
+        "pass": 12,
         "total": 12
       },
       "E051-04": {
         "description": "GROUP BY can contain columns not in &lt;select list&gt;",
-        "pass": 0,
+        "pass": 6,
         "total": 6
       },
       "E051-05": {
@@ -148,8 +148,8 @@ loadResults({
       },
       "E051-06": {
         "description": "HAVING clause",
-        "pass": 0,
-        "total": 2
+        "pass": 1,
+        "total": 1
       },
       "E051-07": {
         "description": "Qualified * in select list",
@@ -168,7 +168,7 @@ loadResults({
       },
       "E061": {
         "description": "Basic predicates and search conditions",
-        "pass": 59,
+        "pass": 81,
         "total": 81
       },
       "E061-01": {
@@ -188,12 +188,12 @@ loadResults({
       },
       "E061-04": {
         "description": "LIKE predicate",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E061-05": {
         "description": "LIKE predicate: ESCAPE clause",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E061-06": {
@@ -203,7 +203,7 @@ loadResults({
       },
       "E061-07": {
         "description": "Quantified comparison predicate",
-        "pass": 0,
+        "pass": 18,
         "total": 18
       },
       "E061-08": {
@@ -268,47 +268,47 @@ loadResults({
       },
       "E081": {
         "description": "Basic Privileges",
-        "pass": 0,
+        "pass": 28,
         "total": 32
       },
       "E081-01": {
         "description": "SELECT privilege at the table level",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E081-02": {
         "description": "DELETE privilege",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E081-03": {
         "description": "INSERT privilege at the table level",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E081-04": {
         "description": "UPDATE privilege at the table level",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E081-05": {
         "description": "UPDATE privilege at the column level",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E081-06": {
         "description": "REFERENCES privilege at the table level",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E081-07": {
         "description": "REFERENCES privilege at the column level",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E081-08": {
         "description": "WITH GRANT OPTION",
-        "pass": 0,
+        "pass": 14,
         "total": 14
       },
       "E081-09": {
@@ -324,7 +324,7 @@ loadResults({
       "E091": {
         "description": "Set functions",
         "pass": 16,
-        "total": 17
+        "total": 16
       },
       "E091-01": {
         "description": "AVG",
@@ -334,7 +334,7 @@ loadResults({
       "E091-02": {
         "description": "COUNT",
         "pass": 2,
-        "total": 3
+        "total": 2
       },
       "E091-03": {
         "description": "MAX",
@@ -383,27 +383,27 @@ loadResults({
       },
       "E111": {
         "description": "Single row SELECT statement",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E121": {
         "description": "Basic cursor support",
-        "pass": 0,
+        "pass": 8,
         "total": 21
       },
       "E121-01": {
         "description": "DECLARE CURSOR",
-        "pass": 0,
+        "pass": 4,
         "total": 4
       },
       "E121-02": {
         "description": "ORDER BY columns need not be in select list",
-        "pass": 0,
+        "pass": 1,
         "total": 1
       },
       "E121-03": {
         "description": "Value expressions in ORDER BY clause",
-        "pass": 0,
+        "pass": 1,
         "total": 1
       },
       "E121-04": {
@@ -433,7 +433,7 @@ loadResults({
       },
       "E121-17": {
         "description": "WITH HOLD cursors",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E131": {
@@ -443,8 +443,8 @@ loadResults({
       },
       "E141": {
         "description": "Basic integrity constraints",
-        "pass": 71,
-        "total": 85
+        "pass": 81,
+        "total": 83
       },
       "E141-01": {
         "description": "NOT NULL constraints",
@@ -473,8 +473,8 @@ loadResults({
       },
       "E141-07": {
         "description": "Column defaults",
-        "pass": 1,
-        "total": 15
+        "pass": 11,
+        "total": 13
       },
       "E141-08": {
         "description": "NOT NULL inferred on PRIMARY KEY",
@@ -523,7 +523,7 @@ loadResults({
       },
       "E161": {
         "description": "SQL comments using leading double minus",
-        "pass": 0,
+        "pass": 1,
         "total": 1
       },
       "E171": {
@@ -538,7 +538,7 @@ loadResults({
       },
       "F031": {
         "description": "Basic schema manipulation",
-        "pass": 7,
+        "pass": 42,
         "total": 104
       },
       "F031-01": {
@@ -553,7 +553,7 @@ loadResults({
       },
       "F031-03": {
         "description": "GRANT statement",
-        "pass": 0,
+        "pass": 18,
         "total": 50
       },
       "F031-04": {
@@ -573,7 +573,7 @@ loadResults({
       },
       "F031-19": {
         "description": "REVOKE statement: RESTRICT clause",
-        "pass": 0,
+        "pass": 17,
         "total": 47
       },
       "F041": {
@@ -668,7 +668,7 @@ loadResults({
       },
       "F131": {
         "description": "Grouped operations",
-        "pass": 31,
+        "pass": 33,
         "total": 33
       },
       "F131-01": {
@@ -683,7 +683,7 @@ loadResults({
       },
       "F131-03": {
         "description": "Set functions supported in queries with grouped views",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "F131-04": {
@@ -738,18 +738,18 @@ loadResults({
       },
       "F311": {
         "description": "Schema definition statement",
-        "pass": 7,
-        "total": 14
+        "pass": 8,
+        "total": 8
       },
       "F311-01": {
         "description": "CREATE SCHEMA",
-        "pass": 3,
-        "total": 4
+        "pass": 1,
+        "total": 1
       },
       "F311-02": {
         "description": "CREATE TABLE for persistent base tables",
-        "pass": 3,
-        "total": 4
+        "pass": 1,
+        "total": 1
       },
       "F311-03": {
         "description": "CREATE VIEW",
@@ -758,12 +758,12 @@ loadResults({
       },
       "F311-04": {
         "description": "CREATE VIEW: WITH CHECK OPTION",
-        "pass": 0,
+        "pass": 3,
         "total": 3
       },
       "F311-05": {
         "description": "GRANT statement",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "F471": {
@@ -1344,7 +1344,7 @@ loadResults({
         "total": 0
       },
       "F431": {
-        "description": "Read-only scrollable cursors",
+        "description": "Read-only scROLEable cursors",
         "pass": 0,
         "total": 0
       },
@@ -1574,7 +1574,7 @@ loadResults({
         "total": 0
       },
       "F831-01": {
-        "description": "Updateable scrollable cursors",
+        "description": "Updateable scROLEable cursors",
         "pass": 0,
         "total": 0
       },

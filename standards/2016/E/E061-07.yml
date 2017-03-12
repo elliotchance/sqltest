@@ -1,5 +1,12 @@
+# The spec is ambiguous about this:
+# 
+# "<quantified comparison predicate>": Without support for <table subquery>
+# 
+# However, you can only have a table query on the right side, so they must mean
+# that the query must must not reference another table?
+
 sql:
   - CREATE TABLE TN ( A INT )
   - SELECT A FROM TN WHERE A <quantified comparison predicate part 2>
 override:
-  table subquery: ( 1, 2 )
+  table subquery: ( SELECT 1 )

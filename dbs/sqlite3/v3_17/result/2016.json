@@ -1344,7 +1344,7 @@ loadResults({
         "total": 0
       },
       "F431": {
-        "description": "Read-only scrollable cursors",
+        "description": "Read-only scROLEable cursors",
         "pass": 0,
         "total": 0
       },
@@ -1574,7 +1574,7 @@ loadResults({
         "total": 0
       },
       "F831-01": {
-        "description": "Updateable scrollable cursors",
+        "description": "Updateable scROLEable cursors",
         "pass": 0,
         "total": 0
       },

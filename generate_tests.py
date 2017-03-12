@@ -89,7 +89,7 @@ def generate_tests(feature_file_path, db_config):
             )
 
             sqls[rule_number] = sqls[rule_number].replace('TN', 'TABLE_%s' % test_id.upper())
-            sqls[rule_number] = sqls[rule_number].replace('ROLL1', 'ROLL_%s' % test_id.upper())
+            sqls[rule_number] = sqls[rule_number].replace('ROLE1', 'ROLE_%s' % test_id.upper())
             sqls[rule_number] = sqls[rule_number].replace('CURSOR1', 'CUR_%s' % test_id.upper())
             sqls[rule_number] = sqls[rule_number].replace('CONSTRAINT1', 'CONST_%s' % test_id.upper())
             sqls[rule_number] = sqls[rule_number].replace('VIEW1', 'VIEW_%s' % test_id.upper())
@@ -121,8 +121,8 @@ for feature_file_path in feature_file_paths:
         'path': generated_file_path
     }
 
-    if os.path.isfile(generated_file_path):
-       continue
+    #if os.path.isfile(generated_file_path):
+    #   continue
 
     print("Generating tests for %s" % feature_id)
     generate_tests(feature_file_path, db_config)
