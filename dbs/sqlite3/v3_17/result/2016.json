@@ -124,7 +124,7 @@ loadResults({
       "E051": {
         "description": "Basic query specification",
         "pass": 38,
-        "total": 54
+        "total": 53
       },
       "E051-01": {
         "description": "SELECT DISTINCT",
@@ -149,7 +149,7 @@ loadResults({
       "E051-06": {
         "description": "HAVING clause",
         "pass": 1,
-        "total": 2
+        "total": 1
       },
       "E051-07": {
         "description": "Qualified * in select list",
@@ -323,8 +323,8 @@ loadResults({
       },
       "E091": {
         "description": "Set functions",
-        "pass": 17,
-        "total": 17
+        "pass": 16,
+        "total": 16
       },
       "E091-01": {
         "description": "AVG",
@@ -333,8 +333,8 @@ loadResults({
       },
       "E091-02": {
         "description": "COUNT",
-        "pass": 3,
-        "total": 3
+        "pass": 2,
+        "total": 2
       },
       "E091-03": {
         "description": "MAX",
@@ -443,8 +443,8 @@ loadResults({
       },
       "E141": {
         "description": "Basic integrity constraints",
-        "pass": 84,
-        "total": 85
+        "pass": 83,
+        "total": 83
       },
       "E141-01": {
         "description": "NOT NULL constraints",
@@ -473,8 +473,8 @@ loadResults({
       },
       "E141-07": {
         "description": "Column defaults",
-        "pass": 14,
-        "total": 15
+        "pass": 13,
+        "total": 13
       },
       "E141-08": {
         "description": "NOT NULL inferred on PRIMARY KEY",
@@ -739,17 +739,17 @@ loadResults({
       "F311": {
         "description": "Schema definition statement",
         "pass": 0,
-        "total": 14
+        "total": 8
       },
       "F311-01": {
         "description": "CREATE SCHEMA",
         "pass": 0,
-        "total": 4
+        "total": 1
       },
       "F311-02": {
         "description": "CREATE TABLE for persistent base tables",
         "pass": 0,
-        "total": 4
+        "total": 1
       },
       "F311-03": {
         "description": "CREATE VIEW",

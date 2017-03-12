@@ -3,17 +3,17 @@ loadResults({
     "mandatory": {
       "E011": {
         "description": "Numeric data types",
-        "pass": 128,
+        "pass": 64,
         "total": 128
       },
       "E011-01": {
         "description": "INTEGER and SMALLINT data types (including all spellings)",
-        "pass": 7,
+        "pass": 0,
         "total": 7
       },
       "E011-02": {
         "description": "REAL, DOUBLE PRECISON, and FLOAT data types",
-        "pass": 70,
+        "pass": 13,
         "total": 70
       },
       "E011-03": {
