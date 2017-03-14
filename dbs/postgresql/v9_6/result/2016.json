@@ -3,17 +3,17 @@ loadResults({
     "mandatory": {
       "E011": {
         "description": "Numeric data types",
-        "pass": 64,
+        "pass": 128,
         "total": 128
       },
       "E011-01": {
         "description": "INTEGER and SMALLINT data types (including all spellings)",
-        "pass": 0,
+        "pass": 7,
         "total": 7
       },
       "E011-02": {
         "description": "REAL, DOUBLE PRECISON, and FLOAT data types",
-        "pass": 13,
+        "pass": 70,
         "total": 70
       },
       "E011-03": {
@@ -2647,6 +2647,7 @@ loadResults({
   },
   "info": {
     "dbname": "PostgreSQL",
-    "dbversion": "9.6"
+    "dbversion": "9.6",
+    "path": "dbs/postgresql/v9_6/result/2016.json"
   }
 })

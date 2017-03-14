@@ -2647,6 +2647,7 @@ loadResults({
   },
   "info": {
     "dbname": "PostgreSQL",
-    "dbversion": "9.2"
+    "dbversion": "9.2",
+    "path": "dbs/postgresql/v9_2/result/2016.json"
   }
 })

@@ -222,10 +222,12 @@ for category in ('mandatory', 'optional'):
 
 # YAML is a much better format, but we use JSON so it can be easily ingested in
 # JavaScript for HTML reports.
-with open("%s/result/%s.json" % (sys.argv[1].replace('.', '/'), standard), "w") as report_file:
+path = "%s/result/%s.json" % (sys.argv[1].replace('.', '/'), standard)
+with open(path, "w") as report_file:
     db = {
         'dbname': db_config['db']['name'],
         'dbversion': str(db_config['db']['version']),
+        'path': path
     }
     report_file.write('loadResults(')
     report_file.write(json.dumps({'info': db, 'features': feats}, sort_keys=True, indent=2, separators=(',', ': ')))

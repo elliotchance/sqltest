@@ -76,8 +76,9 @@
                     '%)';
             var conformColor = getColorForPassRate(conform.pass / conform.total);
 
-            $('#results').append('<tr><td>' + results.info.dbname +
-                '</td><td>' + results.info.dbversion + '</td><td bgcolor="' +
+            $('#results').append('<tr><td><a href="report.html?path=' + results.info.path + '">'
+                    + results.info.dbname +
+                '</a></td><td>' + results.info.dbversion + '</td><td bgcolor="' +
                 conformColor + '">' + conformString + '</td><td bgcolor="' +
                 allTestsColor + '">' + allTestsString + '</td></tr>');
         });
