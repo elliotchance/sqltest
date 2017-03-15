@@ -3,8 +3,8 @@ loadResults({
     "mandatory": {
       "E011": {
         "description": "Numeric data types",
-        "pass": 128,
-        "total": 128
+        "pass": 112,
+        "total": 112
       },
       "E011-01": {
         "description": "INTEGER and SMALLINT data types (including all spellings)",
@@ -13,8 +13,8 @@ loadResults({
       },
       "E011-02": {
         "description": "REAL, DOUBLE PRECISON, and FLOAT data types",
-        "pass": 70,
-        "total": 70
+        "pass": 54,
+        "total": 54
       },
       "E011-03": {
         "description": "DECIMAL and NUMERIC data types",
@@ -539,7 +539,7 @@ loadResults({
       "F031": {
         "description": "Basic schema manipulation",
         "pass": 7,
-        "total": 104
+        "total": 102
       },
       "F031-01": {
         "description": "CREATE TABLE statement to create persistent base tables",
@@ -554,7 +554,7 @@ loadResults({
       "F031-03": {
         "description": "GRANT statement",
         "pass": 0,
-        "total": 50
+        "total": 49
       },
       "F031-04": {
         "description": "ALTER TABLE statement: ADD COLUMN clause",
@@ -574,7 +574,7 @@ loadResults({
       "F031-19": {
         "description": "REVOKE statement: RESTRICT clause",
         "pass": 0,
-        "total": 47
+        "total": 46
       },
       "F041": {
         "description": "Basic joined table",
@@ -713,13 +713,13 @@ loadResults({
       },
       "F261": {
         "description": "CASE expression",
-        "pass": 20,
-        "total": 32
+        "pass": 14,
+        "total": 20
       },
       "F261-01": {
         "description": "Simple CASE",
-        "pass": 12,
-        "total": 24
+        "pass": 6,
+        "total": 12
       },
       "F261-02": {
         "description": "Searched CASE",

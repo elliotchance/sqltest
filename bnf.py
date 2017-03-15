@@ -536,7 +536,7 @@ def find_missing_rules(rules):
 
 def get_paths_for_rule(rules, rule, overrides, exclude):
     p = parse(iter(all_tokens(rule)))
-    return sorted([str(s) for s in p.resolve(rules, overrides, exclude, [])])
+    return sorted(list(set([str(s) for s in p.resolve(rules, overrides, exclude, [])])))
 
 def output_rule(rules, rule_name, overrides, exclude, output_paths, output_subrules):
     if output_paths:
