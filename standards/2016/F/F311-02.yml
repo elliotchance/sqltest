@@ -1,5 +1,1 @@
-sql: <schema definition>
-override:
-  schema name clause: TN
-  schema character set or path:
-  schema element: CREATE TABLE TN_2 ( A INT )
+sql: CREATE SCHEMA TN CREATE TABLE TN2 ( A INT )

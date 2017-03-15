@@ -1,0 +1,107 @@
+<html>
+<head>
+    <title>SQL Conformance</title>
+    <style>
+    body {
+        font-family: 'Helvetica Neue', 'Verdana', serif;
+    }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+    <script>
+    // The returned weighted gradient goes from red at 0% to yellow at 75% to 
+    // green at 100%. It is weighted because what feels like a "pass" where it
+    // start transitioning to green should really start at 75% rather than 50%.
+    function getColorForPassRate(passRate) {
+        if (isNaN(passRate)) {
+            return '#eeeeee';
+        }
+
+        var r, g;
+
+        if (passRate <= 0.75) {
+            r = 255;
+            g = Math.round(255 * passRate * 1.333, 0);
+        } else {
+            r = Math.round(255 - (255 * (passRate - 0.75) * 4), 0);
+            g = 255;
+        }
+        
+        return '#' + ("0" + r.toString(16)).slice(-2) +
+            ("0" + g.toString(16)).slice(-2) + '00';
+    }
+
+    function countConformance(features) {
+        var pass = 0;
+        var total = 0;
+
+        $.each(features, function (featureId, feature) {
+            if (feature.total) {
+                ++total;
+            }
+
+            if (feature.pass / feature.total >= 0.5) {
+                ++pass;
+            }
+        });
+
+        return {pass: pass, total: total};
+    }
+
+    function countAllTests(features) {
+        var pass = 0;
+        var total = 0;
+
+        $.each(['mandatory', 'optional'], function (_, id) {
+            $.each(features[id], function (featureId, feature) {
+                pass += feature.pass;
+                total += feature.total;
+            });
+        });
+
+        return {pass: pass, total: total};
+    }
+
+    function loadResults(results) {
+        $(function () {
+            var allTests = countAllTests(results.features);
+            var allTestsColor = getColorForPassRate(allTests.pass / allTests.total);
+            var allTestsString = allTests.pass + ' of ' + allTests.total +
+                ' (' + Math.round(allTests.pass / allTests.total * 100, 1) +
+                    '%)';
+
+            var conform = countConformance(results.features.mandatory);
+            var conformString = conform.pass + ' of ' +
+                conform.total + ' (' +
+                    Math.round(conform.pass / conform.total * 100, 1) +
+                    '%)';
+            var conformColor = getColorForPassRate(conform.pass / conform.total);
+
+            $('#results').append('<tr><td><a href="report.html?path=' + results.info.path + '">'
+                    + results.info.dbname +
+                '</a></td><td>' + results.info.dbversion + '</td><td bgcolor="' +
+                conformColor + '">' + conformString + '</td><td bgcolor="' +
+                allTestsColor + '">' + allTestsString + '</td></tr>');
+        });
+    }
+    </script>
+
+    <!-- At the moment these are loaded in order of the conformance percentage.
+        When we have more they will have to be loaded in dynamically and sorted
+        as such. -->
+    <script src="dbs/postgresql/v9_2/result/2016.json"></script>
+    <script src="dbs/postgresql/v9_6/result/2016.json"></script>
+    <script src="dbs/sqlite3/v3_17/result/2016.json"></script>
+</head>
+
+<body>
+    <table border='1' cellpadding='3' cellspacing='0' width='100%'
+        bordercolor='grey' id="results">
+            <tr>
+                <th nowrap>Database Name</th>
+                <th>Version</th>
+                <th>Features</th>
+                <th>All Tests</th>
+            </tr>
+    </table>
+</body>
+</html>

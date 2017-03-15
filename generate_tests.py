@@ -8,12 +8,17 @@ import bnf
 import sys
 import sqlite3
 import cgi
-from jinja2 import Template
 import pprint
 import json
 
-def load_db_config(name, version):
-    features_file = open("dbs/%s/%s.yml" % (name, version), "r")
+if len(sys.argv) < 2:
+    print("Usage: %s dbs.postgresql.v9_2" % sys.argv[0])
+    sys.exit(1)
+
+run_test = __import__(sys.argv[1], globals(), locals(), ['run_test']).run_test
+
+def load_db_config(name):
+    features_file = open("%s/config.yml" % name.replace('.', '/'), "r")
     return yaml.load(features_file)
 
 def get_all_features(standard):
@@ -84,7 +89,7 @@ def generate_tests(feature_file_path, db_config):
             )
 
             sqls[rule_number] = sqls[rule_number].replace('TN', 'TABLE_%s' % test_id.upper())
-            sqls[rule_number] = sqls[rule_number].replace('ROLL1', 'ROLL_%s' % test_id.upper())
+            sqls[rule_number] = sqls[rule_number].replace('ROLE1', 'ROLE_%s' % test_id.upper())
             sqls[rule_number] = sqls[rule_number].replace('CURSOR1', 'CUR_%s' % test_id.upper())
             sqls[rule_number] = sqls[rule_number].replace('CONSTRAINT1', 'CONST_%s' % test_id.upper())
             sqls[rule_number] = sqls[rule_number].replace('VIEW1', 'VIEW_%s' % test_id.upper())
@@ -102,7 +107,8 @@ def generate_tests(feature_file_path, db_config):
     with open(output_file(feature_file_path), "w") as f:
         f.write(yaml.dump_all(result_tests, default_flow_style=False))
 
-db_config = load_db_config('SQLite3', '3.16')
+# FIX ME
+db_config = load_db_config(sys.argv[1])
 standard = '2016'
 rules = get_rules(standard)
 feature_file_paths = all_features_with_tests(standard)
@@ -115,11 +121,20 @@ for feature_file_path in feature_file_paths:
         'path': generated_file_path
     }
 
-    # if os.path.isfile(generated_file_path):
-    #    continue
+    #if os.path.isfile(generated_file_path):
+    #   continue
 
     print("Generating tests for %s" % feature_id)
     generate_tests(feature_file_path, db_config)
+
+def fix_keywords(sql):
+    if 'keywords' not in db_config:
+        return sql
+
+    for keyword in db_config['keywords']:
+        sql = sql.replace(keyword, db_config['keywords'][keyword])
+
+    return sql
 
 # Run the tests
 for feature_id in sorted(test_files):
@@ -138,24 +153,11 @@ for feature_id in sorted(test_files):
         if not isinstance(test['sql'], list):
             test['sql'] = [ test['sql'] ]
 
-        error = None
-        try:
-            conn = sqlite3.connect(':memory:')
-            conn.isolation_level = None
+        # Fix keywords
+        test['sql'] = map(fix_keywords, test['sql'])
 
-            c = conn.cursor()
-            for sql in test['sql']:
-                # Fix keywords
-                for keyword in db_config['keywords']:
-                    sql = sql.replace(keyword, db_config['keywords'][keyword])
-
-                c.execute(sql)
-
-            # conn.commit()
-            conn.close()
-        except sqlite3.OperationalError as e:
-            error = e
-            did_pass = False
+        error = run_test(test)
+        did_pass = error is None
 
         if did_pass:
             test_files[feature_id]['pass'] += 1
@@ -220,10 +222,12 @@ for category in ('mandatory', 'optional'):
 
 # YAML is a much better format, but we use JSON so it can be easily ingested in
 # JavaScript for HTML reports.
-with open("dbs/sqlite3/result/%s.json" % standard, "w") as report_file:
+path = "%s/result/%s.json" % (sys.argv[1].replace('.', '/'), standard)
+with open(path, "w") as report_file:
     db = {
-        'dbname': 'SQLite3',
-        'dbversion': sqlite3.sqlite_version,
+        'dbname': db_config['db']['name'],
+        'dbversion': str(db_config['db']['version']),
+        'path': path
     }
     report_file.write('loadResults(')
     report_file.write(json.dumps({'info': db, 'features': feats}, sort_keys=True, indent=2, separators=(',', ': ')))

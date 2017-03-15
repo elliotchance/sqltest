@@ -3,6 +3,6 @@ sql:
   - <declare cursor>
 override:
   query expression: SELECT A FROM TN
-  column name list: A
+  column name list: TN
   cursor name: MYCURSOR
-  cursor properties:
+  cursor properties: CURSOR

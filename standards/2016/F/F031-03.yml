@@ -1,5 +1,6 @@
 sql:
   - CREATE TABLE TN ( A INTEGER )
+  - CREATE ROLE ROLE1
   - GRANT <privileges> TO <grantee> [ WITH GRANT OPTION ] [ GRANTED BY <grantor> ]
 override:
   object privileges: ALL PRIVILEGES
@@ -8,6 +9,7 @@ override:
 ---
 sql:
   - CREATE TABLE TN ( A INTEGER )
+  - CREATE ROLE ROLE1
   - GRANT <privileges> TO <grantee> <comma> <grantee>
 override:
   object privileges: ALL PRIVILEGES
@@ -16,12 +18,23 @@ override:
 ---
 sql:
   - CREATE TABLE TN ( A INTEGER )
+  - CREATE ROLE ROLE1
   - GRANT { SELECT | SELECT <left paren> <privilege column list> <right paren> |
       SELECT <left paren> <privilege method list> <right paren> | DELETE |
       INSERT [ <left paren> <privilege column list> <right paren> ] |
       UPDATE [ <left paren> <privilege column list> <right paren> ] |
       REFERENCES [ <left paren> <privilege column list> <right paren> ] |
-      USAGE | TRIGGER | UNDER | EXECUTE } ON <object name> TO <grantee>
+      TRIGGER | UNDER } ON <object name> TO <grantee>
+override:
+  object name: TN
+  privilege column list: A
+  privilege method list: A
+  grantee: ROLE1
+---
+sql:
+  - CREATE SCHEMA TN
+  - CREATE ROLE ROLE1
+  - GRANT { EXECUTE | USAGE } ON <object name> TO <grantee>
 override:
   object name: TN
   privilege column list: A
@@ -30,6 +43,7 @@ override:
 ---
 sql:
   - CREATE TABLE TN ( A INTEGER )
+  - CREATE ROLE ROLE1
   - GRANT <object privileges> ON [ TABLE ] <table name> TO <grantee>
 override:
   object privileges: ALL PRIVILEGES
@@ -37,7 +51,8 @@ override:
   grantee: ROLE1
 ---
 sql:
-  - CREATE DOMAIN DOMAIN1
+  - CREATE DOMAIN DOMAIN1 AS INT
+  - CREATE ROLE ROLE1
   - GRANT <object privileges> ON DOMAIN <domain name> TO <grantee>
 override:
   object privileges: ALL PRIVILEGES
@@ -45,7 +60,8 @@ override:
   grantee: ROLE1
 ---
 sql:
-  - CREATE COLLATION COLLATION1
+  - CREATE COLLATION COLLATION1 FROM 'de_DE'
+  - CREATE ROLE ROLE1
   - GRANT <object privileges> ON COLLATION <collation name> TO <grantee>
 override:
   object privileges: ALL PRIVILEGES
@@ -54,6 +70,7 @@ override:
 ---
 sql:
   - CREATE CHARACTER SET CHARACTERSET1
+  - CREATE ROLE ROLE1
   - GRANT <object privileges> ON CHARACTER SET <character set name> TO <grantee>
 override:
   object privileges: ALL PRIVILEGES
@@ -62,6 +79,7 @@ override:
 ---
 sql:
   - CREATE TRANSLATION TRANSLATION1
+  - CREATE ROLE ROLE1
   - GRANT <object privileges> ON TRANSLATION <transliteration name> TO <grantee>
 override:
   object privileges: ALL PRIVILEGES
@@ -70,6 +88,7 @@ override:
 ---
 sql:
   - CREATE TYPE TYPE1
+  - CREATE ROLE ROLE1
   - GRANT <object privileges> ON TYPE <schema-resolved user-defined type name> TO <grantee>
 override:
   object privileges: ALL PRIVILEGES
@@ -78,6 +97,7 @@ override:
 ---
 sql:
   - CREATE SEQUENCE SEQUENCE1
+  - CREATE ROLE ROLE1
   - GRANT <object privileges> ON SEQUENCE <sequence generator name> TO <grantee>
 override:
   object privileges: ALL PRIVILEGES
@@ -85,6 +105,7 @@ override:
   grantee: ROLE1
 ---
 sql:
+  - CREATE ROLE ROLE1
   - GRANT <object privileges> ON <specific routine designator> TO <grantee>
 override:
   object privileges: ALL PRIVILEGES

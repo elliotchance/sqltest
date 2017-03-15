@@ -1,4 +1,7 @@
+# PostgreSQL supports this synatx, but only inside a function. So this failure
+# is not legitimate. It should be updated when we have UDFs (T321) implemented.
+
 sql:
   - CREATE TABLE TN ( A INT )
-  - DECLARE CURSOR CURSOR1 FOR SELECT A FROM TN
+  - DECLARE CURSOR1 CURSOR FOR SELECT A FROM TN
   - UPDATE TN SET A = 1 WHERE CURRENT OF CURSOR1

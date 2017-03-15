@@ -3,11 +3,19 @@
 # <subtype clause>
 # <user-defined type option list>
 # <method specification list>
+#
+# ---
+#
+# <representation> ::=
+#     <predefined type>
+#   | <collection type>
+#   | <member list>
+#
+# It looks like only <member list> is supported by PostgreSQL.
 
 sql:
   - CREATE TYPE TN [ AS <representation> ]
 override:
-  supertype name: TN2
   representation: INT
 ---
 sql:

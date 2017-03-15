@@ -1,7 +1,10 @@
+# PostgreSQL supports this synatx, but only inside a function. So this failure
+# is not legitimate. It should be updated when we have UDFs (T321) implemented.
+
 sql:
   - CREATE TABLE TN1 ( A INT )
   - CREATE TABLE TN2 ( A INT )
-  - DECLARE CURSOR CURSOR1 FOR SELECT A FROM TN1
+  - DECLARE CURSOR1 CURSOR FOR SELECT A FROM TN1
   - OPEN CURSOR1
   - FETCH [ [ <fetch orientation> ] FROM ] CURSOR1 INTO TN2
 override:

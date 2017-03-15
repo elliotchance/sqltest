@@ -1,5 +1,4 @@
-sql: <schema definition>
-override:
-  schema name clause: TN
-  schema character set or path:
-  schema element:
+# TODO: There are many more optinla extras (not including the CREATE TABLE, etc)
+# that can be added to a CREATE SCHEMA statement.
+
+sql: CREATE SCHEMA TN
