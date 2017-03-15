@@ -18,7 +18,7 @@ docker run -d --name $1 -v "`pwd`:/tmp/sql" $DOCKER_TAG
 
 # We have to give the container a bit of time to start up. There should be a
 # better solution here.
-sleep 10
+sleep 20
 
 # Execute the tests
 docker exec $(docker ps -aqf "name=$1") \
