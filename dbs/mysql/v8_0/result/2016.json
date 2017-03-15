@@ -38,7 +38,7 @@ loadResults({
       },
       "E021": {
         "description": "Character string types",
-        "pass": 24,
+        "pass": 22,
         "total": 58
       },
       "E021-01": {
@@ -48,7 +48,7 @@ loadResults({
       },
       "E021-02": {
         "description": "CHARACTER VARYING data type (including all its spellings)",
-        "pass": 6,
+        "pass": 2,
         "total": 12
       },
       "E021-03": {
@@ -58,12 +58,12 @@ loadResults({
       },
       "E021-04": {
         "description": "CHARACTER_LENGTH function",
-        "pass": 0,
+        "pass": 2,
         "total": 6
       },
       "E021-05": {
         "description": "OCTET_LENGTH function",
-        "pass": 0,
+        "pass": 1,
         "total": 1
       },
       "E021-06": {
@@ -83,7 +83,7 @@ loadResults({
       },
       "E021-09": {
         "description": "TRIM function",
-        "pass": 1,
+        "pass": 0,
         "total": 9
       },
       "E021-10": {
@@ -103,12 +103,12 @@ loadResults({
       },
       "E031": {
         "description": "Identifiers",
-        "pass": 3,
+        "pass": 2,
         "total": 3
       },
       "E031-01": {
         "description": "Delimited identifiers",
-        "pass": 1,
+        "pass": 0,
         "total": 1
       },
       "E031-02": {
@@ -168,7 +168,7 @@ loadResults({
       },
       "E061": {
         "description": "Basic predicates and search conditions",
-        "pass": 41,
+        "pass": 77,
         "total": 81
       },
       "E061-01": {
@@ -203,7 +203,7 @@ loadResults({
       },
       "E061-07": {
         "description": "Quantified comparison predicate",
-        "pass": 0,
+        "pass": 18,
         "total": 18
       },
       "E061-08": {
@@ -223,7 +223,7 @@ loadResults({
       },
       "E061-12": {
         "description": "Subqueries in quantified comparison predicate",
-        "pass": 0,
+        "pass": 18,
         "total": 18
       },
       "E061-13": {
@@ -243,7 +243,7 @@ loadResults({
       },
       "E071-01": {
         "description": "UNION DISTINCT table operator",
-        "pass": 1,
+        "pass": 2,
         "total": 2
       },
       "E071-02": {
@@ -253,7 +253,7 @@ loadResults({
       },
       "E071-03": {
         "description": "EXCEPT DISTINCT table operator",
-        "pass": 1,
+        "pass": 0,
         "total": 2
       },
       "E071-05": {
@@ -268,47 +268,47 @@ loadResults({
       },
       "E081": {
         "description": "Basic Privileges",
-        "pass": 0,
+        "pass": 28,
         "total": 32
       },
       "E081-01": {
         "description": "SELECT privilege at the table level",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E081-02": {
         "description": "DELETE privilege",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E081-03": {
         "description": "INSERT privilege at the table level",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E081-04": {
         "description": "UPDATE privilege at the table level",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E081-05": {
         "description": "UPDATE privilege at the column level",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E081-06": {
         "description": "REFERENCES privilege at the table level",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E081-07": {
         "description": "REFERENCES privilege at the column level",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "E081-08": {
         "description": "WITH GRANT OPTION",
-        "pass": 0,
+        "pass": 14,
         "total": 14
       },
       "E081-09": {
@@ -323,7 +323,7 @@ loadResults({
       },
       "E091": {
         "description": "Set functions",
-        "pass": 16,
+        "pass": 3,
         "total": 16
       },
       "E091-01": {
@@ -333,32 +333,32 @@ loadResults({
       },
       "E091-02": {
         "description": "COUNT",
-        "pass": 2,
+        "pass": 0,
         "total": 2
       },
       "E091-03": {
         "description": "MAX",
-        "pass": 1,
+        "pass": 0,
         "total": 1
       },
       "E091-04": {
         "description": "MIN",
-        "pass": 1,
+        "pass": 0,
         "total": 1
       },
       "E091-05": {
         "description": "SUM",
-        "pass": 1,
+        "pass": 0,
         "total": 1
       },
       "E091-06": {
         "description": "ALL quantifier",
-        "pass": 5,
+        "pass": 1,
         "total": 5
       },
       "E091-07": {
         "description": "DISTINCT quantifier",
-        "pass": 5,
+        "pass": 1,
         "total": 5
       },
       "E101": {
@@ -443,77 +443,77 @@ loadResults({
       },
       "E141": {
         "description": "Basic integrity constraints",
-        "pass": 83,
+        "pass": 49,
         "total": 83
       },
       "E141-01": {
         "description": "NOT NULL constraints",
-        "pass": 2,
+        "pass": 1,
         "total": 2
       },
       "E141-02": {
         "description": "UNIQUE constraints of NOT NULL columns",
-        "pass": 6,
+        "pass": 5,
         "total": 6
       },
       "E141-03": {
         "description": "PRIMARY KEY constraints",
-        "pass": 6,
+        "pass": 5,
         "total": 6
       },
       "E141-04": {
         "description": "Basic FOREIGN KEY constraint with the NO ACTION default for both referential delete action and referential update action",
-        "pass": 30,
+        "pass": 25,
         "total": 30
       },
       "E141-06": {
         "description": "CHECK constraints",
-        "pass": 4,
+        "pass": 3,
         "total": 4
       },
       "E141-07": {
         "description": "Column defaults",
-        "pass": 13,
+        "pass": 0,
         "total": 13
       },
       "E141-08": {
         "description": "NOT NULL inferred on PRIMARY KEY",
-        "pass": 12,
+        "pass": 10,
         "total": 12
       },
       "E141-10": {
         "description": "Names in a foreign key can be specified in any order",
-        "pass": 10,
+        "pass": 0,
         "total": 10
       },
       "E151": {
         "description": "Transaction support",
-        "pass": 2,
+        "pass": 4,
         "total": 4
       },
       "E151-01": {
         "description": "COMMIT statement",
-        "pass": 1,
+        "pass": 2,
         "total": 2
       },
       "E151-02": {
         "description": "ROLLBACK statement",
-        "pass": 1,
+        "pass": 2,
         "total": 2
       },
       "E152": {
         "description": "Basic SET TRANSACTION statement",
-        "pass": 0,
+        "pass": 3,
         "total": 6
       },
       "E152-01": {
         "description": "SET TRANSACTION statement: ISOLATION LEVEL SERIALIZABLE clause",
-        "pass": 0,
+        "pass": 1,
         "total": 2
       },
       "E152-02": {
         "description": "SET TRANSACTION statement: READ ONLY and READ WRITE clauses",
-        "pass": 0,
+        "pass": 2,
         "total": 4
       },
       "E153": {
@@ -538,7 +538,7 @@ loadResults({
       },
       "F031": {
         "description": "Basic schema manipulation",
-        "pass": 7,
+        "pass": 23,
         "total": 104
       },
       "F031-01": {
@@ -553,7 +553,7 @@ loadResults({
       },
       "F031-03": {
         "description": "GRANT statement",
-        "pass": 0,
+        "pass": 16,
         "total": 50
       },
       "F031-04": {
@@ -578,7 +578,7 @@ loadResults({
       },
       "F041": {
         "description": "Basic joined table",
-        "pass": 19,
+        "pass": 23,
         "total": 31
       },
       "F041-01": {
@@ -598,7 +598,7 @@ loadResults({
       },
       "F041-04": {
         "description": "RIGHT OUTER JOIN",
-        "pass": 0,
+        "pass": 4,
         "total": 6
       },
       "F041-05": {
@@ -618,32 +618,32 @@ loadResults({
       },
       "F051": {
         "description": "Basic date and time",
-        "pass": 19,
+        "pass": 29,
         "total": 42
       },
       "F051-01": {
         "description": "DATE data type (including support of DATE literal)",
-        "pass": 1,
+        "pass": 2,
         "total": 2
       },
       "F051-02": {
         "description": "TIME data type (including support of TIME literal) with fractional seconds precision of at least 0",
-        "pass": 1,
+        "pass": 2,
         "total": 2
       },
       "F051-03": {
         "description": "TIMESTAMP data type (including support of TIMESTAMP literal) with fractional seconds precision of at least 0 and 6",
-        "pass": 1,
+        "pass": 2,
         "total": 2
       },
       "F051-04": {
         "description": "Comparison predicate on DATE, TIME, and TIMESTAMP data types",
-        "pass": 0,
+        "pass": 18,
         "total": 18
       },
       "F051-05": {
         "description": "Explicit CAST between datetime types and character string types",
-        "pass": 13,
+        "pass": 0,
         "total": 13
       },
       "F051-06": {
@@ -653,22 +653,22 @@ loadResults({
       },
       "F051-07": {
         "description": "LOCALTIME",
-        "pass": 1,
+        "pass": 2,
         "total": 2
       },
       "F051-08": {
         "description": "LOCALTIMESTAMP",
-        "pass": 1,
+        "pass": 2,
         "total": 2
       },
       "F081": {
         "description": "UNION and EXCEPT in views",
-        "pass": 3,
+        "pass": 2,
         "total": 3
       },
       "F131": {
         "description": "Grouped operations",
-        "pass": 33,
+        "pass": 7,
         "total": 33
       },
       "F131-01": {
@@ -683,12 +683,12 @@ loadResults({
       },
       "F131-03": {
         "description": "Set functions supported in queries with grouped views",
-        "pass": 2,
+        "pass": 0,
         "total": 2
       },
       "F131-04": {
         "description": "Subqueries with GROUP BY and HAVING clauses and grouped views",
-        "pass": 24,
+        "pass": 0,
         "total": 24
       },
       "F131-05": {
@@ -708,7 +708,7 @@ loadResults({
       },
       "F221": {
         "description": "Explicit defaults",
-        "pass": 0,
+        "pass": 2,
         "total": 2
       },
       "F261": {
@@ -738,12 +738,12 @@ loadResults({
       },
       "F311": {
         "description": "Schema definition statement",
-        "pass": 0,
+        "pass": 1,
         "total": 8
       },
       "F311-01": {
         "description": "CREATE SCHEMA",
-        "pass": 0,
+        "pass": 1,
         "total": 1
       },
       "F311-02": {
@@ -2646,8 +2646,8 @@ loadResults({
     }
   },
   "info": {
-    "dbname": "SQLite3",
-    "dbversion": "3.17",
-    "path": "dbs/sqlite3/v3_17/result/2016.json"
+    "dbname": "MySQL",
+    "dbversion": "8.0",
+    "path": "dbs/mysql/v8_0/result/2016.json"
   }
 })
