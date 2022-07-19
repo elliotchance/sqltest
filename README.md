@@ -2,7 +2,7 @@ The goal of this project is to develop a comprehensive suite of SQL tests, based
 on the each of the SQL standards to be able to test to conformance of individual
 SQL databases and engines.
 
-[**View the results here**](http://htmlpreview.github.io/?https://github.com/elliotchance/sqltest/blob/master/index.html)
+[**View the results here**](https://elliotchance.github.io/sqltest/)
 
 The [latest SQL standard](https://www.iso.org/standard/63556.html) is **not
 free** and the licence does not allow all or parts of it to be published. Older
