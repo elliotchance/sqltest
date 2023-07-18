@@ -4,7 +4,7 @@
 mandatory:
   E011: Numeric data types
   E011-01: INTEGER and SMALLINT data types (including all spellings)
-  E011-02: REAL, DOUBLE PRECISON, and FLOAT data types
+  E011-02: 'REAL, DOUBLE PRECISON, and FLOAT data types'
   E011-03: DECIMAL and NUMERIC data types
   E011-04: Arithmetic operators
   E011-05: Numeric comparison
@@ -29,7 +29,7 @@ mandatory:
   E051: Basic query specification
   E051-01: SELECT DISTINCT
   E051-02: GROUP BY clause
-  E051-04: GROUP BY can contain columns not in <select list>
+  E051-04: 'GROUP BY can contain columns not in <select list>'
   E051-05: Select list items can be renamed
   E051-06: HAVING clause
   E051-07: Qualified * in select list
@@ -129,14 +129,14 @@ mandatory:
   F051-01: DATE data type (including support of DATE literal)
   F051-02: TIME data type (including support of TIME literal) with fractional seconds precision of at least 0
   F051-03: TIMESTAMP data type (including support of TIMESTAMP literal) with fractional seconds precision of at least 0 and 6
-  F051-04: Comparison predicate on DATE, TIME, and TIMESTAMP data types
+  F051-04: 'Comparison predicate on DATE, TIME, and TIMESTAMP data types'
   F051-05: Explicit CAST between datetime types and character string types
   F051-06: CURRENT_DATE
   F051-07: LOCALTIME
   F051-08: LOCALTIMESTAMP
   F081: UNION and EXCEPT in views
   F131: Grouped operations
-  F131-01: WHERE, GROUP BY, and HAVING clauses supported in queries with grouped views
+  F131-01: 'WHERE, GROUP BY, and HAVING clauses supported in queries with grouped views'
   F131-02: Multiple tables supported in queries with grouped views
   F131-03: Set functions supported in queries with grouped views
   F131-04: Subqueries with GROUP BY and HAVING clauses and grouped views
@@ -177,7 +177,7 @@ optional:
   B021: Direct SQL
   B031: Basic dynamic SQL
   B032: Extended dynamic SQL
-  B032-01: <describe input statement>
+  B032-01: '<describe input statement>'
   B033: Untyped SQL-invoked function arguments
   B034: Dynamic specification of cursor attributes
   B035: Non-extended descriptor names
@@ -254,7 +254,7 @@ optional:
   F381-02: "ALTER TABLE statement: ADD CONSTRAINT clause"
   F381-03: "ALTER TABLE statement: DROP CONSTRAINT clause"
   F382: Alter column data type
-  F383: Set column not null clause
+  F383: 'Set column not null clause'
   F384: Drop identity property clause
   F385: Drop column generation expression clause
   F386: Set identity column generation clause
@@ -326,20 +326,20 @@ optional:
   F845: TRANSLATE_REGEX
   F846: Octet support in regular expression operators
   F847: Nonconstant regular expressions
-  F850: Top-level <order by clause> in <query expression>
-  F851: <order by clause> in subqueries
-  F852: Top-level <order by clause> in views
-  F855: Nested <order by clause> in <query expression>
-  F856: Nested <fetch first clause> in <query expression>
-  F857: Top-level <fetch first clause> in <query expression>
-  F858: <fetch first clause> in subqueries
-  F859: Top-level <fetch first clause> in views
-  F860: dynamic <fetch first row count> in <fetch first clause>
-  F861: Top-level <result offset clause> in <query expression>
-  F862: <result offset clause> in subqueries
-  F863: Nested <result offset clause> in <query expression>
-  F864: Top-level <result offset clause> in views
-  F865: dynamic <offset row count> in <result offset clause>
+  F850: 'Top-level <order by clause> in <query expression>'
+  F851: '<order by clause> in subqueries'
+  F852: 'Top-level <order by clause> in views'
+  F855: 'Nested <order by clause> in <query expression>'
+  F856: 'Nested <fetch first clause> in <query expression>'
+  F857: 'Top-level <fetch first clause> in <query expression>'
+  F858: '<fetch first clause> in subqueries'
+  F859: 'Top-level <fetch first clause> in views'
+  F860: 'dynamic <fetch first row count> in <fetch first clause>'
+  F861: 'Top-level <result offset clause> in <query expression>'
+  F862: '<result offset clause> in subqueries'
+  F863: 'Nested <result offset clause> in <query expression>'
+  F864: 'Top-level <result offset clause> in views'
+  F865: 'dynamic <offset row count> in <result offset clause>'
   F866: "FETCH FIRST clause: PERCENT option"
   F867: "FETCH FIRST clause: WITH TIES option"
   R010: "Row pattern recognition: FROM clause"
@@ -401,7 +401,7 @@ optional:
   T041: Basic LOB data type support
   T041-01: BLOB data type 
   T041-02: CLOB data type 
-  T041-03: POSITION, LENGTH, LOWER, TRIM, UPPER, and SUBSTRING functions for LOB data types 
+  T041-03: 'POSITION, LENGTH, LOWER, TRIM, UPPER, and SUBSTRING functions for LOB data types'
   T041-04: Concatenation of LOB data types 
   T041-05: "LOB locator: non-holdable"
   T042: Extended LOB data type support
@@ -413,7 +413,7 @@ optional:
   T071: BIGINT data type
   T076: DECFLOAT data type
   T101: Enhanced nullability determination
-  T111: Updatable joins, unions, and columns
+  T111: 'Updatable joins, unions, and columns'
   T121: WITH (excluding RECURSIVE) in query expression
   T122: WITH (excluding RECURSIVE) in subquery
   T131: Recursive query
@@ -434,7 +434,7 @@ optional:
   T191: Referential action RESTRICT
   T201: Comparable data types for referential constraints
   T211: Basic trigger capability
-  T211-01: Triggers activated on UPDATE, INSERT, or DELETE of one base table
+  T211-01: 'Triggers activated on UPDATE, INSERT, or DELETE of one base table'
   T211-02: BEFORE triggers
   T211-03: AFTER triggers
   T211-04: FOR EACH ROW triggers
@@ -485,7 +485,7 @@ optional:
   T571: Array-returning external SQL-invoked functions
   T572: Multiset-returning external SQL-invoked functions
   T581: Regular expression substring function
-  T591: UNIQUE constraints of possibly null columns
+  T591: 'UNIQUE constraints of possibly null columns'
   T601: Local cursor references
   T611: Elementary OLAP operations
   T612: Advanced OLAP operations
